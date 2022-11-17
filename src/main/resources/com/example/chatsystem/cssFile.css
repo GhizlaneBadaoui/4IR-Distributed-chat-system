@@ -1,0 +1,41 @@
+.dark-gray-background {
+	-fx-background-color: #46474A;
+}
+
+.light-gray-background {
+	-fx-background-color: #DADADA;
+}
+
+.gray-background {
+	-fx-background-color: #636566;
+}
+
+.transparent-background {
+	-fx-background-color: rgba(0,0,0,0);
+}
+
+.radius {
+	-fx-background-radius: 100px;
+}
+
+.incoming-bubble {
+	-fx-background-color: #85D6CA;
+	-fx-background-radius: 20px;
+}
+
+.outgoing-bubble {
+	-fx-background-color: #8ED5F8;
+	-fx-background-radius: 20px;
+}
+
+
+.button {
+	-fx-background-color: #85d6ca;
+	-fx-background-radius: 20px;
+}
+
+.border {
+	-fx-border-color: #DADADA;
+	-fx-border-radius: 15px;
+	-fx-border-width: 0.3px;
+}
