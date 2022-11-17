@@ -1,5 +1,6 @@
 package Model;
 
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.List;
 public class User {
@@ -45,6 +46,14 @@ public class User {
 
     public void update_agents_list(String pseudo){
 
+    }
+
+    public void add_user(User u){
+        active_agents.add(u);
+    }
+
+    public String getPseudo() {
+        return pseudo;
     }
 
 }

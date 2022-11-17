@@ -1,14 +1,15 @@
 package Controller;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import Controller.Protocoles.Protocols;
+
+import java.net.*;
 import java.util.Iterator;
 
 public class Broadcast extends Protocols {
     //the total number of agents that are connected to the system which gonna used by a user after broadcasting the sytem.
     private int total;
+
+    private DatagramSocket connectivity_sock;
     public static Broadcast broadcast;
 
     static {
@@ -27,11 +28,11 @@ public class Broadcast extends Protocols {
         total = 0;
     }
 
-    private boolean broadcatsting(String pseudo){
+    private boolean broadcasting(String pseudo){
         return true;
     }
 
-    public static InetAddress get_broadcast_address() throws UnknownHostException, SocketException {
+    private static InetAddress get_broadcast_address() throws UnknownHostException, SocketException {
         Iterator<InetAddress> networkInterface = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getInetAddresses().asIterator();
         InetAddress brodct = null;
         while (networkInterface.hasNext()){
