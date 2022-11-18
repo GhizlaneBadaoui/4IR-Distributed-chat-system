@@ -13,9 +13,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" styleClass="dark-gray-background" stylesheets="@cssFile.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+            prefWidth="1000.0" styleClass="dark-gray-background" stylesheets="@cssFile.css" xmlns="http://javafx.com/javafx/19"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chatsystem.HelloController">
    <center>
-      <HBox alignment="CENTER" prefHeight="648.0" prefWidth="732.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="534.0" prefWidth="800.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" prefHeight="396.0" prefWidth="380.0" spacing="4.0" styleClass="border" stylesheets="@cssFile.css">
                <children>
@@ -27,7 +29,7 @@
                         <Insets bottom="15.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField prefHeight="30.0" prefWidth="231.0" promptText="Enter your pseudoname ..." styleClass="light-gray-background">
+                  <TextField prefHeight="30.0" prefWidth="231.0" promptText="Enter your pseudonym ..." styleClass="light-gray-background">
                      <VBox.margin>
                         <Insets left="30.0" right="30.0" />
                      </VBox.margin>
@@ -43,7 +45,7 @@
                         <Font name="Ebrima" size="12.0" />
                      </font>
                   </PasswordField>
-                  <Label alignment="CENTER" prefHeight="42.0" prefWidth="198.0" text="Invalide infromations !" textFill="RED">
+                  <Label alignment="CENTER" prefHeight="42.0" prefWidth="198.0" text="Invalide infromation !" textFill="RED">
                      <font>
                         <Font name="Sitka Text" size="16.0" />
                      </font>
@@ -61,7 +63,7 @@
                   </Button>
                </children>
                <HBox.margin>
-                  <Insets bottom="90.0" top="90.0" />
+                  <Insets bottom="110.0" top="60.0" />
                </HBox.margin>
             </VBox>
          </children>

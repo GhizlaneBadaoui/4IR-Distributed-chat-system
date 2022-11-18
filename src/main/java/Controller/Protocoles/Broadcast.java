@@ -1,6 +1,4 @@
-package Controller;
-
-import Controller.Protocoles.Protocols;
+package Controller.Protocoles;
 
 import java.net.*;
 import java.util.Iterator;
