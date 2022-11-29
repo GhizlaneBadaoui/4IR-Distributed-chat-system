@@ -1,7 +1,14 @@
 package Model;
 
+import Controller.Protocoles.Broadcast;
+
+import java.sql.Connection;
+import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 public class User {
     private String IdBdd;
@@ -28,15 +35,39 @@ public class User {
         this.port = port;
     }
 
-    public boolean choose_pseudo(String pseudo){
+    public boolean choose_pseudo(String pseudo) throws IOException {
+        if(Broadcast.getInstance().broadcasting(pseudo)){
+            if(identify_active_agents())
+                this.pseudo_selected();//on fait passer l'utilisateur à l'interface principale de l'application
+            else
+                return false;//l'utilisateur se connecte pas et un msg d'errur apparaitera.
+        }
+        return false;
+    }
+
+    public boolean identify_active_agents() throws IOException {
+        DatagramPacket packet = new DatagramPacket(new byte[100],100);
+        String resp;
+        while (true){
+            try {
+                Broadcast.getInstance().getConnectivity_sock().receive(packet);
+                resp = new String(packet.getData());
+                if(!resp.contains("no")){
+                    this.active_agents.add(new User("",resp.substring(10),packet.getAddress(), packet.getPort(),null,null,null));
+                }
+                else{
+                    this.active_agents.clear();
+                    return false;
+                }
+            }
+            catch (Exception e){
+                break;
+            }
+        }
         return true;
     }
 
-    public void identify_active_agents(){
-
-    }
-
-    public void pseudo_selected(String pseudo){
+    public void pseudo_selected(){
 
     }
 

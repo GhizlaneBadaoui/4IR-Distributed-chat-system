@@ -5,6 +5,8 @@ import Model.User;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class ConnectivityThread extends Thread{
     private User user;
@@ -12,10 +14,10 @@ public class ConnectivityThread extends Thread{
     private DatagramPacket packet;
     private byte[] msg = new byte[100];
 
-    public ConnectivityThread(DatagramSocket connectivity_sock, User user) {
+    public ConnectivityThread(DatagramSocket connectivity_sock, User user) throws UnknownHostException {
         this.user = user;
         this.connectivity_sock = connectivity_sock;
-        packet = new DatagramPacket(msg,msg.length);
+        packet = new DatagramPacket(msg,msg.length, null,5002);
     }
 
     @Override

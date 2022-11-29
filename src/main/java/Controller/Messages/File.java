@@ -3,11 +3,12 @@ package Controller.Messages;
 import Model.User;
 
 import java.util.Date;
+import java.sql.*;
 
 public class File extends Message{
-    private String content;
+    private Blob content;
 
-    public File(User sender, User receiver, String content) {
+    public File(User sender, User receiver, Blob content) {
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
