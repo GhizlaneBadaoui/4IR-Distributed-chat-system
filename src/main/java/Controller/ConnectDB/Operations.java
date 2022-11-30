@@ -6,39 +6,37 @@ import java.sql.Statement;
 
 public class Operations{
 
-    static Connection conx = null;
+    static Connection cnx = null;
     static Statement st;
     static ResultSet rst;
 
 
-    /* Tester la connection de la base de donnees */
-
+    /* Check if the database is connected with the code */
     public static void connect() throws Exception {
 
-        connexion conx = new connexion();
-        connexion.getConnection();
-        if ( conx != null) {
-            System.out.println("--> La BDD s'est connectée !\n");
+        Connexion connexion = new Connexion();
+        Connexion.getConnection();
+        if ( connexion != null) {
+            System.out.println("--> DB connected !\n");
         }
     }
 
 
 
-    /* Afficher tous les elements d'une table de la base de donnees */
-
+    /* Display elements from a table */
     public static void display() throws Exception {
 
         try {
 
-            conx = connexion.getConnection();
+            cnx = Connexion.getConnection();
             System.out.println("------- Affichage de la table de BDD --------");
 
-            st = conx.createStatement();
-            rst = st.executeQuery("SELECT * FROM studentdb.student" );
+            st = cnx.createStatement();
+            rst = st.executeQuery("SELECT * FROM chatsystem.User" );
 
             while (rst.next()) {
-                System.out.print(rst.getInt("studentID") + "\t");
-                System.out.print(rst.getString("studentName") + "\t");
+                System.out.print(rst.getInt("id") + "\t");
+                System.out.print(rst.getString("name") + "\t");
                 System.out.println();
             }
         } catch(Exception ex) { ex.printStackTrace();}
@@ -46,37 +44,39 @@ public class Operations{
 
 
 
-    /* Ajouter un �l�ment d'une table */
+    /* Ajouter un element d'une table */
 
     public static void 	add (String name) throws Exception {
 
         try {
-            conx = connexion.getConnection();
-            String query = "INSERT INTO `studentdb`.`student` (`StudentName`) VALUES ('"+ name +"');";
-            st = conx.createStatement();
+            cnx = Connexion.getConnection();
+            String query = "INSERT INTO `chatsystem`.`User` (`name`) VALUES ('"+ name +"');";
+            st = cnx.createStatement();
             st.executeUpdate(query);
             System.out.println("--> Un élément est ajouté à la BDD !\n");
-            conx.close();
+            cnx.close();
         } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
 
 
-    /* Supprimer un �l�ment d'une table */
+    /* Supprimer un element d'une table */
 
     public static void delete (int id) throws Exception {
 
         try {
-            conx = connexion.getConnection();
+            cnx = Connexion.getConnection();
             String query = "DELETE FROM `studentdb`.`student` WHERE (`StudentID` = '"+id+"')";
-            st = conx.createStatement();
+            st = cnx.createStatement();
             st.executeUpdate(query);
             System.out.println("--> Un élément est supprimé de la BDD !\n");
-            conx.close();
+            cnx.close();
         } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
 
 }
+
+

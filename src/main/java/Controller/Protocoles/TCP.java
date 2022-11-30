@@ -16,7 +16,7 @@ public class TCP extends Protocols {
     }
 
     public void wait_connection(){
-        //lance un thread d'attente de connexion depuis un autre agent
+        //lance un thread d'attente de Connexion depuis un autre agent
     }
 
     public void etablish_connection(InetAddress address){
