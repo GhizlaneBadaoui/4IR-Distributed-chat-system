@@ -32,12 +32,12 @@ public class ConnectivityThread extends Thread{
                         packet.setData("no".getBytes());
                         connectivity_sock.send(packet);
                     } else {
-                        packet.setData("okay".getBytes());
+                        packet.setData(("ok "+this.user.getPort()+":"+this.user.getPseudo()).getBytes());
                         connectivity_sock.send(packet);
                     }
                 }
                 if(!data.contains("broadcast") && data.contains("pseudo")){
-                    user.add_user(new User("",data.substring(10),packet.getAddress(),packet.getPort(),"","",null));
+                    user.add_user(new User("",data.substring(data.indexOf(':')+1),packet.getAddress(),Integer.parseInt(data.substring(0,data.indexOf(':')-1)),"","",null));
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

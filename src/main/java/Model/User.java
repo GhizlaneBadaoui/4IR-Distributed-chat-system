@@ -52,8 +52,8 @@ public class User {
             try {
                 Broadcast.getInstance().getConnectivity_sock().receive(packet);
                 resp = new String(packet.getData());
-                if(!resp.contains("no")){
-                    this.active_agents.add(new User("",resp.substring(10),packet.getAddress(), packet.getPort(),null,null,null));
+                if(!resp.contains("no") && resp.contains("ok")){
+                    this.active_agents.add(new User("",resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.getInteger(resp.substring(4,resp.indexOf(':'))),null,null,null));
                 }
                 else{
                     this.active_agents.clear();
@@ -68,14 +68,22 @@ public class User {
     }
 
     public void pseudo_selected(){
-
+        String msg = this.port+":"+this.pseudo;
+        for (User user : this.active_agents) {
+            if(!Broadcast.getInstance().send_msg(new DatagramPacket(msg.getBytes(),msg.length(),user.IP,user.port)))
+                System.out.println("A problem occurs while sending a UDP msg to : "+user.pseudo);
+        }
     }
 
-    public boolean modify_pseudo(String pseudo){
-        return true;
+    public boolean modify_pseudo(String pseudo) throws IOException {
+        return choose_pseudo(pseudo);
     }
 
     public void update_agents_list(String pseudo){
+
+    }
+
+    public void inform_connected_agents(String msg){
 
     }
 
@@ -87,4 +95,7 @@ public class User {
         return pseudo;
     }
 
+    public int getPort() {
+        return port;
+    }
 }

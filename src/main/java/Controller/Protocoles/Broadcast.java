@@ -30,11 +30,12 @@ public class Broadcast extends Protocols {
         connectivity_sock = new DatagramSocket(port);
         connectivity_sock.setSoTimeout(5000);
         sock = new DatagramSocket();
+        packet = new DatagramPacket(msg.getBytes(), msg.length(),broadcast.IP,5002);
     }
 
     public boolean broadcasting(String pseudo) {
         msg += pseudo;
-        packet = new DatagramPacket(msg.getBytes(), msg.length(),broadcast.IP,5002);
+        packet.setData(msg.getBytes());
         try {
             connectivity_sock.send(packet);
         } catch (IOException e) {
@@ -70,11 +71,4 @@ public class Broadcast extends Protocols {
         }
         return brodct;
     }
-
-
-
-
-
-
-
 }
