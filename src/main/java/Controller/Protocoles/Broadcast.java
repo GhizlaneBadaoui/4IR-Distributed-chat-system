@@ -1,14 +1,18 @@
 package Controller.Protocoles;
 
+import java.io.IOException;
 import java.net.*;
 import java.util.Iterator;
 
 public class Broadcast extends Protocols {
-    //the total number of agents that are connected to the system which gonna used by a user after broadcasting the sytem.
-    private int total;
 
     private DatagramSocket connectivity_sock;
-    public static Broadcast broadcast;
+    private static Broadcast broadcast;
+    private DatagramPacket packet;
+
+    private DatagramSocket sock;
+    private String msg = "broadcast pseudo = ";
+
 
     static {
         try {
@@ -20,14 +24,42 @@ public class Broadcast extends Protocols {
         }
     }
 
-    private Broadcast(InetAddress Ip, int port){
+    private Broadcast(InetAddress Ip, int port) throws SocketException {
         this.IP = Ip;
         this.port = port;
-        total = 0;
+        connectivity_sock = new DatagramSocket(port);
+        connectivity_sock.setSoTimeout(5000);
+        sock = new DatagramSocket();
     }
 
-    private boolean broadcasting(String pseudo){
+    public boolean broadcasting(String pseudo) {
+        msg += pseudo;
+        packet = new DatagramPacket(msg.getBytes(), msg.length(),broadcast.IP,5002);
+        try {
+            connectivity_sock.send(packet);
+        } catch (IOException e) {
+            return false;
+        }
         return true;
+    }
+
+    public boolean send_msg(DatagramPacket pack){
+        try {
+            sock.send(pack);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+
+    public DatagramSocket getConnectivity_sock() {
+        return connectivity_sock;
+    }
+
+    public static Broadcast getInstance(){
+        return broadcast;
     }
 
     private static InetAddress get_broadcast_address() throws UnknownHostException, SocketException {
