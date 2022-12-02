@@ -29,8 +29,13 @@
 }
 
 
-.button {
+.normal-button {
 	-fx-background-color: #85d6ca;
+	-fx-background-radius: 20px;
+}
+
+.transparent-button {
+	-fx-background-color: rgba(0,0,0,0);
 	-fx-background-radius: 20px;
 }
 

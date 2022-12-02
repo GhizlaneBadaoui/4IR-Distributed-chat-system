@@ -1,6 +1,4 @@
-package Controller.Messages;
-
-import Model.User;
+package Model;
 
 import java.util.Date;
 import java.sql.*;

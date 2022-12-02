@@ -1,9 +1,5 @@
-package Controller.Messages;
+package Model;
 
-import Model.User;
-
-import java.security.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Text extends Message{

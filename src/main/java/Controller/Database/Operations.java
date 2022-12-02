@@ -1,9 +1,22 @@
-package Controller.ConnectDB;
+package Controller.Database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+
+
+/*-------------------- operations -------------------*/
+            // connect();
+
+            //initiate();
+            //display("id", "name", "User");
+            //add("User", "name", "toto");
+            //delete("User", "id", 2);
+            //display("id", "name", "User");
+            //initiate();
+
+            //closeConnection();
+/*----------------------------------------------------*/
 
 public class Operations{
 
