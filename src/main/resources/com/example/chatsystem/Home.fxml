@@ -71,7 +71,7 @@
                      </styleClass>
                   </HBox>
                   <Pane prefHeight="2.0" prefWidth="200.0" styleClass="dark-gray-background" stylesheets="@style.css" />
-                  <HBox fx:id="messageLabel" alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="320.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="320.0">
                      <children>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -176,7 +176,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="71.0" prefWidth="608.0">
                <children>
-                  <Label prefHeight="30.0" prefWidth="265.0" text="Pseudo 02" textFill="#9da7a7">
+                  <Label fx:id="agentPseudo" prefHeight="30.0" prefWidth="265.0" text="Pseudo 02" textFill="#9da7a7">
                      <font>
                         <Font name="Ebrima Bold" size="23.0" />
                      </font>
@@ -263,7 +263,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <TextField prefHeight="50.0" prefWidth="465.0" promptText="Type something to send ..." styleClass="transparent-background" stylesheets="@style.css">
+                  <TextField fx:id="messageLabel" prefHeight="50.0" prefWidth="465.0" promptText="Type something to send ..." styleClass="transparent-background" stylesheets="@style.css">
                      <font>
                         <Font name="Ebrima" size="14.0" />
                      </font>

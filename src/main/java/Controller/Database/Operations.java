@@ -1,21 +1,20 @@
 package Controller.Database;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 
 /*-------------------- operations -------------------*/
-            // connect();
-
-            //initiate();
-            //display("id", "name", "User");
-            //add("User", "name", "toto");
-            //delete("User", "id", 2);
-            //display("id", "name", "User");
-            //initiate();
-
-            //closeConnection();
+//            connect();
+//            initiate();
+//            displayAll();
+//            add("Hi ghiz", Date.valueOf("2022-12-12"), 'R', "walid");  // date sous la forme YYYY-MM-DD
+//            add("Hi walid", Date.valueOf("2022-12-12"), 'S', "walid");
+//            delete(1);
+//            displayAll();
+//            closeConnection();
 /*----------------------------------------------------*/
 
 public class Operations{
@@ -23,6 +22,8 @@ public class Operations{
     static Connection cnx = null;
     static Statement st;
     static ResultSet rst;
+
+    static String tableName = "messages";
 
     /* Check if the database is connected with the code */
     public static void connect() {
@@ -39,12 +40,12 @@ public class Operations{
     /* Initiate the database */
     public static void initiate() {
         try {
-            String query = "CREATE TABLE Message" +
-                    " (massageID INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+            String query = "CREATE TABLE messages" +
+                    " (messageID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                     " content BLOB NOT NULL," +
-                    " date DATE NOT NULL," +
-                    " operation ENUM('R', 'S')," +
-                    " pseudo VARCHAR(100) NOT NULL)";
+                    " date NUMERIC NOT NULL," +
+                    " operation TEXT CHECK( operation IN ('R','S') ) NOT NULL DEFAULT 'R'," +
+                    " pseudo TEXT NOT NULL)";
 
             st = cnx.createStatement();
             st.executeUpdate(query);
@@ -55,8 +56,8 @@ public class Operations{
         }
     }
 
-    /* Display elements from a DB table */
-    public static void display(String id, String name, String tableName){
+    /* Display all elements from a DB table */
+    public static void displayAll(){
 
         try {
             System.out.println("\n------- Display table content --------");
@@ -65,8 +66,11 @@ public class Operations{
             rst = st.executeQuery("SELECT * FROM "+ tableName );
 
             while (rst.next()) {
-                System.out.print(rst.getInt(id) + "\t");
-                System.out.print(rst.getString(name) + "\t");
+                System.out.print(rst.getInt("messageID") + "\t");
+                System.out.print(rst.getString("content") + "\t");
+                System.out.print(rst.getString("date") + "\t");
+                System.out.print(rst.getString("operation") + "\t");
+                System.out.print(rst.getString("pseudo") + "\t");
                 System.out.println();
             }
         } catch(Exception ex) { ex.printStackTrace();}
@@ -75,10 +79,11 @@ public class Operations{
 
 
     /* Add an element in a DB table  */
-    public static void 	add(String tableName, String column, String value){
+    public static void 	add(String content, Date date, char operation, String pseudo){
 
         try {
-            String query = "INSERT INTO `chatsystem`."+ tableName +" ("+ column + ") VALUES ('"+ value +"');";
+            String query = "INSERT INTO "+ tableName +" (content, date, operation, pseudo) "+
+                    "VALUES ('"+ content +"','"+ date +"','"+ operation +"', '"+ pseudo +"');";
             st = cnx.createStatement();
             st.executeUpdate(query);
             System.out.println("\n--> An element is added to the DB  !\n");
@@ -89,11 +94,11 @@ public class Operations{
 
 
     /* Delete an element in a DB table */
-    public static void delete (String tableName, String column, int value){
+    public static void delete (int messageID){
 
         try {
             cnx = Connexion.getConnection();
-            String query = "DELETE FROM `chatsystem`."+ tableName +" WHERE ("+ column +" = '"+ value +"')";
+            String query = "DELETE FROM "+ tableName +" WHERE (messageID = '"+ messageID +"')";
             st = cnx.createStatement();
             st.executeUpdate(query);
             System.out.println("\n--> An element is deleted in the DB !\n");
@@ -104,6 +109,7 @@ public class Operations{
 
     public static void closeConnection() {
         try {
+            st.close();
             cnx.close();
         } catch (Exception ex) {
             ex.printStackTrace();
