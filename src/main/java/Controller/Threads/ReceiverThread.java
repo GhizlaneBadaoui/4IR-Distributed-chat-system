@@ -6,12 +6,13 @@ import java.net.Socket;
 
 public class ReceiverThread extends Thread{
     private Socket sock;
+    private String pseudo;
     private ObjectInputStream inputStream;
 
-    public ReceiverThread(Socket sock) throws IOException {
+    public ReceiverThread(Socket sock, String pseudo) throws IOException {
         this.sock = sock;
+        this.pseudo = pseudo;
         inputStream = new ObjectInputStream(sock.getInputStream());
-        this.start();
     }
 
     @Override

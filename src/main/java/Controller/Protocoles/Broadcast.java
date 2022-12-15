@@ -30,7 +30,7 @@ public class Broadcast extends Protocols {
         connectivity_sock = new DatagramSocket(port);
         connectivity_sock.setSoTimeout(5000);
         sock = new DatagramSocket();
-        packet = new DatagramPacket(msg.getBytes(), msg.length(),Ip,port);
+        packet = new DatagramPacket(msg.getBytes(), msg.length(),Ip,5000);
     }
 
     public boolean broadcasting(String pseudo) {

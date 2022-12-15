@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+
 public class User {
     private String IdBdd;
     private String pseudo;
@@ -82,9 +83,16 @@ public class User {
     public void update_agents_list(String pseudo){
 
     }
-
     public void inform_connected_agents(String msg){
 
+    }
+
+    public InetAddress getIP() {
+        return IP;
+    }
+
+    public List<User> getActive_agents() {
+        return active_agents;
     }
 
     public void add_user(User u){

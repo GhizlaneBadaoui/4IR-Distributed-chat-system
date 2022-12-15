@@ -7,20 +7,24 @@ import java.net.Socket;
 
 public class SenderThread extends Thread{
     private Socket sock;
+    private String pseudo;
+
+    private String msg;
     private ObjectOutputStream outputStream;
 
-    public SenderThread(Socket sock) throws IOException {
+
+    public SenderThread(Socket sock, String pseudo, String msg) throws IOException {
         this.sock = sock;
+        this.pseudo = pseudo;
+        this.msg = msg;
         outputStream = new ObjectOutputStream(sock.getOutputStream());
-        this.start();
     }
 
     @Override
     public void run() {
-        Object msg;
         while (true){
             try {
-                outputStream.writeObject(new Object());
+                outputStream.writeObject(msg);
                 //il faut traiter le type de message - aussi ajouter le message dans la bdd
             } catch (IOException e) {
                 throw new RuntimeException(e);

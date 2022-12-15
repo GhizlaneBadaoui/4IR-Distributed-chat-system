@@ -13,7 +13,7 @@ public class ConnectivityThread extends Thread{
 
     public ConnectivityThread() throws UnknownHostException, SocketException {
         this.user = user;
-        this.connectivity_sock = new DatagramSocket();
+        this.connectivity_sock = new DatagramSocket(5000);
         packet = new DatagramPacket(msg,msg.length);
         this.start();
     }
@@ -31,7 +31,7 @@ public class ConnectivityThread extends Thread{
                         packet.setData("no".getBytes());
                         connectivity_sock.send(packet);
                     } else {
-                        System.out.println("msg rec ");
+                        System.out.println("msg rec 2");
                         packet.setData(("ok "+this.user.getPort()+":"+this.user.getPseudo()).getBytes());
                         connectivity_sock.send(packet);
                     }
