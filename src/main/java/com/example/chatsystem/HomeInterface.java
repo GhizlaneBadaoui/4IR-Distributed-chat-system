@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 import java.net.Socket;
 
@@ -39,6 +41,12 @@ public class HomeInterface {
 
     @FXML
     private Label agentPseudo;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private VBox vbox_messages;
 
 
     Main objetMain = new Main();
