@@ -30,11 +30,12 @@ public class Broadcast extends Protocols {
         connectivity_sock = new DatagramSocket(port);
         connectivity_sock.setSoTimeout(5000);
         sock = new DatagramSocket();
+        packet = new DatagramPacket(msg.getBytes(), msg.length(),Ip,5000);
     }
 
     public boolean broadcasting(String pseudo) {
         msg += pseudo;
-        packet = new DatagramPacket(msg.getBytes(), msg.length(),broadcast.IP,5002);
+        packet.setData(msg.getBytes());
         try {
             connectivity_sock.send(packet);
         } catch (IOException e) {
@@ -63,18 +64,16 @@ public class Broadcast extends Protocols {
     }
 
     private static InetAddress get_broadcast_address() throws UnknownHostException, SocketException {
-        Iterator<InetAddress> networkInterface = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getInetAddresses().asIterator();
-        InetAddress brodct = null;
-        while (networkInterface.hasNext()){
-            brodct = networkInterface.next();
-        }
-        return brodct;
+        Iterator<InterfaceAddress> networkInterface = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getInterfaceAddresses().iterator();
+        return networkInterface.next().getBroadcast();
     }
 
-
-
-
-
-
-
+    public static void main(String[] args) throws SocketException, UnknownHostException {
+        //System.out.println(InetAddress.getLocalHost().getHostAddress());
+        System.out.println(Broadcast.get_broadcast_address().getHostAddress());
+        if(Broadcast.getInstance().broadcasting("walid"))
+            System.out.println("Done");
+        else
+            System.out.println("Error");
+    }
 }
