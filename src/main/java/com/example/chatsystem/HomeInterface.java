@@ -8,8 +8,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-import java.net.Socket;
-
 public class HomeInterface {
 
     @FXML
