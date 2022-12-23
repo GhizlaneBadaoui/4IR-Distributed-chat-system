@@ -231,7 +231,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="sendButton" mnemonicParsing="false" onAction="#send" styleClass="transparent-button" stylesheets="@style.css">
+                  <Button fx:id="sendButton" mnemonicParsing="false" styleClass="transparent-button" stylesheets="@style.css">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
