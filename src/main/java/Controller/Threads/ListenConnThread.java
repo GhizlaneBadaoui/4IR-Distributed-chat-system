@@ -14,8 +14,8 @@ public class ListenConnThread extends Thread {
 
     private static Map<String,Socket> map_sockets;
 
-    public ListenConnThread(ServerSocket user_listen_sock, User user) {
-        user_listen_sock = user_listen_sock;
+    public ListenConnThread(User user) throws IOException {
+        user_listen_sock = new ServerSocket(9000);
         this.user = user;
         this.start();
     }

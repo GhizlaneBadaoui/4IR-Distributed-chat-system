@@ -9,6 +9,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -18,16 +19,12 @@ public class User {
     private int port;
     private String lastname;
     private String firstname;
-    private List<User> active_agents;
+    private List<User> active_agents = new ArrayList<>();
 
-    public User(String idBdd, String pseudo, InetAddress IP, int port, String lastname, String firstname, List<User> active_agents) {
-        IdBdd = idBdd;
-        this.pseudo = pseudo;
+
+    public User(InetAddress IP, int port) {
         this.IP = IP;
         this.port = port;
-        this.lastname = lastname;
-        this.firstname = firstname;
-        this.active_agents = active_agents;
     }
 
     public User(String pseudo, InetAddress IP, int port) {
@@ -54,7 +51,7 @@ public class User {
                 Broadcast.getInstance().getConnectivity_sock().receive(packet);
                 resp = new String(packet.getData());
                 if(!resp.contains("no") && resp.contains("ok")){
-                    this.active_agents.add(new User("",resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.getInteger(resp.substring(4,resp.indexOf(':'))),null,null,null));
+                    this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.getInteger(resp.substring(4,resp.indexOf(':')))));
                 }
                 else{
                     this.active_agents.clear();
@@ -93,6 +90,10 @@ public class User {
 
     public List<User> getActive_agents() {
         return active_agents;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public void add_user(User u){

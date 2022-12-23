@@ -1,6 +1,8 @@
 package Controller.Threads;
 
 import Model.User;
+import com.example.chatsystem.HomeInterface;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.*;
@@ -37,7 +39,8 @@ public class ConnectivityThread extends Thread{
                     }
                 }
                 if(!data.contains("broadcast") && data.contains("pseudo")){
-                    user.add_user(new User("",data.substring(data.indexOf(':')+1),packet.getAddress(),Integer.parseInt(data.substring(0,data.indexOf(':')-1)),"","",null));
+                    user.add_user(new User(data.substring(data.indexOf(':')+1),packet.getAddress(),Integer.parseInt(data.substring(0,data.indexOf(':')-1))));
+                    HomeInterface.vBoxMap.put(data.substring(data.indexOf(':')+1),new VBox());
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

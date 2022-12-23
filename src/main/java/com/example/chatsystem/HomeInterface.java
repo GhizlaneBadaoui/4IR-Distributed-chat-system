@@ -1,7 +1,6 @@
 package com.example.chatsystem;
 
 import Controller.Threads.ListenConnThread;
-import Controller.Threads.ReceiverThread;
 import Controller.Threads.SenderThread;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -23,8 +22,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class HomeInterface implements Initializable {
@@ -65,8 +66,9 @@ public class HomeInterface implements Initializable {
     @FXML
     private VBox vbox_messages;
 
-    private ReceiverThread receiverThread;
     private SenderThread senderThread;
+
+    public static Map<String,VBox> vBoxMap;
 
     Main objetMain = new Main();
 
@@ -104,18 +106,12 @@ public class HomeInterface implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        String pseudo = agentPseudo.getText();
-        Socket socket = ListenConnThread.getMap_sockets().get(pseudo);
-        receiverThread = new ReceiverThread(socket, pseudo);
-
         vbox_messages.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 scrollPane.setVvalue((Double) newValue);
             }
         });
-
-        receiverThread.receiveMessage(vbox_messages);
 
         sendButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -145,7 +141,7 @@ public class HomeInterface implements Initializable {
                     hbox.getChildren().add(textflow);
                     vbox_messages.getChildren().add(hbox);
 
-                    senderThread.sendMessage();
+                    senderThread.start();
                     messageLabel.clear();
 
                 }
@@ -153,7 +149,7 @@ public class HomeInterface implements Initializable {
         });
     }
 
-    public static void addLabel(Object msg, VBox vbox) {
+    public static void addLabel(String pseudo, Object msg, VBox vbox) {
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER_LEFT);
         hbox.setPadding(new Insets(5,5,5,10));
