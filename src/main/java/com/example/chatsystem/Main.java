@@ -16,10 +16,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Home.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("Chat System");
         stage.getIcons().add(new Image("file:src/main/resources/Images/logo.png"));
         stage.setScene(scene);
+        stage.resizableProperty().setValue(false);
         stage.show();
     }
 

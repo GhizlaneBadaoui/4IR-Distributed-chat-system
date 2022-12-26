@@ -1,74 +1,51 @@
 package com.example.chatsystem;
 
-import Controller.Threads.ListenConnThread;
-import Controller.Threads.SenderThread;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import Model.User;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class HomeInterface implements Initializable {
 
     @FXML
-     private Button disconnectButton;
+    private Button EditButton;
 
     @FXML
-    private Button parametersButton;
+    private ScrollPane contactsScrollPane;
 
     @FXML
-    private Button sendButton;
+    private Button disconnectButton;
 
     @FXML
-    private Button sendPicture;
+    private TextField name;
 
     @FXML
-    private Button sendFile;
+    private ImageView imgProfile;
 
     @FXML
-    private Button sendVoice;
+    private Label ipAddress;
 
     @FXML
-    private Button reduceButton;
+    private Label port;
 
     @FXML
-    private TextField searchField;
+    private Label pseudo;
 
     @FXML
-    private TextField messageLabel;
-
-    @FXML
-    private Label agentPseudo;
-
-    @FXML
-    private ScrollPane scrollPane;
-
-    @FXML
-    private VBox vbox_messages;
-
-    private SenderThread senderThread;
-
-    public static Map<String,VBox> vBoxMap;
+    private VBox vboxListAgent;
 
     Main objetMain = new Main();
 
@@ -82,90 +59,56 @@ public class HomeInterface implements Initializable {
     }
 
     @FXML
-    void displayParameters (ActionEvent event){
-        try {
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
-    void reduceUser (ActionEvent event){
-        try {
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    void search () {
-        try {
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    void editInformation(ActionEvent event) {
+        //User.setName(name.getText());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        vbox_messages.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                scrollPane.setVvalue((Double) newValue);
+
+//        pseudo.setText(User.getPseudo());
+//        ipAddress.setText(User.getIP());
+//        port.setText(User.getPort());
+
+        //List<User> agentsList = new ArrayList<>(User.getActive_agents());
+        List<User> agentsList = new ArrayList<>(Agents());
+        for (User user : agentsList) {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("AgentItem.fxml"));
+
+            try {
+                HBox hbox = fxmlLoader.load();
+                AgentItemController aic = fxmlLoader.getController();
+                aic.setData(user);
+                vboxListAgent.getChildren().add(hbox);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
-
-        sendButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String pseudo = agentPseudo.getText();
-                Socket socket = ListenConnThread.getMap_sockets().get(pseudo);
-                String messageToSend = messageLabel.getText();
-                try {
-                    senderThread = new SenderThread(socket, pseudo, messageToSend);
-                } catch (IOException e) {
-                    e.printStackTrace();                }
-
-                if (!messageToSend.isEmpty()) {
-                    HBox hbox = new HBox();
-                    hbox.setAlignment(Pos.CENTER_RIGHT);
-                    hbox.setPadding(new Insets(5,5,5,10));
-
-                    Text text = new Text(messageToSend);
-                    TextFlow textflow = new TextFlow(text);
-
-                    textflow.setStyle("-fx-background-color: #8ED5F8;" +
-                            "-fx-background-radius: 20px;");
-
-                    textflow.setPadding(new Insets(5, 10, 5, 10));
-                    text.setFill(Color.color(0.934, 0.945, 0.996));
-
-                    hbox.getChildren().add(textflow);
-                    vbox_messages.getChildren().add(hbox);
-
-                    senderThread.start();
-                    messageLabel.clear();
-
-                }
-            }
-        });
+        }
     }
 
-    public static void addLabel(String pseudo, Object msg, VBox vbox) {
-        HBox hbox = new HBox();
-        hbox.setAlignment(Pos.CENTER_LEFT);
-        hbox.setPadding(new Insets(5,5,5,10));
+    private List<User> Agents() {
+        List<User> ls = new ArrayList<>();
+        User user = new User();
 
-        Text text = new Text((String) msg);
-        TextFlow textflow = new TextFlow(text);
-        textflow.setStyle("-fx-background-color: #85D6CA" +
-                "-fx-background-radius: 20px");
-        textflow.setPadding(new Insets(5, 10, 5, 10));
-        hbox.getChildren().add(textflow);
+        user.setPseudo("tata");
+        user.setImgSrc("file:src/main/resources/Images/person.png");
+        ls.add(user);
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                vbox.getChildren().add(hbox);
-            }
-        });
+        user = new User();
+        user.setPseudo("titi");
+        user.setImgSrc("file:src/main/resources/Images/person2.png");
+        ls.add(user);
+
+        user = new User();
+        user.setPseudo("toto");
+        user.setImgSrc("file:src/main/resources/Images/person1.png");
+        ls.add(user);
+
+        user.setPseudo("tutu");
+        user.setImgSrc("file:src/main/resources/Images/person1.png");
+        ls.add(user);
+
+        return ls;
     }
 }

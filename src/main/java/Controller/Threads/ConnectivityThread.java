@@ -1,11 +1,12 @@
 package Controller.Threads;
 
 import Model.User;
-import com.example.chatsystem.HomeInterface;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 public class ConnectivityThread extends Thread{
     private User user;
@@ -40,7 +41,7 @@ public class ConnectivityThread extends Thread{
                 }
                 if(!data.contains("broadcast") && data.contains("pseudo")){
                     user.add_user(new User(data.substring(data.indexOf(':')+1),packet.getAddress(),Integer.parseInt(data.substring(0,data.indexOf(':')-1))));
-                    HomeInterface.vBoxMap.put(data.substring(data.indexOf(':')+1),new VBox());
+                    // smthing to add
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

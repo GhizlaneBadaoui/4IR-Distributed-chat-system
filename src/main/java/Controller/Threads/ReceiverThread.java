@@ -1,8 +1,5 @@
 package Controller.Threads;
 
-import com.example.chatsystem.HomeInterface;
-import javafx.scene.layout.VBox;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,8 +24,7 @@ public class ReceiverThread extends Thread{
         while (sock.isConnected()){
             try {
                 Object msg = bufferedReader.readLine();
-                HomeInterface.addLabel(pseudo,msg, HomeInterface.vBoxMap.get(pseudo));
-                //il faut traiter le type de message - aussi ajouter le message dans la bdd
+                // ajouter le message dans la bdd
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error receiving message to the client");

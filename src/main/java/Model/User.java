@@ -2,25 +2,21 @@ package Model;
 
 import Controller.Protocoles.Broadcast;
 
-import java.sql.Connection;
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private String IdBdd;
     private String pseudo;
     private InetAddress IP;
     private int port;
-    private String lastname;
-    private String firstname;
-    private List<User> active_agents = new ArrayList<>();
+    private String name;
+    private String imgSrc;
+    private static List<User> active_agents = new ArrayList<>();
 
+    public User() {}
 
     public User(InetAddress IP, int port) {
         this.IP = IP;
@@ -84,16 +80,8 @@ public class User {
 
     }
 
-    public InetAddress getIP() {
-        return IP;
-    }
-
-    public List<User> getActive_agents() {
+    public static List<User> getActive_agents() {
         return active_agents;
-    }
-
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
     }
 
     public void add_user(User u){
@@ -106,5 +94,24 @@ public class User {
 
     public int getPort() {
         return port;
+    }
+
+    public InetAddress getIP() {
+        return IP;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImgSrc() {
+        return imgSrc;
+    }
+
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 }

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /*-------------------- operations -------------------*/
@@ -77,6 +79,19 @@ public class Operations{
     }
 
 
+    public static List<String[]> displayMessagesWithAgent(String agentPseudo){
+        List<String[]> tab = new ArrayList<>();
+        try {
+            st = cnx.createStatement();
+            rst = st.executeQuery("SELECT * FROM '"+ tableName +"' where pseudo = '"+ agentPseudo +"' order by messageID");
+            while (rst.next()) {
+                tab.add(new String[]{rst.getString("content"), rst.getString("date"), rst.getString("operation")});
+            }
+        } catch(Exception ex) { ex.printStackTrace();}
+
+        return tab;
+    }
+
 
     /* Add an element in a DB table  */
     public static void 	add(String content, Date date, char operation, String pseudo){
@@ -111,8 +126,10 @@ public class Operations{
         try {
             st.close();
             cnx.close();
+            System.out.println("\n--> DB closed !\n");
         } catch (Exception ex) {
             ex.printStackTrace();
+            System.out.println("\n--> DB not closed !\n");
         }
     }
 

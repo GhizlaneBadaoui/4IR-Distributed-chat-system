@@ -18,16 +18,6 @@
 	-fx-background-radius: 100px;
 }
 
-.incoming-bubble {
-	-fx-background-color: #85D6CA;
-	-fx-background-radius: 20px;
-}
-
-.outgoing-bubble {
-	-fx-background-color: #8ED5F8;
-	-fx-background-radius: 20px;
-}
-
 
 .normal-button {
 	-fx-background-color: #85d6ca;
@@ -43,4 +33,28 @@
 	-fx-border-color: #DADADA;
 	-fx-border-radius: 15px;
 	-fx-border-width: 0.3px;
+}
+
+/* The scrollbar **track** */
+.scroll-bar:vertical .track{
+	-fx-background-color: #DADADA;
+	-fx-border-color: #DADADA;
+}
+
+/* The scrollbar **The increment and decrement button** */
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color:transparent;
+	-fx-padding:0 10 0 0;
+}
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+	-fx-padding:0;
+}
+
+/* The scrollbar **thumb** */
+.scroll-bar:vertical .thumb {
+    -fx-background-color:derive(black,90%);
+	-fx-background-insets: 4, 0, 0;
+	-fx-background-radius: 1em;
 }

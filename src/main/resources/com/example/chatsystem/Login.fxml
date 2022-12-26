@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" styleClass="dark-gray-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chatsystem.LoginInterface">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="dark-gray-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chatsystem.LoginInterface">
    <center>
       <HBox alignment="CENTER" prefHeight="534.0" prefWidth="800.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" prefHeight="396.0" prefWidth="380.0" spacing="4.0" styleClass="border" stylesheets="@style.css">
+            <VBox alignment="CENTER" prefHeight="306.0" prefWidth="334.0" spacing="4.0" styleClass="border" stylesheets="@style.css">
                <children>
                   <Label alignment="CENTER" prefHeight="50.0" prefWidth="393.0" text="Connect" textAlignment="CENTER" textFill="#85d6ca" wrapText="true">
                      <font>
