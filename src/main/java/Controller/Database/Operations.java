@@ -103,7 +103,7 @@ public class Operations{
             st.executeUpdate(query);
             System.out.println("\n--> An element is added to the DB  !\n");
         } catch (Exception ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
         }
     }
 
