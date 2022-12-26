@@ -26,6 +26,9 @@ import javafx.scene.text.TextFlow;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -85,8 +88,8 @@ public class DiscussionController implements Initializable {
                     e.printStackTrace();                }
 
                 if (!messageToSend.isEmpty()) {
-
-                    // add msg to db with actual date
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                    add(messageToSend, Date.valueOf(dtf.format(LocalDateTime.now())), 'S', pseudo);
                     setAgentData();
                     senderThread.start();
                     messageLabel.clear();
