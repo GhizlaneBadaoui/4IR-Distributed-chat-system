@@ -2,13 +2,11 @@ package com.example.chatsystem;
 
 import Model.User;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,9 +20,6 @@ public class HomeInterface implements Initializable {
 
     @FXML
     private Button EditButton;
-
-    @FXML
-    private ScrollPane contactsScrollPane;
 
     @FXML
     private Button disconnectButton;
@@ -45,7 +40,19 @@ public class HomeInterface implements Initializable {
     private Label pseudo;
 
     @FXML
+    private ScrollPane contactsScrollPane;
+
+    @FXML
     private VBox vboxListAgent;
+
+    @FXML
+    private ScrollPane groupsScrollPane;
+
+    @FXML
+    private VBox vboxListGroups;
+
+    @FXML
+    private Button createGroup;
 
     Main objetMain = new Main();
 
@@ -85,6 +92,14 @@ public class HomeInterface implements Initializable {
                 e.printStackTrace();
             }
         }
+
+        createGroup.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                // get data of selected checkboxes + create an groupItem in section vboxListGroups
+                // link the group with discussion interface and think how to save group messages in the database
+            }
+        });
     }
 
     private List<User> Agents() {

@@ -1,13 +1,20 @@
+* {
+	-fx-dark-gray-color: #46474A;
+	-fx-green-color: #85d6ca;
+	-fx-light-gray-color: #DADADA;
+	-fx-gray-color: #636566;
+}
+
 .dark-gray-background {
-	-fx-background-color: #46474A;
+	-fx-background-color: -fx-dark-gray-color;
 }
 
 .light-gray-background {
-	-fx-background-color: #DADADA;
+	-fx-background-color: -fx-light-gray-color;
 }
 
 .gray-background {
-	-fx-background-color: #636566;
+	-fx-background-color: -fx-gray-color;
 }
 
 .transparent-background {
@@ -20,7 +27,7 @@
 
 
 .normal-button {
-	-fx-background-color: #85d6ca;
+	-fx-background-color: -fx-green-color;
 	-fx-background-radius: 20px;
 }
 
@@ -30,15 +37,15 @@
 }
 
 .border {
-	-fx-border-color: #DADADA;
+	-fx-border-color: -fx-light-gray-color;
 	-fx-border-radius: 15px;
 	-fx-border-width: 0.3px;
 }
 
 /* The scrollbar **track** */
 .scroll-bar:vertical .track{
-	-fx-background-color: #DADADA;
-	-fx-border-color: #DADADA;
+	-fx-background-color: -fx-light-gray-color;
+	-fx-border-color: -fx-light-gray-color;
 }
 
 /* The scrollbar **The increment and decrement button** */
@@ -57,4 +64,19 @@
     -fx-background-color:derive(black,90%);
 	-fx-background-insets: 4, 0, 0;
 	-fx-background-radius: 1em;
+}
+
+.check-box .box {
+	-fx-background-color: white;
+	-fx-border-color: -fx-dark-gray-color;
+	-fx-border-radius: 0;
+}
+.check-box .mark {
+ 	-fx-shape: "M1.73,12.91 8.1,19.28 22.79,4.59 22.79,1.59 8.1,16.28 1.73,9.91";
+}
+.check-box:selected .mark {
+	-fx-background-color: white;
+}
+.check-box:selected .box {
+	-fx-background-color: -fx-dark-gray-color;
 }
