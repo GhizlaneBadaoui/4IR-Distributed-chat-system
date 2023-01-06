@@ -14,11 +14,10 @@ public class ConnectivityThread extends Thread{
     private DatagramPacket packet;
     private byte[] msg = new byte[100];
 
-    public ConnectivityThread() throws UnknownHostException, SocketException {
+    public ConnectivityThread(User user) throws UnknownHostException, SocketException {
         this.user = user;
         this.connectivity_sock = new DatagramSocket(5000);
         packet = new DatagramPacket(msg,msg.length);
-        this.start();
     }
 
     @Override
@@ -47,9 +46,5 @@ public class ConnectivityThread extends Thread{
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public static void main(String[] args) throws SocketException, UnknownHostException {
-        ConnectivityThread connectivityThread = new ConnectivityThread();
     }
 }
