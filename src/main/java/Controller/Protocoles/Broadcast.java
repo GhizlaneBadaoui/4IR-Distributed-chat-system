@@ -10,7 +10,6 @@ public class Broadcast extends Protocols {
     private static Broadcast broadcast;
     private DatagramPacket packet;
 
-    private DatagramSocket sock;
     private String msg = "broadcast pseudo = ";
 
 
@@ -24,12 +23,11 @@ public class Broadcast extends Protocols {
         }
     }
 
-    private Broadcast(InetAddress Ip, int port) throws SocketException {
+    private Broadcast(InetAddress Ip, int port) throws SocketException, UnknownHostException {
         this.IP = Ip;
         this.port = port;
-        connectivity_sock = new DatagramSocket(port);
+        connectivity_sock = new DatagramSocket(port,InetAddress.getLocalHost());
         connectivity_sock.setSoTimeout(5000);
-        sock = new DatagramSocket();
         packet = new DatagramPacket(msg.getBytes(), msg.length(),Ip,5000);
     }
 
@@ -46,7 +44,7 @@ public class Broadcast extends Protocols {
 
     public boolean send_msg(DatagramPacket pack){
         try {
-            sock.send(pack);
+            connectivity_sock.send(pack);
         }
         catch (Exception e){
             return false;
@@ -66,14 +64,5 @@ public class Broadcast extends Protocols {
     private static InetAddress get_broadcast_address() throws UnknownHostException, SocketException {
         Iterator<InterfaceAddress> networkInterface = NetworkInterface.getByInetAddress(InetAddress.getLocalHost()).getInterfaceAddresses().iterator();
         return networkInterface.next().getBroadcast();
-    }
-
-    public static void main(String[] args) throws SocketException, UnknownHostException {
-        //System.out.println(InetAddress.getLocalHost().getHostAddress());
-        System.out.println(Broadcast.get_broadcast_address().getHostAddress());
-        if(Broadcast.getInstance().broadcasting("walid"))
-            System.out.println("Done");
-        else
-            System.out.println("Error");
     }
 }
