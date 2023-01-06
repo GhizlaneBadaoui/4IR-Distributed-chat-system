@@ -72,7 +72,7 @@ public class HomeInterface implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        List<AgentItemController> aicList = new ArrayList<>();
 //        pseudo.setText(User.getPseudo());
 //        ipAddress.setText(User.getIP());
 //        port.setText(User.getPort());
@@ -87,6 +87,7 @@ public class HomeInterface implements Initializable {
                 HBox hbox = fxmlLoader.load();
                 AgentItemController aic = fxmlLoader.getController();
                 aic.setData(user);
+                aicList.add(aic);
                 vboxListAgent.getChildren().add(hbox);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -96,8 +97,26 @@ public class HomeInterface implements Initializable {
         createGroup.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                // get data of selected checkboxes + create an groupItem in section vboxListGroups
-                // link the group with discussion interface and think how to save group messages in the database
+                List <String> group = new ArrayList<>();
+                for (AgentItemController agc : aicList) {
+                    if (agc.checkBoxGroup.isSelected()) {
+                        group.add(String.valueOf(agc.pseudo.getText()));
+                    }
+                }
+
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("GroupItem.fxml"));
+
+                try {
+                    HBox hbox = fxmlLoader.load();
+                    GroupItemController gic = fxmlLoader.getController();
+                    gic.setData(group);
+                    vboxListGroups.getChildren().add(hbox);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // think how to save group messages in the database
             }
         });
     }

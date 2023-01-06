@@ -1,7 +1,6 @@
 package com.example.chatsystem;
 
 import Controller.Database.DataSingleton;
-import Model.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,9 +16,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
-public class AgentItemController implements Initializable {
+public class GroupItemController implements Initializable {
 
     @FXML
     private Label incomingMessages;
@@ -32,16 +31,20 @@ public class AgentItemController implements Initializable {
     private ImageView photo;
 
     @FXML
-    protected Label pseudo;
-
-    @FXML
-    protected CheckBox checkBoxGroup;
+    protected Label pseudos;
 
     DataSingleton data = DataSingleton.getInstance();
 
-    public void setData (User agent) {
-        photo.setImage(new Image(agent.getImgSrc()));
-        pseudo.setText(agent.getPseudo());
+    public void setData (List<String> group) {
+        String groupName = "";
+        for (String pseudo : group) {
+            if (groupName.isEmpty()) {
+                groupName = pseudo;
+            } else {
+                groupName = groupName + "," + pseudo;
+            }
+        }
+        pseudos.setText(groupName);
         incomingMessages.setText("0");
     }
 
@@ -52,12 +55,11 @@ public class AgentItemController implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 try {
 
-                    data.setPseudo(pseudo.getText());
-                    data.setImg(photo.getImage());
+                    data.setPseudo(pseudos.getText());
 
                     Stage secondStage = new Stage();
                     FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Discussion.fxml"));
-                    secondStage.setTitle("Conversation de "+ pseudo.getText());
+                    secondStage.setTitle("Conversation de "+ pseudos.getText());
                     secondStage.getIcons().add(new Image("file:src/main/resources/Images/logo.png"));
                     secondStage.initModality(Modality.APPLICATION_MODAL);
                     secondStage.setScene(new Scene(fxmlLoader.load(),443, 600));
