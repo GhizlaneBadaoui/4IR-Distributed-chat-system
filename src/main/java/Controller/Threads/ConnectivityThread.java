@@ -12,7 +12,7 @@ public class ConnectivityThread extends Thread{
     private User user;
     private DatagramSocket connectivity_sock;
     private DatagramPacket packet;
-    private byte[] msg = new byte[100];
+    private byte[] msg = new byte[1000];
 
     public ConnectivityThread(User user) throws UnknownHostException, SocketException {
         this.user = user;
@@ -27,6 +27,8 @@ public class ConnectivityThread extends Thread{
             try {
                 connectivity_sock.receive(packet);
                 data = new String(packet.getData());
+                packet.setAddress(packet.getAddress());
+                packet.setPort(packet.getPort());
                 if(!data.contains("port:") && data.contains("pseudo")) {
                     if (data.substring(9).equals(user.getPseudo())) {
                         System.out.println("msg rec ");

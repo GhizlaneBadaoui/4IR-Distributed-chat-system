@@ -10,7 +10,7 @@ public class Broadcast extends Protocols {
     private static Broadcast broadcast;
     private DatagramPacket packet;
 
-    private String msg = "broadcast pseudo = ";
+    private String msg = "pseudo = ";
 
 
     static {
@@ -41,17 +41,6 @@ public class Broadcast extends Protocols {
         }
         return true;
     }
-
-    public boolean send_msg(DatagramPacket pack){
-        try {
-            connectivity_sock.send(pack);
-        }
-        catch (Exception e){
-            return false;
-        }
-        return true;
-    }
-
 
     public DatagramSocket getConnectivity_sock() {
         return connectivity_sock;
