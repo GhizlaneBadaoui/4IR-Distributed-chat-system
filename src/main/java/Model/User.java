@@ -49,6 +49,7 @@ public class User {
         String resp;
         while (true){
             try {
+                System.out.println("okay");
                 Broadcast.getInstance().getConnectivity_sock().receive(packet);
                 resp = new String(packet.getData());
                 if(!resp.contains("no") && resp.contains("ok")){
