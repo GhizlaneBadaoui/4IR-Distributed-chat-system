@@ -1,10 +1,12 @@
 package Model;
 
 import Controller.Protocoles.Broadcast;
+import Controller.Threads.ConnectivityThread;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +33,15 @@ public class User {
 
     public boolean choose_pseudo(String pseudo) throws IOException {
         if(Broadcast.getInstance().broadcasting(pseudo)){
-            if(identify_active_agents())
+            if(identify_active_agents()){
+                new ConnectivityThread(this).start();
+                this.pseudo = pseudo;
                 this.pseudo_selected();//on fait passer l'utilisateur à l'interface principale de l'application
+            }
             else
                 return false;//l'utilisateur se connecte pas et un msg d'errur apparaitera.
         }
-        return false;
+        return true;
     }
 
     public boolean identify_active_agents() throws IOException {
@@ -50,23 +55,22 @@ public class User {
                     this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.getInteger(resp.substring(4,resp.indexOf(':')))));
                 }
                 else{
+                    System.out.println("in else bloc");
                     this.active_agents.clear();
                     return false;
                 }
             }
+            catch (SocketTimeoutException e){
+                return true;
+            }
             catch (Exception e){
-                break;
+                return false;
             }
         }
-        return true;
     }
 
     public void pseudo_selected(){
-        String msg = this.port+":"+this.pseudo;
-        for (User user : this.active_agents) {
-            if(!Broadcast.getInstance().send_msg(new DatagramPacket(msg.getBytes(),msg.length(),user.IP,user.port)))
-                System.out.println("A problem occurs while sending a UDP msg to : "+user.pseudo);
-        }
+        Broadcast.getInstance().broadcasting(this.pseudo);
     }
 
     public boolean modify_pseudo(String pseudo) throws IOException {
