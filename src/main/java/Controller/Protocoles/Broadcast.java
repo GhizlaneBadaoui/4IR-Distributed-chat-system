@@ -31,8 +31,8 @@ public class Broadcast extends Protocols {
         packet = new DatagramPacket(msg.getBytes(), msg.length(),Ip,5000);
     }
 
-    public boolean broadcasting(String pseudo) {
-        msg += pseudo;
+    public boolean broadcasting(String _msg) {
+        msg += _msg;
         packet.setData(msg.getBytes());
         try {
             connectivity_sock.send(packet);

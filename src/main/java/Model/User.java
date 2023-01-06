@@ -71,7 +71,7 @@ public class User {
     }
 
     public void pseudo_selected(){
-        Broadcast.getInstance().broadcasting(this.pseudo+"port:"+this.port);
+        Broadcast.getInstance().broadcasting("port:"+this.port);
     }
 
     public boolean modify_pseudo(String pseudo) throws IOException {
