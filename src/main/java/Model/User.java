@@ -34,7 +34,7 @@ public class User {
     public boolean choose_pseudo(String pseudo) throws IOException {
         if(Broadcast.getInstance().broadcasting(pseudo)){
             if(identify_active_agents()){
-                new ConnectivityThread(this).start();
+                (new ConnectivityThread(this)).start();
                 this.pseudo = pseudo;
                 this.pseudo_selected();//on fait passer l'utilisateur à l'interface principale de l'application
             }

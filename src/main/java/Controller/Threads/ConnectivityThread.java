@@ -18,7 +18,6 @@ public class ConnectivityThread extends Thread{
         this.user = user;
         this.connectivity_sock = new DatagramSocket(5000);
         packet = new DatagramPacket(msg,msg.length);
-        this.start();
     }
 
     @Override
