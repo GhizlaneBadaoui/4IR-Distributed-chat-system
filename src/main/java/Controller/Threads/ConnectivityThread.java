@@ -41,6 +41,7 @@ public class ConnectivityThread extends Thread{
                 if(data.contains("port:") && data.contains("pseudo")){
                     String pseu = data.substring(data.indexOf('=')+2,data.indexOf('p'));
                     user.add_user(new User(pseu,packet.getAddress(),Integer.parseInt(data.substring(data.indexOf(':')+1))));
+                    System.out.println("agents : "+User.getActive_agents().size());
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
