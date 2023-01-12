@@ -3,6 +3,7 @@ package Model;
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
 
+import java.io.Console;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class User {
             try {
                 System.out.println("okay");
                 Broadcast.getInstance().getConnectivity_sock().receive(packet);
-                resp = new String(packet.getData());
+                resp = new String(packet.getData()).trim();
                 System.out.println("msg rec : "+resp);
                 if(!resp.contains("no") && resp.contains("ok")){
                     this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.parseInt(resp.substring(4,resp.indexOf(':')))));
@@ -71,7 +72,13 @@ public class User {
 
     public void pseudo_selected() throws SocketException, UnknownHostException {
         Broadcast.getInstance().broadcasting("@port:"+this.port);
-        (new ConnectivityThread(this)).start();
+        ConnectivityThread.getInstance().setUser(this);
+        if(ConnectivityThread.isFlag()){
+            ConnectivityThread.getInstance().setUser(this);
+            ConnectivityThread.setFlag(false);
+        }
+        else
+            ConnectivityThread.getInstance().start();
     }
 
     public boolean modify_pseudo(String pseudo) throws IOException {

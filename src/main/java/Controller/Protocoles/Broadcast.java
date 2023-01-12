@@ -27,6 +27,7 @@ public class Broadcast extends Protocols {
         this.IP = Ip;
         this.port = port;
         connectivity_sock = new DatagramSocket(port);
+        
         connectivity_sock.setSoTimeout(5000);
         packet = new DatagramPacket(msg.getBytes(), msg.length(),Ip,5000);
     }
