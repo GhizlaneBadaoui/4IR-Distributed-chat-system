@@ -26,14 +26,14 @@ public class Broadcast extends Protocols {
     private Broadcast(InetAddress Ip, int port) throws SocketException, UnknownHostException {
         this.IP = Ip;
         this.port = port;
-        connectivity_sock = new DatagramSocket(port,InetAddress.getLocalHost());
+        connectivity_sock = new DatagramSocket(port);
         connectivity_sock.setSoTimeout(5000);
         packet = new DatagramPacket(msg.getBytes(), msg.length(),Ip,5000);
     }
 
     public boolean broadcasting(String _msg) {
-        msg += _msg;
-        packet.setData(msg.getBytes());
+        packet.setData((msg+""+_msg).getBytes());
+        System.out.println("from brodcast : msg = "+new String(packet.getData()));
         try {
             connectivity_sock.send(packet);
         } catch (IOException e) {

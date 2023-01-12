@@ -33,6 +33,7 @@ public class LoginInterface {
             if (user.choose_pseudo(pseudoLabel.getText())) {
                 user.setPseudo(pseudoLabel.getText());
                 connectionError.setText("Succes !");
+                System.out.println("Succes");
                 objetMain.changeScene("Home.fxml");
             }
             else {

@@ -4,9 +4,7 @@ import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,6 @@ public class User {
     public boolean choose_pseudo(String pseudo) throws IOException {
         if(Broadcast.getInstance().broadcasting(pseudo)){
             if(identify_active_agents()){
-                (new ConnectivityThread(this)).start();
                 this.pseudo = pseudo;
                 this.pseudo_selected();//on fait passer l'utilisateur à l'interface principale de l'application
             }
@@ -45,15 +42,16 @@ public class User {
     }
 
     public boolean identify_active_agents() throws IOException {
-        DatagramPacket packet = new DatagramPacket(new byte[100],100);
+        DatagramPacket packet = new DatagramPacket(new byte[1000],1000);
         String resp;
         while (true){
             try {
                 System.out.println("okay");
                 Broadcast.getInstance().getConnectivity_sock().receive(packet);
                 resp = new String(packet.getData());
+                System.out.println("msg rec : "+resp);
                 if(!resp.contains("no") && resp.contains("ok")){
-                    this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.getInteger(resp.substring(4,resp.indexOf(':')))));
+                    this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.parseInt(resp.substring(4,resp.indexOf(':')))));
                 }
                 else{
                     System.out.println("in else bloc");
@@ -65,13 +63,15 @@ public class User {
                 return true;
             }
             catch (Exception e){
+                e.printStackTrace();
                 return false;
             }
         }
     }
 
-    public void pseudo_selected(){
-        Broadcast.getInstance().broadcasting("port:"+this.port);
+    public void pseudo_selected() throws SocketException, UnknownHostException {
+        Broadcast.getInstance().broadcasting("@port:"+this.port);
+        (new ConnectivityThread(this)).start();
     }
 
     public boolean modify_pseudo(String pseudo) throws IOException {
