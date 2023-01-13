@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -67,29 +68,32 @@ public class HomeInterface implements Initializable {
         //User.setName(name.getText());
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-//        pseudo.setText(User.getPseudo());
-//        ipAddress.setText(User.getIP());
-//        port.setText(User.getPort());
-
-        //List<User> agentsList = new ArrayList<>(User.getActive_agents());
-        List<User> agentsList = new ArrayList<>(Agents());
-        for (User user : agentsList) {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("AgentItem.fxml"));
-
-            try {
-                HBox hbox = fxmlLoader.load();
-                AgentItemController aic = fxmlLoader.getController();
-                aic.setData(user);
-                vboxListAgent.getChildren().add(hbox);
-            } catch (Exception e) {
-                e.printStackTrace();
+    public void refreshUsers(){
+        if(User.getActive_agents().size() > 0) {
+            for (User user : User.getActive_agents()) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("AgentItem.fxml"));
+                try {
+                    HBox hbox = fxmlLoader.load();
+                    AgentItemController aic = fxmlLoader.getController();
+                    aic.setData(user);
+                    vboxListAgent.getChildren().add(hbox);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        User u = ConnectivityThread.getInstance().getUser();
+        pseudo.setText(u.getPseudo());
+        ipAddress.setText(u.getIP().getHostAddress());
+        port.setText(String.valueOf(u.getPort()));
+        this.refreshUsers();
+    }
+
+
 
     private List<User> Agents() {
         List<User> ls = new ArrayList<>();

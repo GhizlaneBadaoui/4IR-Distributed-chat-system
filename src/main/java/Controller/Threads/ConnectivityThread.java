@@ -2,6 +2,7 @@ package Controller.Threads;
 
 import Controller.Protocoles.Broadcast;
 import Model.User;
+import com.example.chatsystem.HomeInterface;
 
 import java.io.IOException;
 import java.net.*;
@@ -55,6 +56,10 @@ public class ConnectivityThread extends Thread{
         Broadcast.getInstance().broadcasting(this.user.getPseudo()+"@deconnection@");
     }
 
+
+    public User getUser() {
+        return user;
+    }
 
     @Override
     public void run(){

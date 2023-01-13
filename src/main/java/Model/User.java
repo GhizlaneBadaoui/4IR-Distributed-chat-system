@@ -2,6 +2,10 @@ package Model;
 
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
+import com.example.chatsystem.AgentItemController;
+import com.example.chatsystem.HomeInterface;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.HBox;
 
 import java.io.Console;
 import java.io.IOException;
@@ -107,6 +111,8 @@ public class User {
 
     public void add_user(User u){
         active_agents.add(u);
+        HomeInterface homeInterface = new HomeInterface();
+        homeInterface.refreshUsers();
     }
 
     public String getPseudo() {

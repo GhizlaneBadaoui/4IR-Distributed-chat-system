@@ -36,7 +36,7 @@ public class AgentItemController implements Initializable {
     DataSingleton data = DataSingleton.getInstance();
 
     public void setData (User agent) {
-        photo.setImage(new Image(agent.getImgSrc()));
+        //photo.setImage(new Image(agent.getImgSrc()));
         pseudo.setText(agent.getPseudo());
         incomingMessages.setText("0");
     }
