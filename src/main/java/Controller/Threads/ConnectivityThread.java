@@ -30,7 +30,6 @@ public class ConnectivityThread extends Thread{
         packet_rec = new DatagramPacket(new byte[1000],1000);
         packet_send = new DatagramPacket(new byte[1000],1000);
     }
-
     public void setUser(User user) {
         this.user = user;
     }
@@ -47,6 +46,16 @@ public class ConnectivityThread extends Thread{
         return flag;
     }
 
+    private void set_packet_info(){
+        packet_send.setAddress(packet_rec.getAddress());
+        packet_send.setPort(packet_rec.getPort());
+    }
+
+    public void deconnection(){
+        Broadcast.getInstance().broadcasting(this.user.getPseudo()+"@deconnection@");
+    }
+
+
     @Override
     public void run(){
         String data;
@@ -55,26 +64,27 @@ public class ConnectivityThread extends Thread{
             try {
                 connectivity_sock.receive(packet_rec);
                 if (!packet_rec.getAddress().equals(InetAddress.getLocalHost())) {
+                    set_packet_info();
                     data = new String(packet_rec.getData()).trim();
-                    packet_send.setAddress(packet_rec.getAddress());
-                    packet_send.setPort(packet_rec.getPort());
                     System.out.println("data = " + packet_rec.getData().length);
-                    if (!data.contains("port:") && data.contains("pseudo")) {
-                        if (data.substring(9).equals(user.getPseudo())) {
-                            System.out.println("msg rec from conn: " + data);
-                            packet_send.setData("no".getBytes());
-                            connectivity_sock.send(packet_send);
-                        } else {
-                            System.out.println("msg rec 2 : " + data);
-                            packet_send.setData(("ok" + this.user.getPort() + ":" + this.user.getPseudo()).getBytes());
-                            connectivity_sock.send(packet_send);
-                        }
+                    if (data.contains("@deconnection@") && data.contains("pseudo"))
+                        this.user.delete_user(data.substring(9,data.indexOf("@")));
+                    else if (!data.contains("port:") && data.contains("pseudo")) {
+                            if (data.substring(9).equals(user.getPseudo())) {
+                                System.out.println("msg rec from conn: " + data);
+                                packet_send.setData("no".getBytes());
+                                connectivity_sock.send(packet_send);
+                            } else {
+                                System.out.println("msg rec 2 : " + data);
+                                packet_send.setData(("ok" + this.user.getPort() + ":" + this.user.getPseudo()).getBytes());
+                                connectivity_sock.send(packet_send);
+                            }
                     }
-                    if (data.contains("port:") && data.contains("pseudo")) {
-                        System.out.println(data.substring(data.indexOf("=") + 2) + " index = " + data.indexOf("@"));
-                        String pseu = data.substring(data.indexOf('=') + 2, data.indexOf("@"));
-                        user.add_user(new User(pseu, packet_rec.getAddress(), Integer.parseInt(data.substring(data.indexOf(':') + 1))));
-                        System.out.println("agents : " + User.getActive_agents().size());
+                    else if (data.contains("port:") && data.contains("pseudo")) {
+                            System.out.println(data.substring(data.indexOf("=") + 2) + " index = " + data.indexOf("@"));
+                            String pseu = data.substring(data.indexOf('=') + 2, data.indexOf("@"));
+                            user.add_user(new User(pseu, packet_rec.getAddress(), Integer.parseInt(data.substring(data.indexOf(':') + 1))));
+                            System.out.println("agents : " + User.getActive_agents().size());
                     }
                     packet_send.setData(new byte[1000]);
                     packet_rec.setData(new byte[1000]);

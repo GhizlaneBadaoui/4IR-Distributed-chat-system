@@ -53,6 +53,7 @@ public class User {
                 System.out.println("msg rec : "+resp);
                 if(!resp.contains("no") && resp.contains("ok")){
                     this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.parseInt(resp.substring(4,resp.indexOf(':')))));
+                    System.out.println("agents number = "+this.active_agents.size());
                 }
                 else{
                     System.out.println("in else bloc");
@@ -71,7 +72,7 @@ public class User {
     }
 
     public void pseudo_selected() throws SocketException, UnknownHostException {
-        Broadcast.getInstance().broadcasting("@port:"+this.port);
+        Broadcast.getInstance().broadcasting(this.pseudo+"@port:"+this.port);
         ConnectivityThread.getInstance().setUser(this);
         if(ConnectivityThread.isFlag()){
             ConnectivityThread.getInstance().setUser(this);
@@ -81,6 +82,14 @@ public class User {
             ConnectivityThread.getInstance().start();
     }
 
+    public void delete_user(String pseudo){
+        for (User user:User.getActive_agents()){
+            if(user.getPseudo().equals(pseudo)){
+                User.getActive_agents().remove(user);
+                System.out.println("user deleted");
+            }
+        }
+    }
     public boolean modify_pseudo(String pseudo) throws IOException {
         return choose_pseudo(pseudo);
     }

@@ -1,5 +1,6 @@
 package com.example.chatsystem;
 
+import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
 import Model.User;
 import javafx.event.ActionEvent;
@@ -54,6 +55,7 @@ public class HomeInterface implements Initializable {
     void disconnect (ActionEvent event){
         try {
             ConnectivityThread.setFlag(true);
+            ConnectivityThread.getInstance().deconnection();
             objetMain.changeScene("Login.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
