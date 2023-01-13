@@ -11,6 +11,7 @@ import java.io.Console;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class User {
@@ -86,10 +87,11 @@ public class User {
             ConnectivityThread.getInstance().start();
     }
 
-    public void delete_user(String pseudo){
-        for (User user:User.getActive_agents()){
-            if(user.getPseudo().equals(pseudo)){
-                User.getActive_agents().remove(user);
+    public synchronized void delete_user(String pseudo){
+        Iterator<User> iter = User.getActive_agents().stream().iterator();
+        while (iter.hasNext()){
+            if(iter.next().getPseudo().equals(pseudo)){
+                User.getActive_agents().remove(iter);
                 System.out.println("user deleted");
             }
         }
@@ -111,8 +113,6 @@ public class User {
 
     public void add_user(User u){
         active_agents.add(u);
-        HomeInterface homeInterface = new HomeInterface();
-        homeInterface.refreshUsers();
     }
 
     public String getPseudo() {

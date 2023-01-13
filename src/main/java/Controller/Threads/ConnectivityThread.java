@@ -72,8 +72,10 @@ public class ConnectivityThread extends Thread{
                     set_packet_info();
                     data = new String(packet_rec.getData()).trim();
                     System.out.println("data = " + packet_rec.getData().length);
-                    if (data.contains("@deconnection@") && data.contains("pseudo"))
-                        this.user.delete_user(data.substring(9,data.indexOf("@")));
+                    if (data.contains("@deconnection@") && data.contains("pseudo")) {
+                        System.out.println("deconnection : pseudo = "+data.substring(9,data.indexOf("@")));
+                        this.user.delete_user(data.substring(9, data.indexOf("@")));
+                    }
                     else if (!data.contains("port:") && data.contains("pseudo")) {
                             if (data.substring(9).equals(user.getPseudo())) {
                                 System.out.println("msg rec from conn: " + data);
