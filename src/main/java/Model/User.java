@@ -2,12 +2,8 @@ package Model;
 
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
-import com.example.chatsystem.AgentItemController;
-import com.example.chatsystem.HomeInterface;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.HBox;
+import javafx.scene.image.ImageView;
 
-import java.io.Console;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
@@ -19,7 +15,8 @@ public class User {
     private InetAddress IP;
     private int port;
     private String name;
-    private String imgSrc;
+    private ImageView imgSrc;
+    private Integer incomingMsg;
     private static List<User> active_agents = new ArrayList<>();
 
     public User() {}
@@ -134,11 +131,22 @@ public class User {
         this.name = name;
     }
 
-    public String getImgSrc() {
+    public ImageView getImgSrc() {
         return imgSrc;
     }
 
-    public void setImgSrc(String imgSrc) {
+    public void setImgSrc(ImageView imgSrc) {
+        imgSrc.setFitHeight(60);
+        imgSrc.setFitWidth(60);
         this.imgSrc = imgSrc;
+
+    }
+
+    public Integer getIncomingMsg() {
+        return incomingMsg;
+    }
+
+    public void setIncomingMsg(Integer incomingMsg) {
+        this.incomingMsg = incomingMsg;
     }
 }

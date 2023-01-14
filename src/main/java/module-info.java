@@ -7,5 +7,7 @@ module com.example.chatsystem {
     requires java.sql;
 
     opens com.example.chatsystem to javafx.fxml;
+    opens Model to javafx.fxml;
     exports com.example.chatsystem;
+    exports Model;
 }

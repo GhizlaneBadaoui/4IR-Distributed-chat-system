@@ -30,14 +30,17 @@ public class LoginInterface {
     void LogIn (ActionEvent event){
         try {
             user = new User(InetAddress.getLocalHost(),5009);
-            if (user.choose_pseudo(pseudoLabel.getText())) {
-                user.setPseudo(pseudoLabel.getText());
-                connectionError.setText("Succes !");
-                System.out.println("Succes");
-                objetMain.changeScene("Home.fxml");
-            }
-            else {
-                connectionError.setText("Error !");
+            if (pseudoLabel.getText().contains("@") || pseudoLabel.getText().contains(":")) {
+                connectionError.setText("Attention : use only numbers or letters.");
+            } else {
+                if (user.choose_pseudo(pseudoLabel.getText())) {
+                    user.setPseudo(pseudoLabel.getText());
+                    connectionError.setText("Success !");
+                    objetMain.changeScene("Home.fxml");
+                }
+                else {
+                    connectionError.setText("This pseudo already exists, choose another one.");
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
