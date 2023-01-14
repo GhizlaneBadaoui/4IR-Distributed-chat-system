@@ -75,6 +75,7 @@ public class HomeInterface implements Initializable {
     private TableColumn<User, Integer> msgColumn;
 
     ObservableList<User> agentsList = FXCollections.observableArrayList();
+    public static HomeInterface currentHomeInter;
     Integer index;
     private SenderThread senderThread;
     Main objetMain = new Main();
@@ -90,25 +91,25 @@ public class HomeInterface implements Initializable {
         }
     }
 
+    public void refreshTable(){
+        agentsList.clear();
+        agentsList.addAll(User.getActive_agents());
+        agentsTable.setItems(agentsList);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         connect();
-
+        currentHomeInter = this;
         User u = ConnectivityThread.getInstance().getUser();
         myPseudo.setText("My pseudo : " + u.getPseudo());
 //        ipAddress.setText(u.getIP().getHostAddress());
 //        port.setText(String.valueOf(u.getPort()));
 
-        //agentsList.addAll(User.getActive_agents());
-        agentsList.addAll(Agents());
-
         photoColumn.setCellValueFactory(new PropertyValueFactory<>("imgSrc"));
         pseudoColumn.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
         msgColumn.setCellValueFactory(new PropertyValueFactory<>("incomingMsg"));
-
-        agentsTable.setItems(agentsList);
-
+        refreshTable();
         agentsTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {

@@ -2,6 +2,8 @@ package Model;
 
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
+import com.example.chatsystem.HomeInterface;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
@@ -29,6 +31,8 @@ public class User {
     public User(String pseudo, InetAddress IP, int port) {
         this.pseudo = pseudo;
         this.IP = IP;
+        this.incomingMsg = 0;
+        this.setImgSrc(new ImageView(new Image("file:src/main/resources/Images/person.png")));
         this.port = port;
     }
 
@@ -87,9 +91,11 @@ public class User {
     public synchronized void delete_user(String pseudo){
         Iterator<User> iter = User.getActive_agents().stream().iterator();
         while (iter.hasNext()){
-            if(iter.next().getPseudo().equals(pseudo)){
-                User.getActive_agents().remove(iter);
+            User user = iter.next();
+            if(user.getPseudo().equals(pseudo)){
+                User.getActive_agents().remove(user);
                 System.out.println("user deleted");
+                HomeInterface.currentHomeInter.refreshTable();
             }
         }
     }
@@ -110,6 +116,7 @@ public class User {
 
     public void add_user(User u){
         active_agents.add(u);
+        HomeInterface.currentHomeInter.refreshTable();
     }
 
     public String getPseudo() {
