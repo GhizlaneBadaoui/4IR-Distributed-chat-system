@@ -58,3 +58,16 @@
 	-fx-background-insets: 4, 0, 0;
 	-fx-background-radius: 1em;
 }
+
+.table-view {
+    -fx-base: white;
+    -fx-control-inner-background: white;
+    -fx-background-color: white;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.table-view .column-header-background .column-header{
+    -fx-background-color: white;
+}
