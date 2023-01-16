@@ -147,6 +147,7 @@ public class HomeInterface implements Initializable {
                     socket = SenderHandler.getInstance().startConnection(pseudo);
                     if(socket.isConnected()){
                         try {
+                            System.out.println("connected ");
                             senderThread = new SenderThread(socket, pseudo, messageToSend);
                             ReceiverThread newReceiverThread = new ReceiverThread(socket,pseudo);
                             ReceiverThread.receivers.add(newReceiverThread);

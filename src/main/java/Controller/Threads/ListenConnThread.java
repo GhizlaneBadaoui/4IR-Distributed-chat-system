@@ -11,7 +11,7 @@ public class ListenConnThread extends Thread {
     private ServerSocket user_listen_sock;
     private static ListenConnThread listenConnThread;
 
-    private Map<String,Socket> map_sockets;
+    private Map<String,Socket> map_sockets = new HashMap<>();
 
     static {
         try {
