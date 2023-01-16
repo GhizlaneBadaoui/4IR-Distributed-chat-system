@@ -36,8 +36,10 @@ public class ListenConnThread extends Thread {
 
     private String SearchAgent(InetAddress ip, int port){
         for (User user : User.getActive_agents()){
-            if(user.getPort() == port && user.getIP().getHostAddress().equals(ip.getHostAddress()))
+            if(user.getIP().getHostAddress().equals(ip.getHostAddress())){
+                user.setPort(port);
                 return user.getPseudo();
+            }
         }
         return "";
     }
@@ -65,11 +67,15 @@ public class ListenConnThread extends Thread {
                 sock = user_listen_sock.accept();
                 System.out.println("an agent has been added");
                 if (sock != null){
+                    System.out.println("from lis ip = "+sock.getInetAddress().getHostAddress()+" port = "+sock.getPort());
                     pseudo = SearchAgent(sock.getInetAddress(),sock.getPort());
                     System.out.println("pseudo from list = "+pseudo);
                     map_sockets.put(pseudo,sock);
-                    if(!pseudo.equals(""))
-                        (new ReceiverThread(sock,pseudo)).start();
+                    if(!pseudo.equals("")) {
+                        ReceiverThread receiverThread = new ReceiverThread(sock, pseudo);
+                        ReceiverThread.receivers.add(receiverThread);
+                        receiverThread.start();
+                    }
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

@@ -83,7 +83,7 @@ public class ConnectivityThread extends Thread{
                                 connectivity_sock.send(packet_send);
                             } else {
                                 System.out.println("msg rec 2 : " + data);
-                                packet_send.setData(("ok" + this.user.getPort() + ":" + this.user.getPseudo()).getBytes());
+                                packet_send.setData(("ok" +this.user.getPort() + ":" + this.user.getPseudo()).getBytes());
                                 connectivity_sock.send(packet_send);
                             }
                     }

@@ -59,7 +59,9 @@ public class User {
                 resp = new String(packet.getData()).trim();
                 System.out.println("msg rec : "+resp);
                 if(!resp.contains("no") && resp.contains("ok")){
-                    this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.parseInt(resp.substring(4,resp.indexOf(':')))));
+                    System.out.println("port numer = "+Integer.parseInt(resp.substring(2,resp.indexOf(':'))));
+                    this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.parseInt(resp.substring(2,resp.indexOf(':')))));
+                    System.out.println("port number 2 = "+active_agents.get(0).getPort());
                     System.out.println("agents number = "+this.active_agents.size());
                 }
                 else{
@@ -76,6 +78,10 @@ public class User {
                 return false;
             }
         }
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 
     public void pseudo_selected() throws IOException {

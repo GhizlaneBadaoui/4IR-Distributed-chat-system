@@ -31,7 +31,7 @@ public class SenderHandler {
     }
 
     public boolean isEtablished(String pseudo){
-        if(ListenConnThread.getInstance().getSock(pseudo)!=null)
+        if(ListenConnThread.getInstance().getSock(pseudo).isConnected())
             return true;
         else
             return false;
