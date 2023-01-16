@@ -16,6 +16,7 @@ public class SenderHandler {
 
     public Socket startConnection(String pseudo) {
         User usr = User.getUser(pseudo);
+        System.out.println("pseudo to connect with"+pseudo);
         if(usr != null)
             try {
                 Socket sock = new Socket(usr.getIP(),usr.getPort());

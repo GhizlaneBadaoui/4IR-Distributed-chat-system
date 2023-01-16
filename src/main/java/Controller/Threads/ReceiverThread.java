@@ -1,5 +1,7 @@
 package Controller.Threads;
 
+import com.example.chatsystem.HomeInterface;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Controller.Database.Operations.add;
+import static com.example.chatsystem.HomeInterface.addLabelForIncomingMessage;
 
 public class ReceiverThread extends Thread{
     private Socket sock;
@@ -32,9 +35,14 @@ public class ReceiverThread extends Thread{
     public void run() {
         while (sock.isConnected()){
             try {
-                Object msg = bufferedReader.readLine();
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                System.out.println("reciever thread -> to recieve the msgs from "+pseudo);
+                String msg = bufferedReader.readLine();
+                System.out.println(pseudo+"sended the following msg : "+msg);
+                //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                Date msgDate = Date.valueOf(dtf.format(LocalDateTime.now()));
                 add((String) msg, Date.valueOf(dtf.format(LocalDateTime.now())), 'R', pseudo);
+                HomeInterface.currentHomeInter.setConversationData();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error receiving message to the client");

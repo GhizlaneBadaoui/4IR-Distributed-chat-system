@@ -137,7 +137,8 @@ public class HomeInterface implements Initializable {
                 SenderThread senderThread = null;
                 if(SenderHandler.getInstance().isEtablished(pseudo)){
                     try {
-                        senderThread = new SenderThread(ListenConnThread.getInstance().getSock(pseudo), pseudo, messageToSend);
+                        socket = ListenConnThread.getInstance().getSock(pseudo);
+                        senderThread = new SenderThread(socket, pseudo, messageToSend);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -147,19 +148,20 @@ public class HomeInterface implements Initializable {
                     if(socket.isConnected()){
                         try {
                             senderThread = new SenderThread(socket, pseudo, messageToSend);
+                            ReceiverThread newReceiverThread = new ReceiverThread(socket,pseudo);
+                            ReceiverThread.receivers.add(newReceiverThread);
+                            newReceiverThread.start();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 }
                 if (!messageToSend.isEmpty() && socket.isConnected()) {
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                    //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     Date msgDate = Date.valueOf(dtf.format(LocalDateTime.now()));
                     add(messageToSend, msgDate, 'S', pseudo);
                     addLabelForOutgoingMessage(messageToSend, String.valueOf(msgDate), vbox_messages);
-                    ReceiverThread newReceiverThread = new ReceiverThread(socket,pseudo);
-                    ReceiverThread.receivers.add(newReceiverThread);
-                    newReceiverThread.start();
                     senderThread.start();
                     messageLabel.clear();
                 }
@@ -169,7 +171,7 @@ public class HomeInterface implements Initializable {
         Search();
 //        closeConnection();
     }
-    private void setConversationData() {
+    public void setConversationData() {
         agentPseudo.setText(pseudoColumn.getCellData(index));
         agentImg.setImage(photoColumn.getCellData(index).getImage());
 

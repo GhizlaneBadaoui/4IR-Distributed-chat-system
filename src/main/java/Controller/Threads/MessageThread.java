@@ -14,9 +14,9 @@ public class MessageThread extends Thread{
 
     @Override
     public void run() {
-        if(ListenConnThread.getMap_sockets().containsKey(this.pseudo)){
+        if(ListenConnThread.getInstance().getMap_sockets().containsKey(this.pseudo)){
             try {
-                (new SenderThread(ListenConnThread.getMap_sockets().get(pseudo),this.pseudo,msg)).start();
+                (new SenderThread(ListenConnThread.getInstance().getMap_sockets().get(pseudo),this.pseudo,msg)).start();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

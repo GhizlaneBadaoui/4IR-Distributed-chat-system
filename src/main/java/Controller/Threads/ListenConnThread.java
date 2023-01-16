@@ -30,7 +30,7 @@ public class ListenConnThread extends Thread {
     }
 
     public ListenConnThread() throws IOException {
-        user_listen_sock = new ServerSocket(9000);
+        user_listen_sock = new ServerSocket(5009);
         map_sockets = new HashMap<>();
     }
 
@@ -48,6 +48,10 @@ public class ListenConnThread extends Thread {
 
     public Socket getSock(String pseudo){
         return this.map_sockets.get(pseudo);
+    }
+
+    public Map<String, Socket> getMap_sockets() {
+        return map_sockets;
     }
 
     @Override

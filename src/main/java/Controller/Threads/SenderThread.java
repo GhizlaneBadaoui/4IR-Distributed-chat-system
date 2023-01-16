@@ -20,14 +20,13 @@ public class SenderThread extends Thread{
     }
     @Override
     public void run() {
-        while (sock.isConnected()) {
             try {
                 outputStream.writeObject(msg);
                 System.out.println("msg send to user");
                 //il faut traiter le type de message - aussi ajouter le message dans la bdd
             } catch (IOException e) {
+                e.printStackTrace();
                 throw new RuntimeException(e);
-            }
         }
     }
 }
