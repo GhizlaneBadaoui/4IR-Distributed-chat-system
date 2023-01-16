@@ -2,6 +2,7 @@ package Model;
 
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
+import Controller.Threads.ListenConnThread;
 import com.example.chatsystem.HomeInterface;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -77,15 +78,17 @@ public class User {
         }
     }
 
-    public void pseudo_selected() throws SocketException, UnknownHostException {
+    public void pseudo_selected() throws IOException {
         Broadcast.getInstance().broadcasting(this.pseudo+"@port:"+this.port);
         ConnectivityThread.getInstance().setUser(this);
         if(ConnectivityThread.isFlag()){
             ConnectivityThread.getInstance().setUser(this);
             ConnectivityThread.setFlag(false);
         }
-        else
+        else {
             ConnectivityThread.getInstance().start();
+            ListenConnThread.getInstance().start();
+        }
     }
 
     public synchronized void delete_user(String pseudo){
