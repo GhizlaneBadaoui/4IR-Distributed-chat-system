@@ -88,6 +88,8 @@ public class HomeInterface implements Initializable {
             objetMain.changeScene("Login.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 

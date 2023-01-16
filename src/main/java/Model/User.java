@@ -110,6 +110,11 @@ public class User {
 
     }
 
+    public void deconnection(){
+        active_agents.clear();
+        System.out.println("all users are deleted : "+active_agents.size());
+    }
+
     public static List<User> getActive_agents() {
         return active_agents;
     }

@@ -54,8 +54,8 @@ public class ConnectivityThread extends Thread{
 
     public void deconnection(){
         Broadcast.getInstance().broadcasting(this.user.getPseudo()+"@deconnection@");
+        this.user.deconnection();
     }
-
 
     public User getUser() {
         return user;
