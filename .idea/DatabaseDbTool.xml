@@ -22,21 +22,18 @@
               <option name="databaseVersion">
                 <NameVersion>
                   <option name="majorVersion" value="3" />
-                  <option name="minorVersion" value="36" />
+                  <option name="minorVersion" value="39" />
                   <option name="name" value="SQLite" />
-                  <option name="version" value="3.36.0" />
+                  <option name="version" value="3.39.2" />
                 </NameVersion>
               </option>
               <option name="dbFile" value="$PROJECT_DIR$/mydatabase.db" />
               <option name="driverCombos" value="thin" />
               <option name="driverType" value="SQLite" />
               <option name="host" value="localhost" />
-              <option name="jarUrl" value="C:\Users\ghizl\AppData\Roaming\JetBrains\IdeaIC2022.2\jdbc-drivers\Xerial SQLiteJDBC\3.36.0.3\sqlite-jdbc-3.36.0.3.jar" />
+              <option name="jarUrl" value="C:\Users\badaou\AppData\Roaming\JetBrains\IdeaIC2022.3\jdbc-drivers\Xerial SQLiteJDBC\3.39.2\sqlite-jdbc-3.39.2.jar" />
               <option name="myUniqueId" value="a76954e8-dad0-41dc-89d1-bc3207caacc1" />
               <option name="port" value="3306" />
-              <option name="properties">
-                <map />
-              </option>
               <option name="schemaSourceDto">
                 <SchemaSourceDto>
                   <option name="name" value="main" />
@@ -144,9 +141,9 @@
               <option name="driverVersion">
                 <NameVersion>
                   <option name="majorVersion" value="3" />
-                  <option name="minorVersion" value="36" />
+                  <option name="minorVersion" value="39" />
                   <option name="name" value="SQLite JDBC" />
-                  <option name="version" value="3.36.0.3" />
+                  <option name="version" value="3.39.2.0" />
                 </NameVersion>
               </option>
             </DataConfigSourceDto>

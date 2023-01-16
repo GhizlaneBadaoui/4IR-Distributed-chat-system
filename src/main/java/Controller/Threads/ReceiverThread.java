@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static Controller.Database.Operations.add;
 
@@ -14,6 +16,8 @@ public class ReceiverThread extends Thread{
     private Socket sock;
     private String pseudo;
     private BufferedReader bufferedReader;
+
+    public static List<ReceiverThread> receivers = new ArrayList<>();
 
     public ReceiverThread(Socket socket, String pseudo){
         try {

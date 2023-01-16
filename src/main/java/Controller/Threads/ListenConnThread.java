@@ -4,13 +4,14 @@ import Model.User;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ListenConnThread extends Thread {
     private ServerSocket user_listen_sock;
     private static ListenConnThread listenConnThread;
 
-    private static Map<String,Socket> map_sockets;
+    private Map<String,Socket> map_sockets;
 
     static {
         try {
@@ -30,6 +31,7 @@ public class ListenConnThread extends Thread {
 
     public ListenConnThread() throws IOException {
         user_listen_sock = new ServerSocket(9000);
+        map_sockets = new HashMap<>();
     }
 
     private String SearchAgent(InetAddress ip, int port){
@@ -40,8 +42,12 @@ public class ListenConnThread extends Thread {
         return "";
     }
 
-    public static Map<String, Socket> getMap_sockets() {
-        return map_sockets;
+    public void addNewSock(String pseudo, Socket socket){
+        this.map_sockets.put(pseudo,socket);
+    }
+
+    public Socket getSock(String pseudo){
+        return this.map_sockets.get(pseudo);
     }
 
     @Override

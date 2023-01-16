@@ -1,8 +1,6 @@
 package com.example.chatsystem;
 
-import Controller.Threads.ConnectivityThread;
-import Controller.Threads.ListenConnThread;
-import Controller.Threads.SenderThread;
+import Controller.Threads.*;
 import Model.User;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -134,21 +132,36 @@ public class HomeInterface implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String pseudo = agentPseudo.getText();
-                Socket socket = ListenConnThread.getMap_sockets().get(pseudo);
                 String messageToSend = messageLabel.getText();
-                try {
-                    senderThread = new SenderThread(socket, pseudo, messageToSend);
-                } catch (IOException e) {
-                    e.printStackTrace();                }
-
-                if (!messageToSend.isEmpty()) {
+                Socket socket = null;
+                SenderThread senderThread = null;
+                if(SenderHandler.getInstance().isEtablished(pseudo)){
+                    try {
+                        senderThread = new SenderThread(ListenConnThread.getInstance().getSock(pseudo), pseudo, messageToSend);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else {
+                    socket = SenderHandler.getInstance().startConnection(pseudo);
+                    if(socket.isConnected()){
+                        try {
+                            senderThread = new SenderThread(socket, pseudo, messageToSend);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                if (!messageToSend.isEmpty() && socket.isConnected()) {
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                     Date msgDate = Date.valueOf(dtf.format(LocalDateTime.now()));
                     add(messageToSend, msgDate, 'S', pseudo);
                     addLabelForOutgoingMessage(messageToSend, String.valueOf(msgDate), vbox_messages);
+                    ReceiverThread newReceiverThread = new ReceiverThread(socket,pseudo);
+                    ReceiverThread.receivers.add(newReceiverThread);
+                    newReceiverThread.start();
                     senderThread.start();
                     messageLabel.clear();
-
                 }
             }
         });

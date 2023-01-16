@@ -113,6 +113,16 @@ public class User {
 
     }
 
+    public static synchronized User getUser(String pseudo){
+        Iterator<User> iter = User.getActive_agents().stream().iterator();
+        while (iter.hasNext()){
+            User user = iter.next();
+            if(user.getPseudo().equals(pseudo)){
+                return user;
+            }
+        }
+        return null;
+    }
     public void deconnection(){
         active_agents.clear();
         System.out.println("all users are deleted : "+active_agents.size());
