@@ -7,6 +7,7 @@
           <value>
             <DataConfigSourceDto>
               <option name="comment" value="" />
+              <option name="connectionType" value="default" />
               <option name="dataBaseType" value="Sqlite" />
               <option name="database" value="main" />
               <option name="databaseName" value="localhost" />
@@ -76,7 +77,7 @@
                             <ColumnSourceDto>
                               <option name="columnName" value="date" />
                               <option name="tableName" value="messages" />
-                              <option name="typeName" value="NUMERIC" />
+                              <option name="typeName" value="TEXT" />
                             </ColumnSourceDto>
                             <ColumnSourceDto>
                               <option name="columnDefault" value="'R'" />
@@ -102,27 +103,27 @@
                             <ColumnSourceDto>
                               <option name="columnName" value="type" />
                               <option name="tableName" value="sqlite_master" />
-                              <option name="typeName" value="text" />
+                              <option name="typeName" value="TEXT" />
                             </ColumnSourceDto>
                             <ColumnSourceDto>
                               <option name="columnName" value="name" />
                               <option name="tableName" value="sqlite_master" />
-                              <option name="typeName" value="text" />
+                              <option name="typeName" value="TEXT" />
                             </ColumnSourceDto>
                             <ColumnSourceDto>
                               <option name="columnName" value="tbl_name" />
                               <option name="tableName" value="sqlite_master" />
-                              <option name="typeName" value="text" />
+                              <option name="typeName" value="TEXT" />
                             </ColumnSourceDto>
                             <ColumnSourceDto>
                               <option name="columnName" value="rootpage" />
                               <option name="tableName" value="sqlite_master" />
-                              <option name="typeName" value="int" />
+                              <option name="typeName" value="INT" />
                             </ColumnSourceDto>
                             <ColumnSourceDto>
                               <option name="columnName" value="sql" />
                               <option name="tableName" value="sqlite_master" />
-                              <option name="typeName" value="text" />
+                              <option name="typeName" value="TEXT" />
                             </ColumnSourceDto>
                           </list>
                         </option>
@@ -136,7 +137,7 @@
                 </SchemaSourceDto>
               </option>
               <option name="sid" value="" />
-              <option name="url" value="jdbc:sqlite:C:/Users/ghizl/OneDrive/Bureau/4A IR/S7/Java OO avancée/Projet_Java_UML/mydatabase.db" />
+              <option name="url" value="jdbc:sqlite:C:/Users/badaou/IdeaProjects/Projet_Java_UML/mydatabase.db" />
               <option name="userName" value="" />
               <option name="driverVersion">
                 <NameVersion>

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class Operations{
             String query = "CREATE TABLE messages" +
                     " (messageID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                     " content BLOB NOT NULL," +
-                    " date NUMERIC NOT NULL," +
+                    " date TEXT NOT NULL," +
                     " operation TEXT CHECK( operation IN ('R','S') ) NOT NULL DEFAULT 'R'," +
                     " pseudo TEXT NOT NULL)";
 
@@ -94,14 +96,14 @@ public class Operations{
 
 
     /* Add an element in a DB table  */
-    public static void 	add(String content, Date date, char operation, String pseudo){
+    public static void 	add(String content, String date, char operation, String pseudo){
 
         try {
             String query = "INSERT INTO "+ tableName +" (content, date, operation, pseudo) "+
                     "VALUES ('"+ content +"','"+ date +"','"+ operation +"', '"+ pseudo +"');";
             st = cnx.createStatement();
             st.executeUpdate(query);
-            System.out.println("\n--> An element is added to the DB  !\n");
+            System.out.println("\n--> An element ( msg = "+ content +") is added to the DB  !\n");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -132,7 +134,6 @@ public class Operations{
             System.out.println("\n--> DB not closed !\n");
         }
     }
-
 }
 
 

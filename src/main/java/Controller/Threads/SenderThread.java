@@ -31,11 +31,9 @@ public class SenderThread extends Thread{
             try {
                 outputStream.write(msg);
                 System.out.println("msg send to user");
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                Date msgDate = Date.valueOf(dtf.format(LocalDateTime.now()));
-                add(msg, msgDate, 'S', pseudo);
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                add(msg, dtf.format(LocalDateTime.now()), 'S', pseudo);
                 HomeInterface.currentHomeInter.setConversationData();
-                //il faut traiter le type de message - aussi ajouter le message dans la bdd
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
