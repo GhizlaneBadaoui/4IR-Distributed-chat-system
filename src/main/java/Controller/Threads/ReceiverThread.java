@@ -3,6 +3,7 @@ package Controller.Threads;
 import com.example.chatsystem.HomeInterface;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.sql.Date;
@@ -16,14 +17,14 @@ import static Controller.Database.Operations.add;
 public class ReceiverThread extends Thread{
     private Socket sock;
     private String pseudo;
-    private ObjectInputStream bufferedReader;
+    private InputStreamReader bufferedReader;
     public static List<ReceiverThread> receivers = new ArrayList<>();
 
     public ReceiverThread(Socket socket, String pseudo){
         try {
             this.sock = socket;
             this.pseudo = pseudo;
-            this.bufferedReader = new ObjectInputStream(socket.getInputStream());
+            this.bufferedReader = new InputStreamReader(socket.getInputStream());
         } catch (IOException e) {
             System.out.println("Error creating receiver thread.");
             e.printStackTrace();
@@ -33,7 +34,7 @@ public class ReceiverThread extends Thread{
         while (sock.isConnected()){
             try {
                 System.out.println("reciever thread -> to recieve the msgs from "+pseudo);
-                String msg = String.valueOf(bufferedReader.readObject());
+                String msg = String.valueOf(bufferedReader.read());
                 System.out.println(pseudo+"sended the following msg : "+msg);
                 //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -42,16 +43,14 @@ public class ReceiverThread extends Thread{
                 HomeInterface.currentHomeInter.setConversationData();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Error receiving message to the client");
+                System.out.println("Error receiving message from the client");
                 closeEverything(sock, bufferedReader);
                 break;
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
             }
         }
     }
 
-    public void closeEverything (Socket socket, ObjectInputStream bufferedReader) {
+    public void closeEverything (Socket socket, InputStreamReader bufferedReader) {
         try {
             if (bufferedReader != null) {
                 bufferedReader.close();

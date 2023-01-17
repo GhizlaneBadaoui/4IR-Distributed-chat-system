@@ -135,7 +135,9 @@ public class HomeInterface implements Initializable {
                 String messageToSend = messageLabel.getText();
                 Socket socket = null;
                 SenderThread senderThread = null;
+                ReceiverThread newReceiverThread = null;
                 if(SenderHandler.getInstance().isEtablished(pseudo)){
+                    System.out.println("old connection");
                     try {
                         socket = ListenConnThread.getInstance().getSock(pseudo);
                         senderThread = new SenderThread(socket, pseudo, messageToSend);
@@ -144,25 +146,24 @@ public class HomeInterface implements Initializable {
                     }
                 }
                 else {
+                    System.out.println("new connection");
                     socket = SenderHandler.getInstance().startConnection(pseudo);
                     if(socket.isConnected()){
                         try {
                             System.out.println("connected ");
                             senderThread = new SenderThread(socket, pseudo, messageToSend);
-                            ReceiverThread newReceiverThread = new ReceiverThread(socket,pseudo);
+                            System.out.println("the sender has been created");
+                            newReceiverThread = new ReceiverThread(socket,pseudo);
+                            System.out.println("the reciever has been created");
                             ReceiverThread.receivers.add(newReceiverThread);
                             newReceiverThread.start();
+                            System.out.println("the reciever has been started");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 }
                 if (!messageToSend.isEmpty() && socket.isConnected()) {
-                    //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    Date msgDate = Date.valueOf(dtf.format(LocalDateTime.now()));
-                    add(messageToSend, msgDate, 'S', pseudo);
-                    addLabelForOutgoingMessage(messageToSend, String.valueOf(msgDate), vbox_messages);
                     senderThread.start();
                     messageLabel.clear();
                 }
