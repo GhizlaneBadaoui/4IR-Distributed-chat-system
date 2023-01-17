@@ -164,6 +164,7 @@ public class HomeInterface implements Initializable {
                     }
                 }
                 if (!messageToSend.isEmpty() && socket.isConnected()) {
+                    vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
                     senderThread.start();
                     messageLabel.clear();
                 }

@@ -18,13 +18,14 @@ public class ReceiverThread extends Thread{
     private Socket sock;
     private String pseudo;
     private InputStreamReader bufferedReader;
+
     public static List<ReceiverThread> receivers = new ArrayList<>();
 
     public ReceiverThread(Socket socket, String pseudo){
         try {
             this.sock = socket;
             this.pseudo = pseudo;
-            this.bufferedReader = new InputStreamReader(socket.getInputStream());
+            this.bufferedReader = new InputStreamReader(sock.getInputStream());
         } catch (IOException e) {
             System.out.println("Error creating receiver thread.");
             e.printStackTrace();
@@ -34,6 +35,11 @@ public class ReceiverThread extends Thread{
         while (sock.isConnected()){
             try {
                 System.out.println("reciever thread -> to recieve the msgs from "+pseudo);
+                char b = 0;
+                while (b!=1){
+                    b = (char) bufferedReader.read();
+                    System.out.println(b);
+                }
                 String msg = String.valueOf(bufferedReader.read());
                 System.out.println(pseudo+"sended the following msg : "+msg);
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");

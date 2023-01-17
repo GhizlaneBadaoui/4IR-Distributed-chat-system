@@ -2,6 +2,7 @@ package Controller.Threads;
 
 import com.example.chatsystem.HomeInterface;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
@@ -17,14 +18,14 @@ public class SenderThread extends Thread{
     private String pseudo;
 
     private String msg;
-    private OutputStreamWriter outputStream;
+    private BufferedWriter outputStream;
 
 
     public SenderThread(Socket sock, String pseudo, String msg) throws IOException {
         this.sock = sock;
         this.pseudo = pseudo;
         this.msg = msg;
-        outputStream = new OutputStreamWriter(sock.getOutputStream());
+        outputStream = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
     }
     @Override
     public void run() {
