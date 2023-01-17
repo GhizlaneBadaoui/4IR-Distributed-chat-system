@@ -35,11 +35,8 @@ public class ReceiverThread extends Thread{
         while (sock.isConnected()){
             try {
                 System.out.println("reciever thread -> to recieve the msgs from "+pseudo);
-                char b = 0;
-                while (b!=1){
-                    b = (char) bufferedReader.read();
-                    System.out.println(b);
-                }
+                char[] buffer = new char[1000];
+                bufferedReader.read(buffer);
                 String msg = String.valueOf(bufferedReader.read());
                 System.out.println(pseudo+"sended the following msg : "+msg);
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
