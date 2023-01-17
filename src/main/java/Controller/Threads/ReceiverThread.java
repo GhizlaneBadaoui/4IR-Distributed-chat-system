@@ -2,9 +2,7 @@ package Controller.Threads;
 
 import com.example.chatsystem.HomeInterface;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.Socket;
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -17,15 +15,19 @@ import static Controller.Database.Operations.add;
 public class ReceiverThread extends Thread{
     private Socket sock;
     private String pseudo;
-    private InputStreamReader bufferedReader;
+    private ObjectInputStream bufferedReader;
+
+    private ObjectOutputStream bufferedWriter;
 
     public static List<ReceiverThread> receivers = new ArrayList<>();
 
-    public ReceiverThread(Socket socket, String pseudo){
+    public ReceiverThread(Socket socket, String pseudo) throws IOException {
         try {
             this.sock = socket;
             this.pseudo = pseudo;
-            this.bufferedReader = new InputStreamReader(sock.getInputStream());
+            bufferedWriter = (new ObjectOutputStream(sock.getOutputStream()));
+            bufferedWriter.flush();
+            bufferedReader = new ObjectInputStream(sock.getInputStream());
         } catch (IOException e) {
             System.out.println("Error creating receiver thread.");
             e.printStackTrace();
@@ -35,9 +37,7 @@ public class ReceiverThread extends Thread{
         while (sock.isConnected()){
             try {
                 System.out.println("reciever thread -> to recieve the msgs from "+pseudo);
-                char[] buffer = new char[1000];
-                bufferedReader.read(buffer);
-                String msg = String.valueOf(bufferedReader.read());
+                String msg = ((String) bufferedReader.readObject()).trim();
                 System.out.println(pseudo+"sended the following msg : "+msg);
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 add(msg, dtf.format(LocalDateTime.now()), 'R', pseudo);
@@ -47,11 +47,13 @@ public class ReceiverThread extends Thread{
                 System.out.println("Error receiving message from the client");
                 closeEverything(sock, bufferedReader);
                 break;
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
-    public void closeEverything (Socket socket, InputStreamReader bufferedReader) {
+    public void closeEverything (Socket socket, InputStream bufferedReader) {
         try {
             if (bufferedReader != null) {
                 bufferedReader.close();
