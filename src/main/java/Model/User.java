@@ -112,9 +112,34 @@ public class User {
         }
     }
     public boolean modify_pseudo(String pseudo) throws IOException {
-        return choose_pseudo(pseudo);
+        ConnectivityThread.setFlag(true);
+        if(Broadcast.getInstance().broadcasting(pseudo+"@@@!")){
+            if(isPseudoChange()){
+                this.pseudo = pseudo;
+                pseudo_selected();
+            }
+            else
+                return false;
+        }
+        return true;
     }
 
+    private boolean isPseudoChange() {
+        DatagramPacket packet = new DatagramPacket(new byte[1000],1000);
+        while (true) {
+            try {
+                Broadcast.getInstance().getConnectivity_sock().receive(packet);
+            } catch (SocketTimeoutException e) {
+                return true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String resp = new String(packet.getData()).trim();
+            System.out.println("from pseudo change -> msg rec " + resp);
+            if (resp.contains("no") && !resp.contains("ok"))
+                return false;
+        }
+    }
     public void update_agents_list(String pseudo){
 
     }
