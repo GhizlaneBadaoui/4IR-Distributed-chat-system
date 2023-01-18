@@ -100,7 +100,7 @@
                         <Image url="@../../../Images/person.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="agentPseudo" prefHeight="30.0" prefWidth="265.0" text="Pseudo" textFill="#9da7a7">
+                  <Label fx:id="agentPseudo" prefHeight="30.0" prefWidth="462.0" textFill="#9da7a7">
                      <font>
                         <Font name="Ebrima Bold" size="23.0" />
                      </font>
@@ -108,6 +108,18 @@
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Label>
+                  <Button fx:id="reduceButton" mnemonicParsing="false" styleClass="transparent-button" stylesheets="@style.css">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Images/restrict.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
             </HBox>
             <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="572.0" prefWidth="608.0" styleClass="transparent-background" stylesheets="@style.css">

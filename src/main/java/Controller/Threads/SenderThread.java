@@ -35,7 +35,7 @@ public class SenderThread extends Thread{
 
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 add(msg, dtf.format(LocalDateTime.now()), 'S', pseudo);
-                HomeInterface.currentHomeInter.set_cleanConversationData(false);
+                HomeInterface.currentHomeInter.setConversationData();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error sending message to the client");
