@@ -15,17 +15,17 @@ import static Controller.Database.Operations.add;
 public class ReceiverThread extends Thread{
     private Socket sock;
     private String pseudo;
-    private BufferedWriter outputStream;
-    private BufferedReader inputStream;
+    private BufferedReader bufferedReader;
 
+    private BufferedWriter bufferedWriter;
     public static List<ReceiverThread> receivers = new ArrayList<>();
 
     public ReceiverThread(Socket socket, String pseudo) throws IOException {
         try {
             this.sock = socket;
             this.pseudo = pseudo;
-            outputStream = new BufferedWriter(new OutputStreamWriter(this.sock.getOutputStream()));
-            inputStream = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
+            this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(this.sock.getOutputStream()));
+            this.bufferedReader = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
         } catch (IOException e) {
             System.out.println("Error creating receiver thread.");
             e.printStackTrace();
@@ -34,18 +34,16 @@ public class ReceiverThread extends Thread{
     public void run() {
         while (sock.isConnected()){
             try {
-                char[] data = new char[100];
                 System.out.println("reciever thread -> to recieve the msgs from "+pseudo);
-                inputStream.read(data);
-                String msg = new String(data).trim();
+                String msg = bufferedReader.readLine();
                 System.out.println(pseudo+"sended the following msg : "+msg);
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 add(msg, dtf.format(LocalDateTime.now()), 'R', pseudo);
-                HomeInterface.currentHomeInter.setConversationData();
+                HomeInterface.currentHomeInter.set_cleanConversationData(false);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error receiving message from the client");
-                closeEverything(sock, inputStream);
+                //closeEverything(sock, bufferedReader);
                 break;
             }
         }

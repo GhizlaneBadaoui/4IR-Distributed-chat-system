@@ -15,28 +15,44 @@ public class SenderThread extends Thread{
     private String pseudo;
 
     private String msg;
-    private BufferedWriter outputStream;
-    private BufferedReader inputStream;
+    private BufferedWriter bufferedWriter;
 
 
-    public SenderThread(Socket sock, String pseudo, String msg) throws IOException {
-        this.sock = sock;
+    public SenderThread(Socket socket, String pseudo, String msg) throws IOException {
+        this.sock = socket;
         this.pseudo = pseudo;
         this.msg = msg;
-        outputStream = new BufferedWriter(new OutputStreamWriter(this.sock.getOutputStream()));
-        inputStream = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
+        this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
     }
     @Override
     public void run() {
             try {
-                outputStream.write(msg);
+                bufferedWriter.write(msg);
+                bufferedWriter.newLine();
+                bufferedWriter.flush();
+
                 System.out.println("msg send to user");
+
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 add(msg, dtf.format(LocalDateTime.now()), 'S', pseudo);
-                HomeInterface.currentHomeInter.setConversationData();
+                HomeInterface.currentHomeInter.set_cleanConversationData(false);
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new RuntimeException(e);
+                System.out.println("Error sending message to the client");
+                //closeEverything(sock, bufferedWriter);
+        }
+    }
+
+    public void closeEverything (Socket socket, BufferedWriter bufferedWriter) {
+        try {
+            if (bufferedWriter != null) {
+                bufferedWriter.close();
+            }
+            if (socket != null) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

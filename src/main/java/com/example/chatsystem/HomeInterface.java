@@ -116,17 +116,17 @@ public class HomeInterface implements Initializable {
                 index = agentsTable.getSelectionModel().getSelectedIndex();
                 if (index>-1) {
                     vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
-                    setConversationData();
+                    set_cleanConversationData(false);
                 }
             }
         });
 
-        vbox_messages.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                scrollPane.setVvalue((Double) newValue);
-            }
-        });
+//        vbox_messages.heightProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                scrollPane.setVvalue((Double) newValue);
+//            }
+//        });
 
         sendButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -174,18 +174,27 @@ public class HomeInterface implements Initializable {
         Search();
 //        closeConnection();
     }
-    public void setConversationData() {
-        agentPseudo.setText(pseudoColumn.getCellData(index));
-        agentImg.setImage(photoColumn.getCellData(index).getImage());
+    public void set_cleanConversationData(boolean clean) {
+        if (!clean){
+            agentPseudo.setText(pseudoColumn.getCellData(index));
+            agentImg.setImage(photoColumn.getCellData(index).getImage());
 
-        List<String[]> tab = displayMessagesWithAgent(pseudoColumn.getCellData(index).toString());
-        for (String[] element : tab){
-            if (element[2].equals("R")) {
-                addLabelForIncomingMessage(element[0], element[1], vbox_messages);
+            List<String[]> tab = displayMessagesWithAgent(pseudoColumn.getCellData(index).toString());
+            for (String[] element : tab) {
+                if (element[2].equals("R")) {
+                    addLabelForIncomingMessage(element[0], element[1], vbox_messages);
+                }
+                if (element[2].equals("S")) {
+                    addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
+                }
             }
-            if (element[2].equals("S")){
-                addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
+        } else {
+            try {
+                vbox_messages.getChildren().clear();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }
     }
 
@@ -304,4 +313,7 @@ public class HomeInterface implements Initializable {
         return ls;
     }
 
+    public String getAgentPseudo() {
+        return agentPseudo.getText();
+    }
 }

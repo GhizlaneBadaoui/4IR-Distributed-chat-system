@@ -105,6 +105,8 @@ public class User {
                 User.getActive_agents().remove(user);
                 System.out.println("user deleted");
                 HomeInterface.currentHomeInter.refreshTable();
+                if (HomeInterface.currentHomeInter.getAgentPseudo().equals(pseudo))
+                    HomeInterface.currentHomeInter.set_cleanConversationData(true);
             }
         }
     }
