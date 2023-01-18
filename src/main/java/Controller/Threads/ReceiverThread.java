@@ -15,9 +15,8 @@ import static Controller.Database.Operations.add;
 public class ReceiverThread extends Thread{
     private Socket sock;
     private String pseudo;
-    private ObjectInputStream bufferedReader;
-
-    private ObjectOutputStream bufferedWriter;
+    private BufferedWriter outputStream;
+    private BufferedReader inputStream;
 
     public static List<ReceiverThread> receivers = new ArrayList<>();
 
@@ -25,9 +24,8 @@ public class ReceiverThread extends Thread{
         try {
             this.sock = socket;
             this.pseudo = pseudo;
-            bufferedWriter = (new ObjectOutputStream(sock.getOutputStream()));
-            bufferedWriter.flush();
-            bufferedReader = new ObjectInputStream(sock.getInputStream());
+            outputStream = new BufferedWriter(new OutputStreamWriter(this.sock.getOutputStream()));
+            inputStream = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
         } catch (IOException e) {
             System.out.println("Error creating receiver thread.");
             e.printStackTrace();
@@ -36,8 +34,10 @@ public class ReceiverThread extends Thread{
     public void run() {
         while (sock.isConnected()){
             try {
+                char[] data = new char[100];
                 System.out.println("reciever thread -> to recieve the msgs from "+pseudo);
-                String msg = ((String) bufferedReader.readObject()).trim();
+                inputStream.read(data);
+                String msg = new String(data).trim();
                 System.out.println(pseudo+"sended the following msg : "+msg);
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 add(msg, dtf.format(LocalDateTime.now()), 'R', pseudo);
@@ -45,15 +45,13 @@ public class ReceiverThread extends Thread{
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error receiving message from the client");
-                closeEverything(sock, bufferedReader);
+                closeEverything(sock, inputStream);
                 break;
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
             }
         }
     }
 
-    public void closeEverything (Socket socket, InputStream bufferedReader) {
+    public void closeEverything (Socket socket, BufferedReader bufferedReader) {
         try {
             if (bufferedReader != null) {
                 bufferedReader.close();

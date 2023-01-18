@@ -2,10 +2,7 @@ package Controller.Threads;
 
 import com.example.chatsystem.HomeInterface;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -19,13 +16,15 @@ public class SenderThread extends Thread{
 
     private String msg;
     private BufferedWriter outputStream;
+    private BufferedReader inputStream;
 
 
     public SenderThread(Socket sock, String pseudo, String msg) throws IOException {
         this.sock = sock;
         this.pseudo = pseudo;
         this.msg = msg;
-        outputStream = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+        outputStream = new BufferedWriter(new OutputStreamWriter(this.sock.getOutputStream()));
+        inputStream = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
     }
     @Override
     public void run() {
