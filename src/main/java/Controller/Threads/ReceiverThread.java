@@ -4,7 +4,6 @@ import com.example.chatsystem.HomeInterface;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -43,22 +42,8 @@ public class ReceiverThread extends Thread{
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error receiving message from the client");
-                //closeEverything(sock, bufferedReader);
                 break;
             }
-        }
-    }
-
-    public void closeEverything (Socket socket, BufferedReader bufferedReader) {
-        try {
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
-            if (socket != null) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

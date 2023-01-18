@@ -30,29 +30,13 @@ public class SenderThread extends Thread{
                 bufferedWriter.write(msg);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
-
                 System.out.println("msg send to user");
-
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
                 add(msg, dtf.format(LocalDateTime.now()), 'S', pseudo);
                 HomeInterface.currentHomeInter.setConversationData();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error sending message to the client");
-                //closeEverything(sock, bufferedWriter);
-        }
-    }
-
-    public void closeEverything (Socket socket, BufferedWriter bufferedWriter) {
-        try {
-            if (bufferedWriter != null) {
-                bufferedWriter.close();
-            }
-            if (socket != null) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

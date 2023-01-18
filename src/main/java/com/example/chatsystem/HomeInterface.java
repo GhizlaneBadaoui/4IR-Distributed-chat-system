@@ -23,8 +23,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -33,6 +36,7 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -40,6 +44,7 @@ import static Controller.Database.Operations.*;
 
 public class HomeInterface implements Initializable {
     public Button reduceButton;
+    public VBox All;
     @FXML
     private Label agentPseudo;
     @FXML
@@ -79,8 +84,7 @@ public class HomeInterface implements Initializable {
     private SenderThread senderThread;
     Main objetMain = new Main();
 
-    @FXML
-    void disconnect (ActionEvent event){
+    void disconnect (){
         try {
             ConnectivityThread.setFlag(true);
             ConnectivityThread.getInstance().deconnection();
@@ -98,8 +102,24 @@ public class HomeInterface implements Initializable {
         agentsTable.setItems(agentsList);
     }
 
+    public void restrictConversation() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                agentImg.setImage(null);
+                agentPseudo.setText("");
+                vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
+                All.setDisable(true);
+            }
+        });
+
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        All.setDisable(true);
+
         connect();
         currentHomeInter = this;
         User u = ConnectivityThread.getInstance().getUser();
@@ -116,7 +136,11 @@ public class HomeInterface implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 index = agentsTable.getSelectionModel().getSelectedIndex();
                 if (index>-1) {
-                    vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
+                    if (All.isDisable()) {
+                        All.setDisable(false);
+                    } else {
+                        vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
+                    }
                     setConversationData();
                 }
             }
@@ -165,10 +189,32 @@ public class HomeInterface implements Initializable {
                     }
                 }
                 if (!messageToSend.isEmpty() && socket.isConnected()) {
-                    //vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
                     senderThread.start();
                     messageLabel.clear();
                 }
+            }
+        });
+
+        reduceButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                restrictConversation();
+            }
+        });
+
+        disconnectButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                disconnect();
+            }
+        });
+
+        Main.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                disconnect();
+                Platform.exit();
+                System.exit(0);
             }
         });
 
@@ -202,6 +248,7 @@ public class HomeInterface implements Initializable {
         dateLabel.setPadding(new Insets(5, 5, 5, 5));
 
         Text text = new Text((String) msg);
+        text.setStyle("-fx-font-size: 15px;");
         TextFlow textflow = new TextFlow(text);
         textflow.setStyle("-fx-background-color: #85D6CA ;" +
                 "-fx-background-radius: 0 20 20 20 ;");
@@ -231,6 +278,7 @@ public class HomeInterface implements Initializable {
         dateLabel.setPadding(new Insets(5, 5, 5, 5));
 
         Text text = new Text((String) msg);
+        text.setStyle("-fx-font-size: 15px;");
         TextFlow textflow = new TextFlow(text);
 
         textflow.setStyle("-fx-background-color: #8ED5F8;" +
@@ -303,5 +351,13 @@ public class HomeInterface implements Initializable {
         ls.add(user);
 
         return ls;
+    }
+
+    public VBox getVbox_messages() {
+        return vbox_messages;
+    }
+
+    public String getAgentPseudo() {
+        return agentPseudo.getText();
     }
 }
