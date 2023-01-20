@@ -257,7 +257,7 @@ public class HomeInterface implements Initializable {
                                 alert.setContentText("Your pseudonym was successfully changed !\n" +
                                         "Your new pseudonym is : "+ myPseudo.getText());
                                 alert.showAndWait();
-                                //ConnectivityThread.getInstance().getUser().setPseudo(newPseudo);
+                                ConnectivityThread.getInstance().getUser().setPseudo(newPseudo);
                                 myPseudo.setText(newPseudo);
                             } else {
                                 alert.setContentText("Invalid pseudonym !");
