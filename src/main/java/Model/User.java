@@ -39,7 +39,7 @@ public class User {
         if(Broadcast.getInstance().broadcasting(pseudo)){
             if(identify_active_agents()){
                 this.pseudo = pseudo;
-                this.pseudo_selected();//on fait passer l'utilisateur à l'interface principale de l'application
+                this.pseudo_selected("");//on fait passer l'utilisateur à l'interface principale de l'application
             }
             else
                 return false;//l'utilisateur se connecte pas et un msg d'errur apparaitera.
@@ -82,8 +82,8 @@ public class User {
         this.port = port;
     }
 
-    public void pseudo_selected() throws IOException {
-        Broadcast.getInstance().broadcasting(this.pseudo+"@port:"+this.port);
+    public void pseudo_selected(String msg) throws IOException {
+        Broadcast.getInstance().broadcasting(this.pseudo+"@port:"+this.port+msg);
         ConnectivityThread.getInstance().setUser(this);
         if(ConnectivityThread.isFlag()){
             ConnectivityThread.getInstance().setUser(this);
@@ -113,8 +113,8 @@ public class User {
         ConnectivityThread.setFlag(true);
         if(Broadcast.getInstance().broadcasting(pseudo+"@@@!")){
             if(isPseudoChange()){
+                pseudo_selected("_#@-new = "+pseudo);
                 this.pseudo = pseudo;
-                pseudo_selected();
             }
             else
                 return false;
