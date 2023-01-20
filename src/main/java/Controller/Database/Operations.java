@@ -35,7 +35,8 @@ public class Operations{
         try {
             String query = "CREATE TABLE pseudos" +
                     " (pseudoID INTEGER NOT NULL PRIMARY KEY," +
-                    " unPseudo TEXT NOT NULL)";
+                    " unPseudo TEXT NOT NULL," +
+                    " UNIQUE(pseudoID))";
 
             st = cnx.createStatement();
             st.executeUpdate(query);
@@ -102,11 +103,11 @@ public class Operations{
 
 
     /* Add an element in a DB table  */
-    public static void 	add(String content, String date, char operation, String pseudo){
+    public static void 	add(String content, String date, char operation, int id){
 
         try {
             String query = "INSERT INTO "+ tableName +" (content, date, operation, id) "+
-                    "VALUES ('"+ content +"','"+ date +"','"+ operation +"', (SELECT pseudoID FROM '"+ tableNameSec +"' WHERE unPseudo = '"+pseudo+"'));";
+                    "VALUES ('"+ content +"','"+ date +"','"+ operation +",'"+ id +"');";
             st = cnx.createStatement();
             st.executeUpdate(query);
             System.out.println("\n--> An element ( msg = "+ content +") is added to the DB  !\n");

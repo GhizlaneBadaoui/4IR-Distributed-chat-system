@@ -8,6 +8,7 @@ import View.HomeInterface;
 import java.io.IOException;
 import java.net.*;
 
+import static Controller.Database.Operations.addPseudo;
 import static Controller.Database.Operations.modifyPseudo;
 
 public class ConnectivityThread extends Thread{
@@ -86,7 +87,7 @@ public class ConnectivityThread extends Thread{
                             if (data.substring(data.indexOf("=")+1, data.indexOf("@")).equals(user.getPseudo()))
                                 packet_send.setData("no".getBytes());
                             else
-                                packet_send.setData("ok".getBytes());
+                                packet_send.setData(("ok id = "+this.user.getDbID()).getBytes());
                     }
                     else if (data.contains("@deconnection@") && data.contains("pseudo")) {
                             System.out.println("deconnection : pseudo = "+data.substring(9,data.indexOf("@")));
@@ -106,8 +107,9 @@ public class ConnectivityThread extends Thread{
                     else if (data.contains("port:") && data.contains("pseudo")) {
                             System.out.println(data.substring(data.indexOf("=") + 2) + " index = " + data.indexOf("@"));
                             String pseu = data.substring(data.indexOf('=') + 2, data.indexOf("@"));
-                            System.out.println(data.substring(data.indexOf("@id@")+6));
-                            user.add_user(new User(pseu, packet_rec.getAddress(), Integer.parseInt(data.substring(data.indexOf(':') + 1))));
+                            int id = Integer.parseInt(data.substring(data.indexOf("@id@")+7));
+                            user.add_user(new User(pseu, packet_rec.getAddress(), Integer.parseInt(data.substring(data.indexOf(':') + 1,data.indexOf('-'))),id));
+                            addPseudo(pseu,id);
                             System.out.println("agents : " + User.getActive_agents().size());
                     }
                     packet_send.setData(new byte[1000]);

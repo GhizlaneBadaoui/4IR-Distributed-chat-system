@@ -68,6 +68,7 @@
                               <option name="pk" value="true" />
                               <option name="tableName" value="pseudos" />
                               <option name="typeName" value="INTEGER" />
+                              <option name="unique" value="true" />
                             </ColumnSourceDto>
                             <ColumnSourceDto>
                               <option name="columnName" value="unPseudo" />
@@ -77,6 +78,16 @@
                           </list>
                         </option>
                         <option name="databaseType" value="Sqlite" />
+                        <option name="keys">
+                          <list>
+                            <ColumnIndexInfo>
+                              <option name="collation" value="A" />
+                              <option name="columnName" value="pseudoID" />
+                              <option name="indexName" value="sqlite_autoindex_pseudos_1" />
+                              <option name="tableName" value="pseudos" />
+                            </ColumnIndexInfo>
+                          </list>
+                        </option>
                         <option name="schema" value="main" />
                         <option name="tableName" value="pseudos" />
                         <option name="tableType" value="table" />

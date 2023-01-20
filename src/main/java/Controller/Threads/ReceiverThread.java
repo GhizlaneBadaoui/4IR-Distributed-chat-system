@@ -1,5 +1,6 @@
 package Controller.Threads;
 
+import Model.User;
 import View.HomeInterface;
 
 import java.io.*;
@@ -37,7 +38,7 @@ public class ReceiverThread extends Thread{
                 String msg = bufferedReader.readLine();
                 System.out.println(pseudo+"sended the following msg : "+msg);
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                add(msg, dtf.format(LocalDateTime.now()), 'R', pseudo);
+                add(msg, dtf.format(LocalDateTime.now()), 'R', User.getUser(pseudo).getDbID());
                 HomeInterface.currentHomeInter.setConversationData();
             } catch (IOException e) {
                 e.printStackTrace();

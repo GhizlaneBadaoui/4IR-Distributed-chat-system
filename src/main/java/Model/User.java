@@ -31,10 +31,11 @@ public class User {
         this.imgSrc.setFitWidth(60);
     }
 
-    public User(String pseudo, InetAddress IP, int port) {
+    public User(String pseudo, InetAddress IP, int port, int id) {
         this.pseudo = pseudo;
         this.IP = IP;
         this.port = port;
+        this.dbID = id;
         this.imgSrc.setFitHeight(60);
         this.imgSrc.setFitWidth(60);
     }
@@ -43,7 +44,7 @@ public class User {
         if(Broadcast.getInstance().broadcasting(pseudo)){
             if(identify_active_agents()){
                 this.pseudo = pseudo;
-                this.pseudo_selected("@id@ = "+id);//on fait passer l'utilisateur à l'interface principale de l'application
+                this.pseudo_selected("-@id@ = "+id);//on fait passer l'utilisateur à l'interface principale de l'application
             }
             else
                 return false;//l'utilisateur se connecte pas et un msg d'errur apparaitera.
@@ -62,7 +63,8 @@ public class User {
                 System.out.println("msg rec : "+resp);
                 if(!resp.contains("no") && resp.contains("ok")){
                     System.out.println("port numer = "+Integer.parseInt(resp.substring(2,resp.indexOf(':'))));
-                    this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.parseInt(resp.substring(2,resp.indexOf(':')))));
+                    int _id = Integer.parseInt(resp.substring(resp.indexOf('=')+2));
+                    this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.parseInt(resp.substring(2,resp.indexOf(':'))),_id));
                     System.out.println("port number 2 = "+active_agents.get(0).getPort());
                     System.out.println("agents number = "+this.active_agents.size());
                 }
