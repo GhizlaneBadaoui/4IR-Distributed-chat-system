@@ -31,7 +31,7 @@ public class User {
     public User(String pseudo, InetAddress IP, int port) {
         this.pseudo = pseudo;
         this.IP = IP;
-        this.setImgSrc(new ImageView(new Image("file:src/main/resources/Images/person.png")));
+        this.setImgSrc(imgSrc);
         this.port = port;
     }
 
@@ -185,9 +185,13 @@ public class User {
         this.pseudo = pseudo;
     }
 
-    public ImageView getImgSrc(int x) {
+    public ImageView getImgSrcWithSize(int x) {
         imgSrc.setFitWidth(x);
         imgSrc.setFitHeight(x);
+        return imgSrc;
+    }
+
+    public ImageView getImgSrc() {
         return imgSrc;
     }
 

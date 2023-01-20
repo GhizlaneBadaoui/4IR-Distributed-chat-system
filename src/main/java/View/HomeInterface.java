@@ -4,6 +4,7 @@ import Controller.Threads.*;
 import Model.User;
 import com.example.chatsystem.Main;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -32,6 +33,7 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -223,7 +225,7 @@ public class HomeInterface implements Initializable {
                 dialog.setHeaderText("* Your full name is : "+u.getFullName()
                         +"\n* Your address is : "+u.getIP().getHostAddress()
                         +"\n* Your port is : "+u.getPort());
-                dialog.setGraphic(u.getImgSrc(70));
+                dialog.setGraphic(u.getImgSrcWithSize(70));
                 dialog.setContentText("If you want to change your name, please enter the new one : ");
                 ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:src/main/resources/Images/logo.png"));
                 Optional<String> result = dialog.showAndWait();
