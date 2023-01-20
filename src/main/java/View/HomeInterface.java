@@ -1,4 +1,4 @@
-package Controller.View;
+package View;
 
 import Controller.Threads.*;
 import Model.User;

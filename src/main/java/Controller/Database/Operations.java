@@ -9,18 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/*-------------------- operations -------------------*/
-//            connect();
-//            initiate();
-//            displayAll();
-//            add("Hi ghiz", Date.valueOf("2022-12-12"), 'R', "walid");  // date sous la forme YYYY-MM-DD
-//            add("Hi walid", Date.valueOf("2022-12-12"), 'S', "walid");
-//            delete(1);
-//            displayAll();
-//            closeConnection();
-/*----------------------------------------------------*/
-
 public class Operations{
 
     static Connection cnx = null;
@@ -92,6 +80,15 @@ public class Operations{
         } catch(Exception ex) { ex.printStackTrace();}
 
         return tab;
+    }
+
+
+    public static void modifyPseudo(String oldPseudo, String newPseudo) {
+        try {
+            st = cnx.createStatement();
+            rst = st.executeQuery("UPDATE '"+ tableName +"' SET pseudo = '"+ newPseudo +"' WHERE pseudo ='"+oldPseudo);
+            System.out.println("\n--> An element was updated to "+newPseudo+" !\n");
+        } catch(Exception ex) { ex.printStackTrace();}
     }
 
 

@@ -1,6 +1,6 @@
 package Controller.Threads;
 
-import Controller.View.HomeInterface;
+import View.HomeInterface;
 
 import java.io.*;
 import java.net.Socket;

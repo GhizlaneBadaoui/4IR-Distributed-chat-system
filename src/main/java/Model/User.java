@@ -3,7 +3,7 @@ package Model;
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
 import Controller.Threads.ListenConnThread;
-import Controller.View.HomeInterface;
+import View.HomeInterface;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

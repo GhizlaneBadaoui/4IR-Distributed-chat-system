@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.net.*;
 import java.util.Iterator;
 
-public class Broadcast extends Protocols {
-
+public class Broadcast {
+    private InetAddress IP;
+    private int port;
     private DatagramSocket connectivity_sock;
     private static Broadcast broadcast;
     private DatagramPacket packet;

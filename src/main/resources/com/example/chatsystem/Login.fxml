@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" styleClass="dark-gray-background" stylesheets="@../../../Style/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.View.LoginInterface">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" styleClass="dark-gray-background" stylesheets="@../../../Style/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.LoginInterface">
    <center>
       <HBox alignment="CENTER" prefHeight="534.0" prefWidth="800.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
@@ -34,7 +34,7 @@
                         <Font size="12.0" />
                      </font>
                   </TextField>
-                  <Label fx:id="connectionError" alignment="CENTER" prefHeight="42.0" prefWidth="318.0" text="* Use only numbers or letters *" textFill="#d98b8b">
+                  <Label fx:id="connectionError" alignment="CENTER" prefHeight="42.0" prefWidth="318.0" text="* Use only numbers or/and letters *" textFill="#d98b8b">
                      <font>
                         <Font name="Sitka Text" size="13.0" />
                      </font>
