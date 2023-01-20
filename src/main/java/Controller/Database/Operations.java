@@ -34,7 +34,7 @@ public class Operations{
     public static void initiate() {
         try {
             String query = "CREATE TABLE pseudos" +
-                    " (pseudoID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    " (pseudoID INTEGER NOT NULL PRIMARY KEY," +
                     " unPseudo TEXT NOT NULL)";
 
             st = cnx.createStatement();
@@ -45,11 +45,12 @@ public class Operations{
                     " content BLOB NOT NULL," +
                     " date TEXT NOT NULL," +
                     " operation TEXT CHECK( operation IN ('R','S') ) NOT NULL DEFAULT 'R'," +
-                    " pseudo INTEGER NOT NULL," +
-                    " FOREIGN KEY(pseudo) REFERENCES pseudos(pseudoID))";
+                    " id INTEGER NOT NULL," +
+                    " FOREIGN KEY(id) REFERENCES pseudos(pseudoID))";
 
             st = cnx.createStatement();
             st.executeUpdate(query);
+
             System.out.println("\n--> DB is initiated  !\n");
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -81,7 +82,7 @@ public class Operations{
         List<String[]> tab = new ArrayList<>();
         try {
             st = cnx.createStatement();
-            rst = st.executeQuery("SELECT * FROM '"+ tableName +"' where pseudo = '"+ agentPseudo +"' order by messageID");
+            rst = st.executeQuery("SELECT * FROM '"+ tableName +"' where id = (SELECT pseudoID FROM '"+ tableNameSec +"' WHERE unPseudo = '"+agentPseudo+"') order by messageID");
             while (rst.next()) {
                 tab.add(new String[]{rst.getString("content"), rst.getString("date"), rst.getString("operation")});
             }
@@ -91,10 +92,10 @@ public class Operations{
     }
 
 
-    public static void modifyPseudo(String oldPseudo, String newPseudo) {
+    public static void modifyPseudo(int id, String newPseudo) {
         try {
             st = cnx.createStatement();
-            st.executeUpdate("UPDATE '"+ tableName +"' SET pseudo = '"+ newPseudo +"' WHERE pseudo ='"+oldPseudo+"'");
+            rst = st.executeQuery("UPDATE '"+ tableNameSec +"' SET unPseudo = '"+ newPseudo +"' WHERE pseudoID ='"+id);
             System.out.println("\n--> An element was updated to "+newPseudo+" !\n");
         } catch(Exception ex) { ex.printStackTrace();}
     }
@@ -104,7 +105,7 @@ public class Operations{
     public static void 	add(String content, String date, char operation, String pseudo){
 
         try {
-            String query = "INSERT INTO "+ tableName +" (content, date, operation, pseudo) "+
+            String query = "INSERT INTO "+ tableName +" (content, date, operation, id) "+
                     "VALUES ('"+ content +"','"+ date +"','"+ operation +"', (SELECT pseudoID FROM '"+ tableNameSec +"' WHERE unPseudo = '"+pseudo+"'));";
             st = cnx.createStatement();
             st.executeUpdate(query);
@@ -114,16 +115,17 @@ public class Operations{
         }
     }
 
-    public static void addPseudo(String pseudo){
+    public static int addPseudo(String pseudo, int id){
         try {
-            String query = "INSERT INTO "+ tableNameSec +" (unPseudo) "+
-                    "VALUES ('"+ pseudo +"');";
+            String query = "INSERT INTO "+ tableNameSec +" (pseudoID, unPseudo) "+
+                    "VALUES ('"+ id +"','"+ pseudo +"');";
             st = cnx.createStatement();
             st.executeUpdate(query);
             System.out.println("\n--> An element ( pseudo = "+ pseudo +") was added to the DB  !\n");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        return 0;
     }
 
     /* Delete an element in a DB table */

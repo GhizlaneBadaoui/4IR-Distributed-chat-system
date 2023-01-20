@@ -107,7 +107,7 @@
                               <option name="typeName" value="TEXT" />
                             </ColumnSourceDto>
                             <ColumnSourceDto>
-                              <option name="columnName" value="pseudo" />
+                              <option name="columnName" value="id" />
                               <option name="tableName" value="messages" />
                               <option name="typeName" value="INTEGER" />
                             </ColumnSourceDto>

@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class User {
+    private int dbID;
     private String pseudo;
     private InetAddress IP;
     private int port;
@@ -38,11 +39,11 @@ public class User {
         this.imgSrc.setFitWidth(60);
     }
 
-    public boolean choose_pseudo(String pseudo) throws IOException {
+    public boolean choose_pseudo(String pseudo,String id) throws IOException {
         if(Broadcast.getInstance().broadcasting(pseudo)){
             if(identify_active_agents()){
                 this.pseudo = pseudo;
-                this.pseudo_selected("");//on fait passer l'utilisateur à l'interface principale de l'application
+                this.pseudo_selected("@id@ = "+id);//on fait passer l'utilisateur à l'interface principale de l'application
             }
             else
                 return false;//l'utilisateur se connecte pas et un msg d'errur apparaitera.
@@ -201,5 +202,13 @@ public class User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public int getDbID() {
+        return dbID;
+    }
+
+    public void setDbID(int dbID) {
+        this.dbID = dbID;
     }
 }

@@ -78,7 +78,7 @@ public class ConnectivityThread extends Thread{
                     if(data.contains("_#@") && data.contains("new")){
                         String oldps = data.substring(data.indexOf("=")+2, data.indexOf("@"));
                         String newps = data.substring(data.indexOf("new")+6);
-                        modifyPseudo(oldps,newps);
+                        modifyPseudo(1,newps);
                         User.AgentModifyPseudo(oldps,newps);
                         HomeInterface.currentHomeInter.refreshTable();
                     }
@@ -106,6 +106,7 @@ public class ConnectivityThread extends Thread{
                     else if (data.contains("port:") && data.contains("pseudo")) {
                             System.out.println(data.substring(data.indexOf("=") + 2) + " index = " + data.indexOf("@"));
                             String pseu = data.substring(data.indexOf('=') + 2, data.indexOf("@"));
+                            System.out.println(data.substring(data.indexOf("@id@")+6));
                             user.add_user(new User(pseu, packet_rec.getAddress(), Integer.parseInt(data.substring(data.indexOf(':') + 1))));
                             System.out.println("agents : " + User.getActive_agents().size());
                     }

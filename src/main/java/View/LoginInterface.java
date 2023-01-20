@@ -12,7 +12,10 @@ import java.net.InetAddress;
 
 public class LoginInterface {
 
+    @FXML
     public Button logInButton;
+    @FXML
+    public TextField idLabel;
     @FXML
     private TextField pseudoLabel;
     @FXML
@@ -29,19 +32,27 @@ public class LoginInterface {
     void LogIn (ActionEvent event){
         try {
             user = new User(InetAddress.getLocalHost(),5009);
-            if (pseudoLabel.getText().isEmpty()){
-                connectionError.setText("Enter your pseudonym, use only numbers or letters.");
+            if (pseudoLabel.getText().isEmpty() || idLabel.getText().isEmpty()){
+                connectionError.setText("Enter your pseudonym and your id, use only numbers or letters for pseudonym and only numbers for id.");
             } else {
                 if (pseudoLabel.getText().contains("@") || pseudoLabel.getText().contains(":")) {
                     connectionError.setText("Attention : use only numbers or letters ! ");
                 } else {
-                    if (user.choose_pseudo(pseudoLabel.getText())) {
-                        user.setPseudo(pseudoLabel.getText());
-                        connectionError.setText("Success !");
-                        objetMain.changeScene("Home.fxml");
-                    } else {
-                        connectionError.setText("This pseudo already exists, choose another one.");
+                    try {
+                        int id = Integer.parseInt(idLabel.getText());
+                        if (user.choose_pseudo(pseudoLabel.getText(),idLabel.getText())) {
+                            user.setPseudo(pseudoLabel.getText());
+                            user.setDbID(id);
+                            connectionError.setText("Success !");
+                            objetMain.changeScene("Home.fxml");
+                        }
+                        else {
+                            connectionError.setText("This pseudo already exists, choose another one.");
+                        }
+                    } catch (NumberFormatException e){
+                        connectionError.setText("id must be a number !");
                     }
+
                 }
             }
         } catch (Exception ex) {
