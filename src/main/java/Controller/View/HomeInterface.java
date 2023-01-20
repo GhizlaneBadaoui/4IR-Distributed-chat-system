@@ -1,7 +1,8 @@
-package com.example.chatsystem;
+package Controller.View;
 
 import Controller.Threads.*;
 import Model.User;
+import com.example.chatsystem.Main;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,27 +24,25 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static Controller.Database.Operations.*;
+import static Controller.Database.Operations.connect;
+import static Controller.Database.Operations.displayMessagesWithAgent;
 
 public class HomeInterface implements Initializable {
+    @FXML
     public Button reduceButton;
+    @FXML
     public VBox All;
     @FXML
     private Label agentPseudo;
@@ -51,6 +50,8 @@ public class HomeInterface implements Initializable {
     private ImageView agentImg;
     @FXML
     private Button disconnectButton;
+    @FXML
+    public Button editButton;
     @FXML
     private TextField messageLabel;
     @FXML
@@ -62,26 +63,19 @@ public class HomeInterface implements Initializable {
     @FXML
     private Button sendButton;
     @FXML
-    private Button sendFile;
-    @FXML
-    private Button sendPicture;
-    @FXML
     private VBox vbox_messages;
     @FXML
-    private Label myPseudo;
+    private TextField myPseudo;
     @FXML
     private TableView<User> agentsTable;
     @FXML
     private TableColumn<User, ImageView> photoColumn;
     @FXML
     private TableColumn<User, String> pseudoColumn;
-    @FXML
-    private TableColumn<User, Integer> msgColumn;
 
     ObservableList<User> agentsList = FXCollections.observableArrayList();
     public static HomeInterface currentHomeInter;
     Integer index;
-    private SenderThread senderThread;
     Main objetMain = new Main();
 
     void disconnect (){
@@ -107,30 +101,33 @@ public class HomeInterface implements Initializable {
             @Override
             public void run() {
                 agentImg.setImage(null);
-                agentPseudo.setText("");
+                agentPseudo.setText(null);
                 vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
                 All.setDisable(true);
             }
         });
-
-
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        /* Disable conversation space */
         All.setDisable(true);
 
+        /* Connect to the database */
         connect();
+
+        /* Set the user actually connected int the App */
         currentHomeInter = this;
         User u = ConnectivityThread.getInstance().getUser();
-        myPseudo.setText("My pseudo : " + u.getPseudo());
-//        ipAddress.setText(u.getIP().getHostAddress());
-//        port.setText(String.valueOf(u.getPort()));
 
+        /* Set user information */
+        myPseudo.setText(u.getPseudo());
+
+        /* Configure active agents list */
         photoColumn.setCellValueFactory(new PropertyValueFactory<>("imgSrc"));
         pseudoColumn.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
-        msgColumn.setCellValueFactory(new PropertyValueFactory<>("incomingMsg"));
         refreshTable();
+
         agentsTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -218,6 +215,64 @@ public class HomeInterface implements Initializable {
             }
         });
 
+        parametersButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Your personal information");
+                dialog.setHeaderText("* Your full name is : "+u.getFullName()
+                        +"\n* Your address is : "+u.getIP().getHostAddress()
+                        +"\n* Your port is : "+u.getPort());
+                dialog.setGraphic(u.getImgSrc(70));
+                dialog.setContentText("If you want to change your name, please enter the new one : ");
+                ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:src/main/resources/Images/logo.png"));
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(u::setFullName);
+            }
+        });
+
+        editButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Change your pseudonym");
+                dialog.setHeaderText(null);
+                dialog.setContentText("Please enter your new pseudonym :");
+                ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:src/main/resources/Images/logo.png"));
+
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(newPseudo -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Dialog");
+                    alert.setHeaderText(null);
+                    ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:src/main/resources/Images/logo.png"));
+                    try {
+                        if (newPseudo.equals(u.getPseudo())) {
+                            alert.setContentText("You did not change your pseudonym !");
+                            alert.showAndWait();
+                        } else if (!newPseudo.contains("@") && !newPseudo.contains(":")) {
+                            if (u.modifyPseudo(myPseudo.getText())){
+                                alert.setContentText("Your pseudonym was successfully changed !\n" +
+                                        "Your new pseudonym is : "+ myPseudo.getText());
+                                alert.showAndWait();
+                                u.setPseudo(newPseudo);
+                                myPseudo.setText(newPseudo);
+                            } else {
+                                alert.setContentText("Invalid pseudonym !");
+                                alert.showAndWait();
+                            }
+                        } else {
+                            alert.setContentText("Invalid pseudonym ! You can use only letters or/and numbers.");
+                            alert.showAndWait();
+                        }
+                    } catch (IOException e) {
+                       e.printStackTrace();
+                    }
+                });
+            }
+        });
+
+        /* Search for active agent in the list */
         Search();
 //        closeConnection();
     }
@@ -299,7 +354,6 @@ public class HomeInterface implements Initializable {
         });
     }
 
-
     private void Search() {
 
         FilteredList<User> filteredData = new FilteredList<>(agentsList, b -> true);
@@ -322,39 +376,6 @@ public class HomeInterface implements Initializable {
         SortedList<User> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(agentsTable.comparatorProperty());
         agentsTable.setItems(sortedData);
-    }
-
-    private List<User> Agents() {
-        List<User> ls = new ArrayList<>();
-        User user = new User();
-
-        user.setPseudo("tata");
-        user.setImgSrc(new ImageView(new Image("file:src/main/resources/Images/person.png")));
-        user.setIncomingMsg(0);
-        ls.add(user);
-
-        user = new User();
-        user.setPseudo("titi");
-        user.setImgSrc(new ImageView(new Image("file:src/main/resources/Images/person2.png")));
-        user.setIncomingMsg(0);
-        ls.add(user);
-
-        user = new User();
-        user.setPseudo("toto");
-        user.setImgSrc(new ImageView(new Image("file:src/main/resources/Images/person1.png")));
-        user.setIncomingMsg(0);
-        ls.add(user);
-
-        user.setPseudo("tutu");
-        user.setImgSrc(new ImageView(new Image("file:src/main/resources/Images/person1.png")));
-        user.setIncomingMsg(0);
-        ls.add(user);
-
-        return ls;
-    }
-
-    public VBox getVbox_messages() {
-        return vbox_messages;
     }
 
     public String getAgentPseudo() {

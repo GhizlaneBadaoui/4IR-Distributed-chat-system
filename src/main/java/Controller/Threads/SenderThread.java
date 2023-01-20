@@ -1,10 +1,9 @@
 package Controller.Threads;
 
-import com.example.chatsystem.HomeInterface;
+import Controller.View.HomeInterface;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

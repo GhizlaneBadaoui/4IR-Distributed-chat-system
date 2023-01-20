@@ -12,15 +12,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" styleClass="dark-gray-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.chatsystem.LoginInterface">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" styleClass="dark-gray-background" stylesheets="@../../../Style/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.View.LoginInterface">
    <center>
       <HBox alignment="CENTER" prefHeight="534.0" prefWidth="800.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" prefHeight="396.0" prefWidth="380.0" spacing="4.0" styleClass="border" stylesheets="@style.css">
+            <VBox alignment="CENTER" prefHeight="396.0" prefWidth="380.0" spacing="4.0" styleClass="border" stylesheets="@../../../Style/style.css">
                <children>
                   <Label alignment="CENTER" prefHeight="50.0" prefWidth="393.0" text="Connect" textAlignment="CENTER" textFill="#85d6ca" wrapText="true">
                      <font>
-                        <Font name="Ebrima Bold" size="24.0" />
+                        <Font name="System Bold" size="24.0" />
                      </font>
                      <VBox.margin>
                         <Insets bottom="15.0" />
@@ -31,20 +31,20 @@
                         <Insets left="30.0" right="30.0" />
                      </VBox.margin>
                      <font>
-                        <Font name="Ebrima" size="12.0" />
+                        <Font size="12.0" />
                      </font>
                   </TextField>
-                  <Label fx:id="connectionError" alignment="CENTER" prefHeight="42.0" prefWidth="318.0" textFill="#d98b8b">
+                  <Label fx:id="connectionError" alignment="CENTER" prefHeight="42.0" prefWidth="318.0" text="* Use only numbers or letters *" textFill="#d98b8b">
                      <font>
-                        <Font name="Sitka Text" size="16.0" />
+                        <Font name="Sitka Text" size="13.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="40.0" />
                      </VBox.margin>
                   </Label>
-                  <Button fx:id="logInButton" mnemonicParsing="false" onAction="#LogIn" prefHeight="26.0" prefWidth="170.0" styleClass="normal-button" stylesheets="@style.css" text="Start" textFill="WHITE">
+                  <Button fx:id="logInButton" mnemonicParsing="false" onAction="#LogIn" prefHeight="26.0" prefWidth="170.0" styleClass="normal-button" stylesheets="@../../../Style/style.css" text="Start" textFill="WHITE">
                      <font>
-                        <Font name="Ebrima" size="14.0" />
+                        <Font size="14.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="20.0" />

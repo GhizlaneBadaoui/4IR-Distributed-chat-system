@@ -1,3 +1,7 @@
+;* {
+    -fx-font-family: Ebrima;
+}
+
 .dark-gray-background {
 	-fx-background-color: #46474A;
 }
@@ -70,4 +74,8 @@
 
 .table-view .column-header-background .column-header{
     -fx-background-color: white;
+}
+
+.button:pressed {
+    -fx-background-color: #219fa4;
 }

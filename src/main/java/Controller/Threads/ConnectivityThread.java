@@ -2,7 +2,6 @@ package Controller.Threads;
 
 import Controller.Protocoles.Broadcast;
 import Model.User;
-import com.example.chatsystem.HomeInterface;
 
 import java.io.IOException;
 import java.net.*;

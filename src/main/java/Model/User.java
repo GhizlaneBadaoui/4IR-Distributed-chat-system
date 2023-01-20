@@ -3,7 +3,7 @@ package Model;
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
 import Controller.Threads.ListenConnThread;
-import com.example.chatsystem.HomeInterface;
+import Controller.View.HomeInterface;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -17,9 +17,8 @@ public class User {
     private String pseudo;
     private InetAddress IP;
     private int port;
-    private String name;
-    private ImageView imgSrc;
-    private Integer incomingMsg;
+    private String fullName;
+    private ImageView imgSrc = new ImageView(new Image("file:src/main/resources/Images/person.png"));
     private static List<User> active_agents = new ArrayList<>();
 
     public User() {}
@@ -32,7 +31,6 @@ public class User {
     public User(String pseudo, InetAddress IP, int port) {
         this.pseudo = pseudo;
         this.IP = IP;
-        this.incomingMsg = 0;
         this.setImgSrc(new ImageView(new Image("file:src/main/resources/Images/person.png")));
         this.port = port;
     }
@@ -111,7 +109,7 @@ public class User {
             }
         }
     }
-    public boolean modify_pseudo(String pseudo) throws IOException {
+    public boolean modifyPseudo(String pseudo) throws IOException {
         ConnectivityThread.setFlag(true);
         if(Broadcast.getInstance().broadcasting(pseudo+"@@@!")){
             if(isPseudoChange()){
@@ -186,26 +184,24 @@ public class User {
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
-    public void setName(String name) {
-        this.name = name;
+
+    public ImageView getImgSrc(int x) {
+        imgSrc.setFitWidth(x);
+        imgSrc.setFitHeight(x);
+        return imgSrc;
     }
 
-    public ImageView getImgSrc() {
-        return imgSrc;
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public void setImgSrc(ImageView imgSrc) {
         imgSrc.setFitHeight(60);
         imgSrc.setFitWidth(60);
         this.imgSrc = imgSrc;
-
-    }
-
-    public Integer getIncomingMsg() {
-        return incomingMsg;
-    }
-
-    public void setIncomingMsg(Integer incomingMsg) {
-        this.incomingMsg = incomingMsg;
     }
 }
