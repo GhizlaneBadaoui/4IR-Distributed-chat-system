@@ -26,13 +26,16 @@ public class User {
     public User(InetAddress IP, int port) {
         this.IP = IP;
         this.port = port;
+        this.imgSrc.setFitHeight(60);
+        this.imgSrc.setFitWidth(60);
     }
 
     public User(String pseudo, InetAddress IP, int port) {
         this.pseudo = pseudo;
         this.IP = IP;
-        this.setImgSrc(imgSrc);
         this.port = port;
+        this.imgSrc.setFitHeight(60);
+        this.imgSrc.setFitWidth(60);
     }
 
     public boolean choose_pseudo(String pseudo) throws IOException {
@@ -138,12 +141,6 @@ public class User {
                 return false;
         }
     }
-    public void update_agents_list(String pseudo){
-
-    }
-    public void inform_connected_agents(String msg){
-
-    }
 
     public static synchronized User getUser(String pseudo){
         Iterator<User> iter = User.getActive_agents().stream().iterator();
@@ -185,12 +182,6 @@ public class User {
         this.pseudo = pseudo;
     }
 
-    public ImageView getImgSrcWithSize(int x) {
-        imgSrc.setFitWidth(x);
-        imgSrc.setFitHeight(x);
-        return imgSrc;
-    }
-
     public ImageView getImgSrc() {
         return imgSrc;
     }
@@ -201,11 +192,5 @@ public class User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public void setImgSrc(ImageView imgSrc) {
-        imgSrc.setFitHeight(60);
-        imgSrc.setFitWidth(60);
-        this.imgSrc = imgSrc;
     }
 }

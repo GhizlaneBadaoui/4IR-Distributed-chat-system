@@ -120,10 +120,9 @@ public class HomeInterface implements Initializable {
 
         /* Set the user actually connected int the App */
         currentHomeInter = this;
-        User u = ConnectivityThread.getInstance().getUser();
 
         /* Set user information */
-        myPseudo.setText(u.getPseudo());
+        myPseudo.setText(ConnectivityThread.getInstance().getUser().getPseudo());
 
         /* Configure active agents list */
         photoColumn.setCellValueFactory(new PropertyValueFactory<>("imgSrc"));
@@ -222,14 +221,15 @@ public class HomeInterface implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setTitle("Your personal information");
-                dialog.setHeaderText("* Your full name is : "+u.getFullName()
-                        +"\n* Your address is : "+u.getIP().getHostAddress()
-                        +"\n* Your port is : "+u.getPort());
-                dialog.setGraphic(u.getImgSrcWithSize(70));
+                dialog.setHeaderText("* Your full name is : "+ConnectivityThread.getInstance().getUser().getFullName()
+                        +"\n* Your pseudo is : "+ConnectivityThread.getInstance().getUser().getPseudo()
+                        +"\n* Your address is : "+ConnectivityThread.getInstance().getUser().getIP().getHostAddress()
+                        +"\n* Your port is : "+ConnectivityThread.getInstance().getUser().getPort());
+                dialog.setGraphic(ConnectivityThread.getInstance().getUser().getImgSrc());
                 dialog.setContentText("If you want to change your name, please enter the new one : ");
                 ((Stage) dialog.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:src/main/resources/Images/logo.png"));
                 Optional<String> result = dialog.showAndWait();
-                result.ifPresent(u::setFullName);
+                result.ifPresent(ConnectivityThread.getInstance().getUser()::setFullName);
             }
         });
 
@@ -249,15 +249,15 @@ public class HomeInterface implements Initializable {
                     alert.setHeaderText(null);
                     ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:src/main/resources/Images/logo.png"));
                     try {
-                        if (newPseudo.equals(u.getPseudo())) {
+                        if (newPseudo.equals(ConnectivityThread.getInstance().getUser().getPseudo())) {
                             alert.setContentText("You did not change your pseudonym !");
                             alert.showAndWait();
                         } else if (!newPseudo.contains("@") && !newPseudo.contains(":")) {
-                            if (u.modifyPseudo(myPseudo.getText())){
+                            if (ConnectivityThread.getInstance().getUser().modifyPseudo(myPseudo.getText())){
                                 alert.setContentText("Your pseudonym was successfully changed !\n" +
                                         "Your new pseudonym is : "+ myPseudo.getText());
                                 alert.showAndWait();
-                                u.setPseudo(newPseudo);
+                                //ConnectivityThread.getInstance().getUser().setPseudo(newPseudo);
                                 myPseudo.setText(newPseudo);
                             } else {
                                 alert.setContentText("Invalid pseudonym !");
