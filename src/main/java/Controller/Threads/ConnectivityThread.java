@@ -1,10 +1,14 @@
 package Controller.Threads;
 
+import Controller.Database.Operations;
 import Controller.Protocoles.Broadcast;
 import Model.User;
+import View.HomeInterface;
 
 import java.io.IOException;
 import java.net.*;
+
+import static Controller.Database.Operations.modifyPseudo;
 
 public class ConnectivityThread extends Thread{
     private static volatile boolean flag = false;
@@ -72,7 +76,11 @@ public class ConnectivityThread extends Thread{
                     data = new String(packet_rec.getData()).trim();
                     System.out.println("data = " + packet_rec.getData().length);
                     if(data.contains("_#@") && data.contains("new")){
-                        System.out.println(data.substring(data.indexOf("=")+1, data.indexOf("@"))+" ------- "+data.substring(data.indexOf("new")+3));
+                        String oldps = data.substring(data.indexOf("=")+2, data.indexOf("@"));
+                        String newps = data.substring(data.indexOf("new")+6);
+                        modifyPseudo(oldps,newps);
+                        User.AgentModifyPseudo(oldps,newps);
+                        HomeInterface.currentHomeInter.refreshTable();
                     }
                     else if(data.contains("@@@!") && data.contains("pseudo")){
                             if (data.substring(data.indexOf("=")+1, data.indexOf("@")).equals(user.getPseudo()))

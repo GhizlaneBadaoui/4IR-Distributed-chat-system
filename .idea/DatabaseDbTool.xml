@@ -64,6 +64,27 @@
                         <option name="columns">
                           <list>
                             <ColumnSourceDto>
+                              <option name="columnName" value="pseudoID" />
+                              <option name="pk" value="true" />
+                              <option name="tableName" value="pseudos" />
+                              <option name="typeName" value="INTEGER" />
+                            </ColumnSourceDto>
+                            <ColumnSourceDto>
+                              <option name="columnName" value="unPseudo" />
+                              <option name="tableName" value="pseudos" />
+                              <option name="typeName" value="TEXT" />
+                            </ColumnSourceDto>
+                          </list>
+                        </option>
+                        <option name="databaseType" value="Sqlite" />
+                        <option name="schema" value="main" />
+                        <option name="tableName" value="pseudos" />
+                        <option name="tableType" value="table" />
+                      </TableSourceDto>
+                      <TableSourceDto>
+                        <option name="columns">
+                          <list>
+                            <ColumnSourceDto>
                               <option name="columnName" value="messageID" />
                               <option name="pk" value="true" />
                               <option name="tableName" value="messages" />
@@ -88,7 +109,7 @@
                             <ColumnSourceDto>
                               <option name="columnName" value="pseudo" />
                               <option name="tableName" value="messages" />
-                              <option name="typeName" value="TEXT" />
+                              <option name="typeName" value="INTEGER" />
                             </ColumnSourceDto>
                           </list>
                         </option>

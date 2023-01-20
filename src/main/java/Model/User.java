@@ -124,7 +124,6 @@ public class User {
         }
         return true;
     }
-
     private boolean isPseudoChange() {
         DatagramPacket packet = new DatagramPacket(new byte[1000],1000);
         while (true) {
@@ -157,6 +156,16 @@ public class User {
         System.out.println("all users are deleted : "+active_agents.size());
     }
 
+    public static void AgentModifyPseudo(String oldPseudo, String newPseudo) {
+        Iterator<User> iter = User.active_agents.stream().iterator();
+        while (iter.hasNext()) {
+            User user = iter.next();
+            if (user.getPseudo().equals(oldPseudo)) {
+                user.setPseudo(newPseudo);
+                System.out.println("agent's pseudo has changed");
+            }
+        }
+    }
     public static List<User> getActive_agents() {
         return active_agents;
     }

@@ -16,6 +16,7 @@ public class Operations{
     static ResultSet rst;
 
     static String tableName = "messages";
+    static String tableNameSec = "pseudos";
 
     /* Check if the database is connected with the code */
     public static void connect() {
@@ -32,16 +33,23 @@ public class Operations{
     /* Initiate the database */
     public static void initiate() {
         try {
-            String query = "CREATE TABLE messages" +
-                    " (messageID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                    " content BLOB NOT NULL," +
-                    " date TEXT NOT NULL," +
-                    " operation TEXT CHECK( operation IN ('R','S') ) NOT NULL DEFAULT 'R'," +
-                    " pseudo TEXT NOT NULL)";
+            String query = "CREATE TABLE pseudos" +
+                    " (pseudoID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    " unPseudo TEXT NOT NULL)";
 
             st = cnx.createStatement();
             st.executeUpdate(query);
 
+            query = "CREATE TABLE messages" +
+                    " (messageID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    " content BLOB NOT NULL," +
+                    " date TEXT NOT NULL," +
+                    " operation TEXT CHECK( operation IN ('R','S') ) NOT NULL DEFAULT 'R'," +
+                    " pseudo INTEGER NOT NULL," +
+                    " FOREIGN KEY(pseudo) REFERENCES pseudos(pseudoID))";
+
+            st = cnx.createStatement();
+            st.executeUpdate(query);
             System.out.println("\n--> DB is initiated  !\n");
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -86,7 +94,7 @@ public class Operations{
     public static void modifyPseudo(String oldPseudo, String newPseudo) {
         try {
             st = cnx.createStatement();
-            rst = st.executeQuery("UPDATE '"+ tableName +"' SET pseudo = '"+ newPseudo +"' WHERE pseudo ='"+oldPseudo);
+            st.executeUpdate("UPDATE '"+ tableName +"' SET pseudo = '"+ newPseudo +"' WHERE pseudo ='"+oldPseudo+"'");
             System.out.println("\n--> An element was updated to "+newPseudo+" !\n");
         } catch(Exception ex) { ex.printStackTrace();}
     }
@@ -97,7 +105,7 @@ public class Operations{
 
         try {
             String query = "INSERT INTO "+ tableName +" (content, date, operation, pseudo) "+
-                    "VALUES ('"+ content +"','"+ date +"','"+ operation +"', '"+ pseudo +"');";
+                    "VALUES ('"+ content +"','"+ date +"','"+ operation +"', (SELECT pseudoID FROM '"+ tableNameSec +"' WHERE unPseudo = '"+pseudo+"'));";
             st = cnx.createStatement();
             st.executeUpdate(query);
             System.out.println("\n--> An element ( msg = "+ content +") is added to the DB  !\n");
@@ -106,6 +114,17 @@ public class Operations{
         }
     }
 
+    public static void addPseudo(String pseudo){
+        try {
+            String query = "INSERT INTO "+ tableNameSec +" (unPseudo) "+
+                    "VALUES ('"+ pseudo +"');";
+            st = cnx.createStatement();
+            st.executeUpdate(query);
+            System.out.println("\n--> An element ( pseudo = "+ pseudo +") was added to the DB  !\n");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     /* Delete an element in a DB table */
     public static void delete (int messageID){

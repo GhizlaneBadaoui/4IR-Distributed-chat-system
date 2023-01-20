@@ -253,9 +253,9 @@ public class HomeInterface implements Initializable {
                             alert.setContentText("You did not change your pseudonym !");
                             alert.showAndWait();
                         } else if (!newPseudo.contains("@") && !newPseudo.contains(":")) {
-                            if (ConnectivityThread.getInstance().getUser().modifyPseudo(myPseudo.getText())){
+                            if (ConnectivityThread.getInstance().getUser().modifyPseudo(newPseudo)){
                                 alert.setContentText("Your pseudonym was successfully changed !\n" +
-                                        "Your new pseudonym is : "+ myPseudo.getText());
+                                        "Your new pseudonym is : "+ newPseudo);
                                 alert.showAndWait();
                                 ConnectivityThread.getInstance().getUser().setPseudo(newPseudo);
                                 myPseudo.setText(newPseudo);
