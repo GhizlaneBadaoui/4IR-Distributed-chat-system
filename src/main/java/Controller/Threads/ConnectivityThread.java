@@ -87,7 +87,7 @@ public class ConnectivityThread extends Thread{
                             if (data.substring(data.indexOf("=")+1, data.indexOf("@")).equals(user.getPseudo()))
                                 packet_send.setData("no".getBytes());
                             else
-                                packet_send.setData(("ok id = "+this.user.getDbID()).getBytes());
+                                packet_send.setData("ok".getBytes());
                     }
                     else if (data.contains("@deconnection@") && data.contains("pseudo")) {
                             System.out.println("deconnection : pseudo = "+data.substring(9,data.indexOf("@")));
@@ -100,7 +100,7 @@ public class ConnectivityThread extends Thread{
                                 connectivity_sock.send(packet_send);
                             } else {
                                 System.out.println("msg rec 2 : " + data);
-                                packet_send.setData(("ok" +this.user.getPort() + ":" + this.user.getPseudo()).getBytes());
+                                packet_send.setData(("ok" +this.user.getPort() + ":" + this.user.getPseudo()+"@id = "+this.user.getDbID()).getBytes());
                                 connectivity_sock.send(packet_send);
                             }
                     }

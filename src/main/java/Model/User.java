@@ -64,7 +64,9 @@ public class User {
                 if(!resp.contains("no") && resp.contains("ok")){
                     System.out.println("port numer = "+Integer.parseInt(resp.substring(2,resp.indexOf(':'))));
                     int _id = Integer.parseInt(resp.substring(resp.indexOf('=')+2));
-                    this.active_agents.add(new User(resp.substring(resp.indexOf(':')+1),packet.getAddress(), Integer.parseInt(resp.substring(2,resp.indexOf(':'))),_id));
+                    String ps = resp.substring(resp.indexOf(':') + 1, resp.indexOf('@'));
+                    System.out.println("id reçu from "+ ps +" is "+_id);
+                    this.active_agents.add(new User(ps,packet.getAddress(), Integer.parseInt(resp.substring(2,resp.indexOf(':'))),_id));
                     System.out.println("port number 2 = "+active_agents.get(0).getPort());
                     System.out.println("agents number = "+this.active_agents.size());
                 }
