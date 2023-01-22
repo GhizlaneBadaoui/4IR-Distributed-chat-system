@@ -1,5 +1,6 @@
 package Controller.Threads;
 
+import Controller.Database.Operations;
 import Controller.Protocoles.Broadcast;
 import Model.User;
 import Controller.Interfaces.HomeInterface;
@@ -70,7 +71,9 @@ public class ConnectivityThread extends Thread{
         while (true){
             while (flag);
             try {
+                System.out.println("hello there from connectivity");
                 connectivity_sock.receive(packet_rec);
+                System.out.println("recivedSSS");
                 if (!packet_rec.getAddress().equals(InetAddress.getLocalHost())) {
                     set_packet_info();
                     data = new String(packet_rec.getData()).trim();
@@ -108,7 +111,8 @@ public class ConnectivityThread extends Thread{
                             String pseu = data.substring(data.indexOf('=') + 2, data.indexOf("@"));
                             int id = Integer.parseInt(data.substring(data.indexOf("@id@")+7));
                             user.add_user(new User(pseu, packet_rec.getAddress(), Integer.parseInt(data.substring(data.indexOf(':') + 1,data.indexOf('-'))),id));
-                            addPseudo(pseu,id);
+                            if(!Operations.exist(id))
+                                addPseudo(pseu,id);
                             System.out.println("agents : " + User.getActive_agents().size());
                     }
                     packet_send.setData(new byte[1000]);

@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.Database.Operations;
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
 import Controller.Threads.ListenConnThread;
@@ -70,11 +71,18 @@ public class User {
                     String ps = resp.substring(resp.indexOf(':') + 1, resp.indexOf('@'));
                     System.out.println("id reçu from "+ ps +" is "+_id);
                     this.active_agents.add(new User(ps,packet.getAddress(), Integer.parseInt(resp.substring(2,resp.indexOf(':'))),_id));
+                    Operations.addPseudo(ps,_id);
                     System.out.println("port number 2 = "+active_agents.get(0).getPort());
                     System.out.println("agents number = "+this.active_agents.size());
                 }
                 else{
                     System.out.println("in else bloc");
+                    if(active_agents.size() > 0){
+                        Iterator<User> iter = User.getActive_agents().stream().iterator();
+                        while (iter.hasNext()){
+                            Operations.deleteAgent(iter.next().dbID);
+                        }
+                    }
                     this.active_agents.clear();
                     return false;
                 }

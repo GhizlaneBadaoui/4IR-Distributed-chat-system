@@ -119,6 +119,7 @@ public class HomeInterface implements Initializable {
             if (tab.isEmpty()) {
                 return;
             }
+            vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
             for (String[] element : tab) {
                 if (element[2].equals("R")) {
                     addLabelForIncomingMessage(element[0], element[1], vbox_messages);
