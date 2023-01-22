@@ -115,7 +115,11 @@ public class HomeInterface implements Initializable {
 
     public void refreshConversation(String pseudo, int id) {
         if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
+            vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
             List<String[]> tab = displayMessagesWithAgent(id);
+            if (tab.isEmpty()) {
+                return;
+            }
             for (String[] element : tab) {
                 if (element[2].equals("R")) {
                     addLabelForIncomingMessage(element[0], element[1], vbox_messages);
@@ -152,7 +156,6 @@ public class HomeInterface implements Initializable {
                 index = agentsTable.getSelectionModel().getSelectedIndex();
                 if (index>-1) {
                     All.setDisable(false);
-                    vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
                     agentPseudo.setText(pseudoColumn.getCellData(index));
                     agentImg.setImage(photoColumn.getCellData(index).getImage());
                     refreshConversation(pseudoColumn.getCellData(index), getUser(pseudoColumn.getCellData(index)).getDbID());
@@ -312,7 +315,7 @@ public class HomeInterface implements Initializable {
 
         Label dateLabel = new Label(date);
         dateLabel.setPadding(new Insets(5, 5, 5, 5));
-        dateLabel.setStyle("-fx-font-size: 12px;");
+        dateLabel.setStyle("-fx-font-size: 10px;");
         dateLabel.setStyle("-fx-text-fill: #636566;");
 
         Text text = new Text((String) msg);
@@ -346,7 +349,7 @@ public class HomeInterface implements Initializable {
 
         Label dateLabel = new Label(date);
         dateLabel.setPadding(new Insets(5, 5, 5, 5));
-        dateLabel.setStyle("-fx-font-size: 12px;");
+        dateLabel.setStyle("-fx-font-size: 10px;");
         dateLabel.setStyle("-fx-text-fill: #636566;");
 
         Text text = new Text((String) msg);
