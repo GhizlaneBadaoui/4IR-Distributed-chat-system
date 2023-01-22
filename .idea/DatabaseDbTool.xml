@@ -32,7 +32,7 @@
               <option name="driverCombos" value="thin" />
               <option name="driverType" value="SQLite" />
               <option name="host" value="localhost" />
-              <option name="jarUrl" value="C:\Users\badaou\AppData\Roaming\JetBrains\IdeaIC2022.3\jdbc-drivers\Xerial SQLiteJDBC\3.39.2\sqlite-jdbc-3.39.2.jar" />
+              <option name="jarUrl" value="C:\Users\ghizl\AppData\Roaming\JetBrains\IdeaIC2022.2\jdbc-drivers\Xerial SQLiteJDBC\3.39.2\sqlite-jdbc-3.39.2.jar" />
               <option name="myUniqueId" value="a76954e8-dad0-41dc-89d1-bc3207caacc1" />
               <option name="port" value="3306" />
               <option name="schemaSourceDto">

@@ -3,7 +3,7 @@ package Model;
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
 import Controller.Threads.ListenConnThread;
-import View.HomeInterface;
+import Controller.Interfaces.HomeInterface;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -18,11 +18,14 @@ public class User {
     private String pseudo;
     private InetAddress IP;
     private int port;
-    private String fullName;
+    private String fullName = "";
     private ImageView imgSrc = new ImageView(new Image("file:src/main/resources/Images/person.png"));
     private static List<User> active_agents = new ArrayList<>();
 
-    public User() {}
+    public User() {
+        this.imgSrc.setFitHeight(60);
+        this.imgSrc.setFitWidth(60);
+    }
 
     public User(InetAddress IP, int port) {
         this.IP = IP;

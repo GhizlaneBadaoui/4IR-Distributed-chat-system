@@ -1,51 +1,40 @@
+/**************** ALL ****************/
 ;* {
-    -fx-font-family: Ebrima;
+    -fx-font-family: "Ebrima";
 }
 
+/**************** Style of BACKGROUNDS ****************/
 .dark-gray-background {
 	-fx-background-color: #46474A;
 }
-
 .light-gray-background {
 	-fx-background-color: #DADADA;
 }
-
 .gray-background {
 	-fx-background-color: #636566;
 }
-
 .transparent-background {
 	-fx-background-color: rgba(0,0,0,0);
 }
 
-.radius {
-	-fx-background-radius: 100px;
-}
-
-
+/**************** Style of BUTTONS ****************/
 .normal-button {
 	-fx-background-color: #85d6ca;
 	-fx-background-radius: 20px;
 }
-
 .transparent-button {
 	-fx-background-color: rgba(0,0,0,0);
 	-fx-background-radius: 20px;
 }
-
-.border {
-	-fx-border-color: #DADADA;
-	-fx-border-radius: 15px;
-	-fx-border-width: 0.3px;
+.button:pressed {
+    -fx-background-color: #219fa4;
 }
 
-/* The scrollbar **track** */
+/**************** Style of SCROLLBARS ****************/
 .scroll-bar:vertical .track{
 	-fx-background-color: #DADADA;
 	-fx-border-color: #DADADA;
 }
-
-/* The scrollbar **The increment and decrement button** */
 .scroll-bar:vertical .increment-button ,
 .scroll-bar:vertical .decrement-button {
     -fx-background-color:transparent;
@@ -55,27 +44,40 @@
 .scroll-bar .decrement-arrow {
 	-fx-padding:0;
 }
-
-/* The scrollbar **thumb** */
 .scroll-bar:vertical .thumb {
     -fx-background-color:derive(black,90%);
 	-fx-background-insets: 4, 0, 0;
 	-fx-background-radius: 1em;
 }
 
+/**************** Style of TABLEVIEW ****************/
 .table-view {
-    -fx-base: white;
-    -fx-control-inner-background: white;
     -fx-background-color: white;
     -fx-table-cell-border-color: transparent;
-    -fx-table-header-border-color: transparent;
-    -fx-padding: 5;
 }
-
-.table-view .column-header-background .column-header{
+.column-header{
     -fx-background-color: white;
 }
-
-.button:pressed {
-    -fx-background-color: #219fa4;
+.table-row-cell:selected {
+    -fx-background-color: #E1EBE9;
+    -fx-table-cell-border-color: transparent;
 }
+.table-view .table-cell{
+    -fx-padding: 2 0 2 10px;
+    -fx-font-size: 14pt;
+    -fx-text-fill: #46474A;
+}
+.table-view .table-column{
+    -fx-alignment: center-left;
+}
+
+/**************** OTHERS ****************/
+.radius {
+	-fx-background-radius: 100px;
+}
+.border {
+	-fx-border-color: #DADADA;
+	-fx-border-radius: 15px;
+	-fx-border-width: 0.3px;
+}
+

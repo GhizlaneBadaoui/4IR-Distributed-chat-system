@@ -1,11 +1,8 @@
 package Controller.Database;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +32,7 @@ public class Operations{
         try {
             String query = "CREATE TABLE pseudos" +
                     " (pseudoID INTEGER NOT NULL PRIMARY KEY," +
-                    " unPseudo TEXT NOT NULL," +
-                    " UNIQUE(pseudoID))";
+                    " unPseudo TEXT NOT NULL)";
 
             st = cnx.createStatement();
             st.executeUpdate(query);
@@ -96,7 +92,7 @@ public class Operations{
     public static void modifyPseudo(int id, String newPseudo) {
         try {
             st = cnx.createStatement();
-            rst = st.executeQuery("UPDATE '"+ tableNameSec +"' SET unPseudo = '"+ newPseudo +"' WHERE pseudoID ='"+id);
+            rst = st.executeQuery("UPDATE '"+ tableNameSec +"' SET unPseudo = '"+ newPseudo +"' WHERE pseudoID ="+id+");");
             System.out.println("\n--> An element was updated to "+newPseudo+" !\n");
         } catch(Exception ex) { ex.printStackTrace();}
     }
@@ -107,7 +103,7 @@ public class Operations{
 
         try {
             String query = "INSERT INTO "+ tableName +" (content, date, operation, id) "+
-                    "VALUES ('"+ content +"','"+ date +"','"+ operation +",'"+ id +"');";
+                    "VALUES ('"+ content +"','"+ date +"','"+ operation +"',"+ id +");";
             st = cnx.createStatement();
             st.executeUpdate(query);
             System.out.println("\n--> An element ( msg = "+ content +") is added to the DB  !\n");
@@ -119,7 +115,7 @@ public class Operations{
     public static int addPseudo(String pseudo, int id){
         try {
             String query = "INSERT INTO "+ tableNameSec +" (pseudoID, unPseudo) "+
-                    "VALUES ('"+ id +"','"+ pseudo +"');";
+                    "VALUES ("+ id +",'"+ pseudo +"');";
             st = cnx.createStatement();
             st.executeUpdate(query);
             System.out.println("\n--> An element ( pseudo = "+ pseudo +") was added to the DB  !\n");

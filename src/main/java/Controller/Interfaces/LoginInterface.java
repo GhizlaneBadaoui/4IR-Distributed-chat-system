@@ -1,4 +1,4 @@
-package View;
+package Controller.Interfaces;
 
 import Model.User;
 import com.example.chatsystem.Main;
@@ -36,7 +36,7 @@ public class LoginInterface {
                 connectionError.setText("Enter your pseudonym and your id, use only numbers or letters for pseudonym and only numbers for id.");
             } else {
                 if (pseudoLabel.getText().contains("@") || pseudoLabel.getText().contains(":")) {
-                    connectionError.setText("Attention : use only numbers or letters ! ");
+                    connectionError.setText("Attention : use only numbers or letters for the pseudonym ! ");
                 } else {
                     try {
                         int id = Integer.parseInt(idLabel.getText());
@@ -50,7 +50,7 @@ public class LoginInterface {
                             connectionError.setText("This pseudo already exists, choose another one.");
                         }
                     } catch (NumberFormatException e){
-                        connectionError.setText("id must be a number !");
+                        connectionError.setText("Attention : your id must be a number !");
                     }
 
                 }

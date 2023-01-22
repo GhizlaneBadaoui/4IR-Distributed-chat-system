@@ -1,9 +1,8 @@
 package Controller.Threads;
 
-import Controller.Database.Operations;
 import Controller.Protocoles.Broadcast;
 import Model.User;
-import View.HomeInterface;
+import Controller.Interfaces.HomeInterface;
 
 import java.io.IOException;
 import java.net.*;

@@ -6,9 +6,9 @@ module com.example.chatsystem {
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
 
-    opens View to javafx.fxml;
+    opens Controller.Interfaces to javafx.fxml;
     opens Model to javafx.fxml;
-    exports com.example.chatsystem;
     exports Model;
-    exports View;
+    exports Controller.Interfaces;
+    exports com.example.chatsystem;
 }

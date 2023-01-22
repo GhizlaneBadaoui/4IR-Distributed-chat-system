@@ -1,10 +1,9 @@
-package View;
+package Controller.Interfaces;
 
 import Controller.Threads.*;
 import Model.User;
 import com.example.chatsystem.Main;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -19,6 +18,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,13 +33,13 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static Controller.Database.Operations.connect;
 import static Controller.Database.Operations.displayMessagesWithAgent;
+import static com.example.chatsystem.Main.stage;
 
 public class HomeInterface implements Initializable {
     @FXML
@@ -77,7 +77,7 @@ public class HomeInterface implements Initializable {
 
     ObservableList<User> agentsList = FXCollections.observableArrayList();
     public static HomeInterface currentHomeInter;
-    Integer index;
+    int index = -1;
     Main objetMain = new Main();
 
     void disconnect (){
@@ -105,6 +105,8 @@ public class HomeInterface implements Initializable {
                 agentImg.setImage(null);
                 agentPseudo.setText(null);
                 vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
+                agentsTable.getSelectionModel().clearSelection();
+                index = -1;
                 All.setDisable(true);
             }
         });
@@ -134,14 +136,20 @@ public class HomeInterface implements Initializable {
             public void handle(MouseEvent mouseEvent) {
                 index = agentsTable.getSelectionModel().getSelectedIndex();
                 if (index>-1) {
-                    if (All.isDisable()) {
-                        All.setDisable(false);
-                    } else {
-                        vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
-                    }
-                    setConversationData();
+                    All.setDisable(false);
+                    vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
+                    agentPseudo.setText(pseudoColumn.getCellData(index));
+                    agentImg.setImage(photoColumn.getCellData(index).getImage());
+                    refreshConversation(pseudoColumn.getCellData(index));
                 }
             }
+        });
+
+        agentsTable.skinProperty().addListener((obsVal, oldSkin, newSkin) -> {
+            TableHeaderRow header = (TableHeaderRow) agentsTable.lookup("TableHeaderRow");
+            header.reorderingProperty()
+                    .addListener((obs, oldVal, newVal) -> header.setReordering(false));
+
         });
 
         vbox_messages.heightProperty().addListener(new ChangeListener<Number>() {
@@ -207,7 +215,7 @@ public class HomeInterface implements Initializable {
             }
         });
 
-        Main.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t) {
                 disconnect();
@@ -278,22 +286,21 @@ public class HomeInterface implements Initializable {
         Search();
 //        closeConnection();
     }
-    public void setConversationData() {
-        agentPseudo.setText(pseudoColumn.getCellData(index));
-        agentImg.setImage(photoColumn.getCellData(index).getImage());
-
-        List<String[]> tab = displayMessagesWithAgent(pseudoColumn.getCellData(index).toString());
-        for (String[] element : tab) {
-            if (element[2].equals("R")) {
-                addLabelForIncomingMessage(element[0], element[1], vbox_messages);
-            }
-            if (element[2].equals("S")) {
-                addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
+    public void refreshConversation(String pseudo) {
+        if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
+            List<String[]> tab = displayMessagesWithAgent(pseudo);
+            for (String[] element : tab) {
+                if (element[2].equals("R")) {
+                    addLabelForIncomingMessage(element[0], element[1], vbox_messages);
+                }
+                if (element[2].equals("S")) {
+                    addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
+                }
             }
         }
     }
 
-    public static void addLabelForIncomingMessage(Object msg, String date, VBox vbox) {
+    public void addLabelForIncomingMessage(Object msg, String date, VBox vbox) {
         VBox primaryVbox = new VBox();
         primaryVbox.setAlignment(Pos.CENTER_LEFT);
 
@@ -323,7 +330,7 @@ public class HomeInterface implements Initializable {
         });
     }
 
-    public static void addLabelForOutgoingMessage(Object msg, String date, VBox vbox) {
+    public void addLabelForOutgoingMessage(Object msg, String date, VBox vbox) {
         VBox primaryVbox = new VBox();
         primaryVbox.setAlignment(Pos.CENTER_RIGHT);
 
