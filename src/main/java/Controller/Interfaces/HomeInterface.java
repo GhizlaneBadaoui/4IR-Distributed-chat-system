@@ -39,6 +39,7 @@ import java.util.ResourceBundle;
 
 import static Controller.Database.Operations.connect;
 import static Controller.Database.Operations.displayMessagesWithAgent;
+import static Model.User.getUser;
 import static com.example.chatsystem.Main.stage;
 
 public class HomeInterface implements Initializable {
@@ -112,6 +113,20 @@ public class HomeInterface implements Initializable {
         });
     }
 
+    public void refreshConversation(String pseudo, int id) {
+        if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
+            List<String[]> tab = displayMessagesWithAgent(id);
+            for (String[] element : tab) {
+                if (element[2].equals("R")) {
+                    addLabelForIncomingMessage(element[0], element[1], vbox_messages);
+                }
+                if (element[2].equals("S")) {
+                    addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
+                }
+            }
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         /* Disable conversation space */
@@ -140,7 +155,7 @@ public class HomeInterface implements Initializable {
                     vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
                     agentPseudo.setText(pseudoColumn.getCellData(index));
                     agentImg.setImage(photoColumn.getCellData(index).getImage());
-                    refreshConversation(pseudoColumn.getCellData(index));
+                    refreshConversation(pseudoColumn.getCellData(index), getUser(pseudoColumn.getCellData(index)).getDbID());
                 }
             }
         });
@@ -286,19 +301,6 @@ public class HomeInterface implements Initializable {
         Search();
 //        closeConnection();
     }
-    public void refreshConversation(String pseudo) {
-        if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
-            List<String[]> tab = displayMessagesWithAgent(pseudo);
-            for (String[] element : tab) {
-                if (element[2].equals("R")) {
-                    addLabelForIncomingMessage(element[0], element[1], vbox_messages);
-                }
-                if (element[2].equals("S")) {
-                    addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
-                }
-            }
-        }
-    }
 
     public void addLabelForIncomingMessage(Object msg, String date, VBox vbox) {
         VBox primaryVbox = new VBox();
@@ -310,12 +312,16 @@ public class HomeInterface implements Initializable {
 
         Label dateLabel = new Label(date);
         dateLabel.setPadding(new Insets(5, 5, 5, 5));
+        dateLabel.setStyle("-fx-font-size: 12px;");
+        dateLabel.setStyle("-fx-text-fill: #636566;");
 
         Text text = new Text((String) msg);
         text.setStyle("-fx-font-size: 15px;");
         TextFlow textflow = new TextFlow(text);
+
         textflow.setStyle("-fx-background-color: #85D6CA ;" +
                 "-fx-background-radius: 0 20 20 20 ;");
+
         textflow.setPadding(new Insets(5, 10, 5, 10));
 
         hbox.getChildren().add(textflow);
@@ -340,6 +346,8 @@ public class HomeInterface implements Initializable {
 
         Label dateLabel = new Label(date);
         dateLabel.setPadding(new Insets(5, 5, 5, 5));
+        dateLabel.setStyle("-fx-font-size: 12px;");
+        dateLabel.setStyle("-fx-text-fill: #636566;");
 
         Text text = new Text((String) msg);
         text.setStyle("-fx-font-size: 15px;");

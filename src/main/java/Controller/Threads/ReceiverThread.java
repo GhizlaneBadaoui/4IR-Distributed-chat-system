@@ -1,6 +1,5 @@
 package Controller.Threads;
 
-import Model.User;
 import Controller.Interfaces.HomeInterface;
 
 import java.io.*;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Controller.Database.Operations.add;
+import static Model.User.getUser;
 
 public class ReceiverThread extends Thread{
     private Socket sock;
@@ -38,8 +38,8 @@ public class ReceiverThread extends Thread{
                 String msg = bufferedReader.readLine();
                 System.out.println(pseudo+"sended the following msg : "+msg);
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                add(msg, dtf.format(LocalDateTime.now()), 'R', User.getUser(pseudo).getDbID());
-                HomeInterface.currentHomeInter.refreshConversation(pseudo);
+                add(msg, dtf.format(LocalDateTime.now()), 'R', getUser(pseudo).getDbID());
+                HomeInterface.currentHomeInter.refreshConversation(pseudo, getUser(pseudo).getDbID());
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error receiving message from the client");

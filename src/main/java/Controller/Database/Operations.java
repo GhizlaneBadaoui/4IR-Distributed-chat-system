@@ -2,6 +2,7 @@ package Controller.Database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,11 +76,11 @@ public class Operations{
     }
 
 
-    public static List<String[]> displayMessagesWithAgent(String agentPseudo){
+    public static List<String[]> displayMessagesWithAgent(int agentID){
         List<String[]> tab = new ArrayList<>();
         try {
             st = cnx.createStatement();
-            rst = st.executeQuery("SELECT * FROM '"+ tableName +"' where id = (SELECT pseudoID FROM '"+ tableNameSec +"' WHERE unPseudo = '"+agentPseudo+"') order by messageID");
+            rst = st.executeQuery("SELECT * FROM '"+ tableName +"' where id = "+ agentID +" order by messageID;");
             while (rst.next()) {
                 tab.add(new String[]{rst.getString("content"), rst.getString("date"), rst.getString("operation")});
             }
@@ -88,11 +89,23 @@ public class Operations{
         return tab;
     }
 
+    public static boolean exist(int id) {
+        try {
+            String query = "SELECT EXISTS(SELECT 1 FROM '" + tableNameSec + "' WHERE pseudoID=" + id + ");";
+            st = cnx.createStatement();
+            rst = st.executeQuery(query);
+            return Integer.parseInt(rst.toString()) == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public static void modifyPseudo(int id, String newPseudo) {
         try {
+            String query = "UPDATE '"+ tableNameSec +"' SET unPseudo = '"+ newPseudo +"' WHERE pseudoID ="+id+";";
             st = cnx.createStatement();
-            rst = st.executeQuery("UPDATE '"+ tableNameSec +"' SET unPseudo = '"+ newPseudo +"' WHERE pseudoID ="+id+");");
+            rst = st.executeQuery(query);
             System.out.println("\n--> An element was updated to "+newPseudo+" !\n");
         } catch(Exception ex) { ex.printStackTrace();}
     }
@@ -112,7 +125,7 @@ public class Operations{
         }
     }
 
-    public static int addPseudo(String pseudo, int id){
+    public static void addPseudo(String pseudo, int id){
         try {
             String query = "INSERT INTO "+ tableNameSec +" (pseudoID, unPseudo) "+
                     "VALUES ("+ id +",'"+ pseudo +"');";
@@ -122,18 +135,16 @@ public class Operations{
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return 0;
     }
 
     /* Delete an element in a DB table */
-    public static void delete (int messageID){
-
+    public static void deleteAgent (int id){
         try {
             cnx = Connexion.getConnection();
-            String query = "DELETE FROM "+ tableName +" WHERE (messageID = '"+ messageID +"')";
+            String query = "DELETE FROM "+ tableNameSec +" WHERE pseudoID = "+ id +";";
             st = cnx.createStatement();
             st.executeUpdate(query);
-            System.out.println("\n--> An element is deleted in the DB !\n");
+            System.out.println("\n--> An element (id = "+ id +") was deleted in the DB !\n");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

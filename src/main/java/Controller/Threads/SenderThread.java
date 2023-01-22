@@ -1,14 +1,16 @@
 package Controller.Threads;
 
-import Model.User;
 import Controller.Interfaces.HomeInterface;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static Controller.Database.Operations.add;
+import static Model.User.getUser;
 
 public class SenderThread extends Thread{
     private Socket sock;
@@ -32,8 +34,8 @@ public class SenderThread extends Thread{
                 bufferedWriter.flush();
                 System.out.println("msg send to user");
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                add(msg, dtf.format(LocalDateTime.now()), 'S', User.getUser(pseudo).getDbID());
-                HomeInterface.currentHomeInter.refreshConversation(pseudo);
+                add(msg, dtf.format(LocalDateTime.now()), 'S', getUser(pseudo).getDbID());
+                HomeInterface.currentHomeInter.refreshConversation(pseudo, getUser(pseudo).getDbID());
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error sending message to the client");
