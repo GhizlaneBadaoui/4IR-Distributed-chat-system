@@ -115,7 +115,6 @@ public class HomeInterface implements Initializable {
 
     public void refreshConversation(String pseudo, int id) {
         if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
-            vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
             List<String[]> tab = displayMessagesWithAgent(id);
             if (tab.isEmpty()) {
                 return;
@@ -158,6 +157,7 @@ public class HomeInterface implements Initializable {
                     All.setDisable(false);
                     agentPseudo.setText(pseudoColumn.getCellData(index));
                     agentImg.setImage(photoColumn.getCellData(index).getImage());
+                    vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
                     refreshConversation(pseudoColumn.getCellData(index), getUser(pseudoColumn.getCellData(index)).getDbID());
                 }
             }
