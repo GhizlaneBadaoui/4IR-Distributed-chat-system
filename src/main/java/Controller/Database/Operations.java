@@ -90,11 +90,19 @@ public class Operations{
     }
 
     public static boolean exist(int id) {
+        int res = 0;
         try {
-            String query = "SELECT EXISTS(SELECT 1 FROM '" + tableNameSec + "' WHERE pseudoID=" + id + ");";
+            String query = "SELECT EXISTS(SELECT 1 FROM '" + tableNameSec + "' WHERE pseudoID=" + id + ") AS result;";
             st = cnx.createStatement();
             rst = st.executeQuery(query);
-            return Integer.parseInt(rst.toString()) == 1;
+            while (rst.next()) {
+                res = Integer.parseInt(rst.getString("result"));
+            }
+            if (res==1) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
