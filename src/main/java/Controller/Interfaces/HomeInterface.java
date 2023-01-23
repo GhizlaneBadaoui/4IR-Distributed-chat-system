@@ -404,10 +404,10 @@ public class HomeInterface implements Initializable {
     }
 
     public void setAgentPseudo(String agentPseudo) {
-        this.agentPseudo.setText(agentPseudo);
+        currentHomeInter.agentPseudo.setText(agentPseudo);
     }
 
     public void setAgentImg(Image agentImg) {
-        this.agentImg.setImage(agentImg);
+        currentHomeInter.agentImg.setImage(agentImg);
     }
 }
