@@ -80,8 +80,8 @@ public class ConnectivityThread extends Thread{
                     System.out.println("data = " + packet_rec.getData().length);
                     if(data.contains("_#@") && data.contains("new")){
                         String oldps = data.substring(data.indexOf("=")+2, data.indexOf("@"));
-                        String newps = data.substring(data.indexOf("new")+6,data.indexOf("id"));
-                        int _id = Integer.parseInt(data.substring(data.indexOf("id")+2));
+                        String newps = data.substring(data.indexOf("new")+6,data.indexOf("@id"));
+                        int _id = Integer.parseInt(data.substring(data.indexOf("@id")+3));
                         ListenConnThread.getInstance().setMapPseudo(oldps,newps);
                         ReceiverThread.setPseudo(oldps, newps);
                         modifyPseudo(_id,newps);
@@ -106,7 +106,7 @@ public class ConnectivityThread extends Thread{
                     else if (!data.contains("port:") && data.contains("pseudo")) {
                             if (data.substring(9).equals(user.getPseudo())) {
                                 System.out.println("msg rec from conn: " + data);
-                                packet_send.setData("no".getBytes());
+                                packet_send.setData("@no".getBytes());
                                 connectivity_sock.send(packet_send);
                             } else {
                                 System.out.println("msg rec 2 : " + data);
