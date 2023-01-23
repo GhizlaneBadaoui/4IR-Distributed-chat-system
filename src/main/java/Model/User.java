@@ -134,7 +134,7 @@ public class User {
         ConnectivityThread.setFlag(true);
         if(Broadcast.getInstance().broadcasting(pseudo+"@@@!")){
             if(isPseudoChange()){
-                pseudo_selected("_#@-new = "+pseudo+"id"+User.getUser(pseudo).dbID);
+                pseudo_selected("_#@-new = "+pseudo+"id"+dbID);
                 this.pseudo = pseudo;
             }
             else

@@ -82,10 +82,11 @@ public class ConnectivityThread extends Thread{
                         String oldps = data.substring(data.indexOf("=")+2, data.indexOf("@"));
                         String newps = data.substring(data.indexOf("new")+6,data.indexOf("id"));
                         int _id = Integer.parseInt(data.substring(data.indexOf("id")+2));
+                        ListenConnThread.getInstance().setMapPseudo(oldps,newps);
                         modifyPseudo(_id,newps);
                         User.AgentModifyPseudo(oldps,newps);
                         HomeInterface.currentHomeInter.refreshTable();
-                        if (HomeInterface.currentHomeInter.isSelected(oldps)) {
+                        if (HomeInterface.currentHomeInter.isSelected(newps)) {
                             HomeInterface.currentHomeInter.setAgentPseudo(newps);
                             HomeInterface.currentHomeInter.setAgentImg(User.getUser(newps).getImgSrc().getImage());
                             HomeInterface.currentHomeInter.refreshConversation(newps,_id);

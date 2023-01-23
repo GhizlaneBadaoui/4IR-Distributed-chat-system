@@ -63,7 +63,7 @@
     -fx-table-cell-border-color: transparent;
 }
 .table-view .table-cell{
-    -fx-padding: 2 0 2 10px;
+    -fx-padding: 3 3 3 10px;
     -fx-font-size: 14pt;
     -fx-text-fill: #46474A;
 }

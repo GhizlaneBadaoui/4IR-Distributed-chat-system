@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static Controller.Database.Operations.closeConnection;
 import static Controller.Database.Operations.displayMessagesWithAgent;
 import static Model.User.getUser;
 import static com.example.chatsystem.Main.stage;
@@ -240,6 +241,7 @@ public class HomeInterface implements Initializable {
             @Override
             public void handle(WindowEvent t) {
                 disconnect();
+                closeConnection();
                 Platform.exit();
                 System.exit(0);
             }
@@ -317,8 +319,8 @@ public class HomeInterface implements Initializable {
         hbox.setPadding(new Insets(5,5,5,10));
 
         Label dateLabel = new Label(date);
-        dateLabel.setPadding(new Insets(5, 5, 5, 5));
-        dateLabel.setStyle("-fx-font-size: 10px;");
+        dateLabel.setPadding(new Insets(0, 0, 0, 0));
+        dateLabel.setStyle("-fx-font-size: 9px;");
         dateLabel.setStyle("-fx-text-fill: #636566;");
 
         Text text = new Text((String) msg);
@@ -351,8 +353,8 @@ public class HomeInterface implements Initializable {
         hbox.setPadding(new Insets(5,5,5,10));
 
         Label dateLabel = new Label(date);
-        dateLabel.setPadding(new Insets(5, 5, 5, 5));
-        dateLabel.setStyle("-fx-font-size: 10px;");
+        dateLabel.setPadding(new Insets(0, 0, 0, 0));
+        dateLabel.setStyle("-fx-font-size: 9px;");
         dateLabel.setStyle("-fx-text-fill: #636566;");
 
         Text text = new Text((String) msg);
@@ -388,11 +390,7 @@ public class HomeInterface implements Initializable {
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                if (user.getPseudo().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return user.getPseudo().toLowerCase().contains(lowerCaseFilter);
             });
         });
 
@@ -403,9 +401,7 @@ public class HomeInterface implements Initializable {
 
     public boolean isSelected(String pseudo) {
         if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()) != null) {
-            if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
-                return true;
-            }
+            return pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo);
         }
         return false;
     }
