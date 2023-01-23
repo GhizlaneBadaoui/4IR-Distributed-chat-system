@@ -69,7 +69,7 @@ public class User {
                 Broadcast.getInstance().getConnectivity_sock().receive(packet);
                 resp = new String(packet.getData()).trim();
                 System.out.println("msg rec : "+resp);
-                if(!resp.contains("no") && resp.contains("ok")){
+                if(!resp.contains("@no") && resp.contains("ok")){
                     System.out.println("port numer = "+Integer.parseInt(resp.substring(2,resp.indexOf(':'))));
                     int _id = Integer.parseInt(resp.substring(resp.indexOf('=')+2));
                     String ps = resp.substring(resp.indexOf(':') + 1, resp.indexOf('@'));
@@ -138,7 +138,7 @@ public class User {
         ConnectivityThread.setFlag(true);
         if(Broadcast.getInstance().broadcasting(pseudo+"@@@!")){
             if(isPseudoChange()){
-                pseudo_selected("_#@-new = "+pseudo+"id"+dbID);
+                pseudo_selected("_#@-new = "+pseudo+"@id"+dbID);
                 this.pseudo = pseudo;
             }
             else
