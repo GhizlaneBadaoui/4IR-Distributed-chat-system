@@ -319,7 +319,7 @@ public class HomeInterface implements Initializable {
         hbox.setPadding(new Insets(5,5,5,10));
 
         Label dateLabel = new Label(date);
-        dateLabel.setPadding(new Insets(0, 0, 0, 0));
+        dateLabel.setPadding(new Insets(0, 3, 0, 3));
         dateLabel.setStyle("-fx-font-size: 9px;");
         dateLabel.setStyle("-fx-text-fill: #636566;");
 
@@ -353,7 +353,7 @@ public class HomeInterface implements Initializable {
         hbox.setPadding(new Insets(5,5,5,10));
 
         Label dateLabel = new Label(date);
-        dateLabel.setPadding(new Insets(0, 0, 0, 0));
+        dateLabel.setPadding(new Insets(0, 3, 0, 3));
         dateLabel.setStyle("-fx-font-size: 9px;");
         dateLabel.setStyle("-fx-text-fill: #636566;");
 

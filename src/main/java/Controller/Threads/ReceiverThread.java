@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static Controller.Database.Operations.add;
@@ -29,6 +30,24 @@ public class ReceiverThread extends Thread{
         } catch (IOException e) {
             System.out.println("Error creating receiver thread.");
             e.printStackTrace();
+        }
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
+    public static void setPseudo(String oldps, String newps){
+        Iterator<ReceiverThread> iter = receivers.stream().iterator();
+        while (iter.hasNext()){
+            ReceiverThread rt = iter.next();
+            if(rt.getPseudo().equals(oldps)){
+                rt.setPseudo(newps);
+            }
         }
     }
     public void run() {
