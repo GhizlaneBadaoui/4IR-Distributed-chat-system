@@ -113,18 +113,25 @@ public class HomeInterface implements Initializable {
     }
 
     public void refreshConversation(String pseudo, int id) {
-        if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
-            List<String[]> tab = displayMessagesWithAgent(id);
-            if (tab.isEmpty()) {
-                return;
-            }
-            vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
-            for (String[] element : tab) {
-                if (element[2].equals("R")) {
-                    addLabelForIncomingMessage(element[0], element[1], vbox_messages);
+        if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()) != null) {
+            if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
+                List<String[]> tab = displayMessagesWithAgent(id);
+                if (tab.isEmpty()) {
+                    return;
                 }
-                if (element[2].equals("S")) {
-                    addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
+                    }
+                });
+                for (String[] element : tab) {
+                    if (element[2].equals("R")) {
+                        addLabelForIncomingMessage(element[0], element[1], vbox_messages);
+                    }
+                    if (element[2].equals("S")) {
+                        addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
+                    }
                 }
             }
         }
@@ -154,7 +161,6 @@ public class HomeInterface implements Initializable {
                     All.setDisable(false);
                     agentPseudo.setText(pseudoColumn.getCellData(index));
                     agentImg.setImage(photoColumn.getCellData(index).getImage());
-                    vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
                     refreshConversation(pseudoColumn.getCellData(index), getUser(pseudoColumn.getCellData(index)).getDbID());
                 }
             }
@@ -395,7 +401,28 @@ public class HomeInterface implements Initializable {
         agentsTable.setItems(sortedData);
     }
 
+    public boolean isSelected(String pseudo) {
+        if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()) != null) {
+            if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getAgentPseudo() {
         return agentPseudo.getText();
+    }
+
+    public void setAgentPseudo(String agentPseudo) {
+        this.agentPseudo.setText(agentPseudo);
+    }
+
+    public Image getAgentImg() {
+        return agentImg.getImage();
+    }
+
+    public void setAgentImg(Image agentImg) {
+        this.agentImg.setImage(agentImg);
     }
 }

@@ -80,10 +80,16 @@ public class ConnectivityThread extends Thread{
                     System.out.println("data = " + packet_rec.getData().length);
                     if(data.contains("_#@") && data.contains("new")){
                         String oldps = data.substring(data.indexOf("=")+2, data.indexOf("@"));
-                        String newps = data.substring(data.indexOf("new")+6);
-                        modifyPseudo(1,newps);
+                        String newps = data.substring(data.indexOf("new")+6,data.indexOf("id"));
+                        int _id = Integer.parseInt(data.substring(data.indexOf("id")+2));
+                        modifyPseudo(_id,newps);
                         User.AgentModifyPseudo(oldps,newps);
                         HomeInterface.currentHomeInter.refreshTable();
+                        if (HomeInterface.currentHomeInter.isSelected(oldps)) {
+                            HomeInterface.currentHomeInter.setAgentPseudo(newps);
+                            HomeInterface.currentHomeInter.setAgentImg(User.getUser(newps).getImgSrc().getImage());
+                            HomeInterface.currentHomeInter.refreshConversation(newps,_id);
+                        }
                     }
                     else if(data.contains("@@@!") && data.contains("pseudo")){
                             if (data.substring(data.indexOf("=")+1, data.indexOf("@")).equals(user.getPseudo()))

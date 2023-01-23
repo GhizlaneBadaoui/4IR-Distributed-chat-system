@@ -1,20 +1,20 @@
 package Model;
 
 import Controller.Database.Operations;
+import Controller.Interfaces.HomeInterface;
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
 import Controller.Threads.ListenConnThread;
-import Controller.Interfaces.HomeInterface;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import static Controller.Database.Operations.connect;
 
 public class User {
     private int dbID;
@@ -134,7 +134,7 @@ public class User {
         ConnectivityThread.setFlag(true);
         if(Broadcast.getInstance().broadcasting(pseudo+"@@@!")){
             if(isPseudoChange()){
-                pseudo_selected("_#@-new = "+pseudo);
+                pseudo_selected("_#@-new = "+pseudo+"id"+User.getUser(pseudo).dbID);
                 this.pseudo = pseudo;
             }
             else

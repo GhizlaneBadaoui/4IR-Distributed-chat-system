@@ -113,7 +113,7 @@ public class Operations{
         try {
             String query = "UPDATE '"+ tableNameSec +"' SET unPseudo = '"+ newPseudo +"' WHERE pseudoID ="+id+";";
             st = cnx.createStatement();
-            rst = st.executeQuery(query);
+            st.executeUpdate(query);
             System.out.println("\n--> An element was updated to "+newPseudo+" !\n");
         } catch(Exception ex) { ex.printStackTrace();}
     }
