@@ -139,9 +139,11 @@ public class Operations{
 
     public static void closeConnection() {
         try {
-            st.close();
-            cnx.close();
-            System.out.println("\n--> DB closed !\n");
+            if (st!=null && cnx!=null) {
+                st.close();
+                cnx.close();
+                System.out.println("\n--> DB closed !\n");
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("\n--> DB not closed !\n");
