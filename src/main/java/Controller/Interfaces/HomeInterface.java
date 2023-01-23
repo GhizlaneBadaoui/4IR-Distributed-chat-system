@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static Controller.Database.Operations.connect;
 import static Controller.Database.Operations.displayMessagesWithAgent;
 import static Model.User.getUser;
 import static com.example.chatsystem.Main.stage;
@@ -135,9 +134,6 @@ public class HomeInterface implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         /* Disable conversation space */
         All.setDisable(true);
-
-        /* Connect to the database */
-        connect();
 
         /* Set the user actually connected int the App */
         currentHomeInter = this;

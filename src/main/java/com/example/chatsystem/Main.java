@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static Controller.Database.Operations.connect;
+
 public class Main extends Application {
 
     public static Stage stage;
@@ -30,6 +32,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        connect();
         launch();
     }
 
