@@ -87,8 +87,7 @@ public class ConnectivityThread extends Thread{
                         modifyPseudo(_id,newps);
                         User.AgentModifyPseudo(oldps,newps);
                         HomeInterface.currentHomeInter.refreshTable();
-                        if (HomeInterface.currentHomeInter.isSelected(newps)) {
-                            System.out.println(" ------------------------ interface, pseudo changes");
+                        if (HomeInterface.currentHomeInter.getAgentPseudo().equals(oldps)) {
                             HomeInterface.currentHomeInter.setAgentPseudo(newps);
                             HomeInterface.currentHomeInter.setAgentImg(User.getUser(newps).getImgSrc().getImage());
                             HomeInterface.currentHomeInter.refreshConversation(newps,_id);
@@ -120,8 +119,9 @@ public class ConnectivityThread extends Thread{
                             String pseu = data.substring(data.indexOf('=') + 2, data.indexOf("@"));
                             int id = Integer.parseInt(data.substring(data.indexOf("@id@")+7));
                             user.add_user(new User(pseu, packet_rec.getAddress(), Integer.parseInt(data.substring(data.indexOf(':') + 1,data.indexOf('-'))),id));
-                            if(!Operations.exist(id))
+                            if(!Operations.exist(id)) {
                                 addPseudo(pseu,id);
+                            }
                             System.out.println("agents : " + User.getActive_agents().size());
                     }
                     packet_send.setData(new byte[1000]);

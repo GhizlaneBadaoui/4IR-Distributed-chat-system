@@ -254,6 +254,7 @@ public class HomeInterface implements Initializable {
                 dialog.setTitle("Your personal information");
                 dialog.setHeaderText("* Your full name is : "+ConnectivityThread.getInstance().getUser().getFullName()
                         +"\n* Your pseudo is : "+ConnectivityThread.getInstance().getUser().getPseudo()
+                        +"\n* Your id is : "+ConnectivityThread.getInstance().getUser().getDbID()
                         +"\n* Your address is : "+ConnectivityThread.getInstance().getUser().getIP().getHostAddress()
                         +"\n* Your port is : "+ConnectivityThread.getInstance().getUser().getPort());
                 dialog.setGraphic(ConnectivityThread.getInstance().getUser().getImgSrc());
@@ -307,7 +308,6 @@ public class HomeInterface implements Initializable {
 
         /* Search for active agent in the list */
         Search();
-//        closeConnection();
     }
 
     public void addLabelForIncomingMessage(Object msg, String date, VBox vbox) {
@@ -399,23 +399,12 @@ public class HomeInterface implements Initializable {
         agentsTable.setItems(sortedData);
     }
 
-    public boolean isSelected(String pseudo) {
-        if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()) != null) {
-            return pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo);
-        }
-        return false;
-    }
-
     public String getAgentPseudo() {
         return agentPseudo.getText();
     }
 
     public void setAgentPseudo(String agentPseudo) {
         this.agentPseudo.setText(agentPseudo);
-    }
-
-    public Image getAgentImg() {
-        return agentImg.getImage();
     }
 
     public void setAgentImg(Image agentImg) {

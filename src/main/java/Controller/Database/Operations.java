@@ -55,27 +55,6 @@ public class Operations{
         }
     }
 
-    /* Display all elements from a DB table */
-    public static void displayAll(){
-
-        try {
-            System.out.println("\n------- Display table content --------");
-
-            st = cnx.createStatement();
-            rst = st.executeQuery("SELECT * FROM "+ tableName );
-
-            while (rst.next()) {
-                System.out.print(rst.getInt("messageID") + "\t");
-                System.out.print(rst.getString("content") + "\t");
-                System.out.print(rst.getString("date") + "\t");
-                System.out.print(rst.getString("operation") + "\t");
-                System.out.print(rst.getString("pseudo") + "\t");
-                System.out.println();
-            }
-        } catch(Exception ex) { ex.printStackTrace();}
-    }
-
-
     public static List<String[]> displayMessagesWithAgent(int agentID){
         List<String[]> tab = new ArrayList<>();
         try {
