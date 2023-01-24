@@ -1,4 +1,4 @@
-package Controller.Interfaces;
+package View;
 
 import Model.User;
 import com.example.chatsystem.Main;

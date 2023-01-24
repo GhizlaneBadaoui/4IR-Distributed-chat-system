@@ -3,7 +3,7 @@ package Controller.Threads;
 import Controller.Database.Operations;
 import Controller.Protocoles.Broadcast;
 import Model.User;
-import Controller.Interfaces.HomeInterface;
+import View.HomeInterface;
 
 import java.io.IOException;
 import java.net.*;

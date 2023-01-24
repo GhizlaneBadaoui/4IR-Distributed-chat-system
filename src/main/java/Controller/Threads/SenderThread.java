@@ -1,6 +1,6 @@
 package Controller.Threads;
 
-import Controller.Interfaces.HomeInterface;
+import View.HomeInterface;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package Controller.Interfaces;
+package View;
 
 import Controller.Threads.*;
 import Model.User;
@@ -118,7 +118,7 @@ public class HomeInterface implements Initializable {
             if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
                 List<String[]> tab = displayMessagesWithAgent(id);
                 if (tab.isEmpty()) {
-                    return;
+                    addLabelForEmptyConversation(vbox_messages);
                 }
                 Platform.runLater(new Runnable() {
                     @Override
@@ -379,6 +379,30 @@ public class HomeInterface implements Initializable {
         });
     }
 
+    public void addLabelForEmptyConversation(VBox vbox) {
+        HBox hbox = new HBox();
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setPadding(new Insets(5,5,5,10));
+
+        Text text = new Text((String) "No messages");
+        text.setStyle("-fx-font-size: 12px;");
+        TextFlow textflow = new TextFlow(text);
+
+        textflow.setStyle("-fx-background-color: #636566;" +
+                "-fx-background-radius: 20 20 20 20 ;");
+
+        textflow.setPadding(new Insets(5, 10, 5, 10));
+        text.setFill(Color.color(0.934, 0.945, 0.996));
+
+        hbox.getChildren().add(textflow);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                vbox.getChildren().add(hbox);
+            }
+        });
+    }
+
     private void Search() {
 
         FilteredList<User> filteredData = new FilteredList<>(agentsList, b -> true);
@@ -401,23 +425,5 @@ public class HomeInterface implements Initializable {
 
     public String getAgentPseudo() {
         return agentPseudo.getText();
-    }
-
-    public void setAgentPseudo(String agentPseudo) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                currentHomeInter.agentPseudo.setText(agentPseudo);
-            }
-        });
-    }
-
-    public void setAgentImg(Image agentImg) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                currentHomeInter.agentImg.setImage(agentImg);
-            }
-        });
     }
 }

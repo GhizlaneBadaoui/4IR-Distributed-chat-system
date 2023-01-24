@@ -1,7 +1,7 @@
 package Model;
 
 import Controller.Database.Operations;
-import Controller.Interfaces.HomeInterface;
+import View.HomeInterface;
 import Controller.Protocoles.Broadcast;
 import Controller.Threads.ConnectivityThread;
 import Controller.Threads.ListenConnThread;
