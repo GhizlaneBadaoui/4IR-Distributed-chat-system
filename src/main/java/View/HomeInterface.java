@@ -94,6 +94,7 @@ public class HomeInterface implements Initializable {
     }
 
     public void refreshTable(){
+        restrictConversation();
         agentsList.clear();
         agentsList.addAll(User.getActive_agents());
         agentsTable.setItems(agentsList);
