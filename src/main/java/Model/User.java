@@ -49,7 +49,14 @@ public class User {
         this.imgSrc.setFitWidth(60);
     }
 
-    public boolean choose_pseudo(String pseudo,String id) throws IOException {
+    public User(int dbID, String pseudo, InetAddress IP, int port) {
+        this.dbID = dbID;
+        this.pseudo = pseudo;
+        this.IP = IP;
+        this.port = port;
+    }
+
+    public boolean choose_pseudo(String pseudo, String id) throws IOException {
         if(Broadcast.getInstance().broadcasting(pseudo)){
             if(identify_active_agents()){
                 this.pseudo = pseudo;
@@ -137,7 +144,7 @@ public class User {
                 }
             }
         } catch (ConcurrentModificationException e) {
-            System.out.println("* un agent vient de se déconnecté *");
+            System.out.println("* un agent vient de se déconnecter *");
         }
     }
     public boolean modifyPseudo(String pseudo) throws IOException {

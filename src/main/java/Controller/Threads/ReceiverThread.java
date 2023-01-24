@@ -60,7 +60,7 @@ public class ReceiverThread extends Thread{
                 add(msg, dtf.format(LocalDateTime.now()), 'R', getUser(pseudo).getDbID());
                 HomeInterface.currentHomeInter.refreshConversation(pseudo, getUser(pseudo).getDbID());
             } catch (IOException e) {
-                System.out.println("TCP connection with an agent is closed");
+                System.out.println("TCP connection with "+pseudo+" is closed");
                 break;
             }
         }

@@ -25,6 +25,12 @@ public class ListenConnThread extends Thread {
         }
     }
 
+    public void setMapPseudo(String oldps,String newps) {
+        Socket sock = map_sockets.get(oldps);
+        map_sockets.remove(oldps);
+        map_sockets.put(newps,sock);
+    }
+
     public static ListenConnThread getInstance() {
         return listenConnThread;
     }
@@ -54,12 +60,6 @@ public class ListenConnThread extends Thread {
 
     public Map<String, Socket> getMap_sockets() {
         return map_sockets;
-    }
-
-    public void setMapPseudo(String oldps,String newps) {
-        Socket sock = map_sockets.get(oldps);
-        map_sockets.remove(oldps);
-        map_sockets.put(newps,sock);
     }
 
     @Override
