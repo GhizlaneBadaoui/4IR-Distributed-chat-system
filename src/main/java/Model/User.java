@@ -92,6 +92,7 @@ public class User {
                     this.active_agents.clear();
                     return false;
                 }
+                packet.setData(new byte[1000]);
             }
             catch (SocketTimeoutException e){
                 return true;
