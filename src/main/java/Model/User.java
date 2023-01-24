@@ -137,7 +137,7 @@ public class User {
                 }
             }
         } catch (ConcurrentModificationException e) {
-            System.out.println("* disconnection *");
+            System.out.println("* un agent vient de se déconnecté *");
         }
     }
     public boolean modifyPseudo(String pseudo) throws IOException {

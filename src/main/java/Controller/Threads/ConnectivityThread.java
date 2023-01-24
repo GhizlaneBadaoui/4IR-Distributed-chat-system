@@ -88,9 +88,7 @@ public class ConnectivityThread extends Thread{
                         User.AgentModifyPseudo(oldps,newps);
                         HomeInterface.currentHomeInter.refreshTable();
                         if (HomeInterface.currentHomeInter.getAgentPseudo().equals(oldps)) {
-                            HomeInterface.currentHomeInter.setAgentPseudo(newps);
-                            HomeInterface.currentHomeInter.setAgentImg(User.getUser(newps).getImgSrc().getImage());
-                            HomeInterface.currentHomeInter.refreshConversation(newps,_id);
+                            HomeInterface.currentHomeInter.restrictConversation();
                         }
                     }
                     else if(data.contains("@@@!") && data.contains("pseudo")){
