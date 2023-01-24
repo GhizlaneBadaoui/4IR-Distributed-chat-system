@@ -13,6 +13,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -123,16 +124,20 @@ public class User {
 
     public synchronized void delete_user(String pseudo){
         Iterator<User> iter = User.getActive_agents().stream().iterator();
-        while (iter.hasNext()){
-            User user = iter.next();
-            if(user.getPseudo().equals(pseudo)){
-                User.getActive_agents().remove(user);
-                System.out.println("user deleted");
-                HomeInterface.currentHomeInter.refreshTable();
-                if (HomeInterface.currentHomeInter.getAgentPseudo().equals(pseudo)){
-                    HomeInterface.currentHomeInter.restrictConversation();
+        try {
+            while (iter.hasNext()){
+                User user = iter.next();
+                if(user.getPseudo().equals(pseudo)){
+                    User.getActive_agents().remove(user);
+                    System.out.println("user deleted");
+                    HomeInterface.currentHomeInter.refreshTable();
+                    if (HomeInterface.currentHomeInter.getAgentPseudo().equals(pseudo)){
+                        HomeInterface.currentHomeInter.restrictConversation();
+                    }
                 }
             }
+        } catch (ConcurrentModificationException e) {
+            System.out.println("* disconnection *");
         }
     }
     public boolean modifyPseudo(String pseudo) throws IOException {
