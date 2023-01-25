@@ -129,7 +129,13 @@ public class HomeInterface implements Initializable {
             if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
                 List<String[]> tab = displayMessagesWithAgent(id);
                 if (tab.isEmpty()) {
-                    addLabelForEmptyConversation(vbox_messages);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
+                            addLabelForEmptyConversation(vbox_messages);
+                        }
+                    });
                 } else {
                     Platform.runLater(new Runnable() {
                         @Override
