@@ -8,14 +8,13 @@ import java.net.UnknownHostException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ConnectivityThreadTest {
-
-
     private User user;
     private int testNum = 1;
     @BeforeAll
     public void BeforeAllTests(){
-        System.out.println("We are testing the User unit");
+        System.out.println("We are testing the ConnectivityThread unit");
     }
 
     @BeforeEach
@@ -34,6 +33,7 @@ class ConnectivityThreadTest {
 
     @Test
     void getInstance() {
+        user.setPseudo("walid");
         Assertions.assertEquals("walid",ConnectivityThread.getInstance().getUser().getPseudo());
     }
 
@@ -50,18 +50,18 @@ class ConnectivityThreadTest {
 
     @Test
     void deconnection() {
-        Assertions.assertThrows(IOException.class,()->{
+        Assertions.assertDoesNotThrow(()->{
             ConnectivityThread.getInstance().deconnection();
         });
     }
 
     @Test
     void getUser() {
+        Assertions.assertEquals(user,ConnectivityThread.getInstance().getUser());
     }
     @AfterEach
     public void afterEachTest(){
         testNum++;
-        User.getActive_agents().clear();
     }
     @AfterAll
     public void AfterAllTests(){

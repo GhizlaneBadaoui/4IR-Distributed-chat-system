@@ -12,5 +12,6 @@ module com.example.chatsystem {
     exports View;
     exports Controller.Protocoles;
     exports Controller.Database;
+    exports Controller.Threads;
     exports com.example.chatsystem;
 }
