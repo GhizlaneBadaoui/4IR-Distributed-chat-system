@@ -25,19 +25,14 @@ public class User {
     private InetAddress IP;
     private int port;
     private String fullName = "";
-    private ImageView imgSrc = new ImageView(new Image("file:src/main/resources/Images/person.png"));
+    private String imgSrc = "file:src/main/resources/Images/person.png";
     private static List<User> active_agents = new ArrayList<>();
 
-    public User() {
-        this.imgSrc.setFitHeight(60);
-        this.imgSrc.setFitWidth(60);
-    }
+    public User() {}
 
     public User(InetAddress IP, int port) {
         this.IP = IP;
         this.port = port;
-        this.imgSrc.setFitHeight(60);
-        this.imgSrc.setFitWidth(60);
     }
 
     public User(String pseudo, InetAddress IP, int port, int id) {
@@ -45,25 +40,16 @@ public class User {
         this.IP = IP;
         this.port = port;
         this.dbID = id;
-        this.imgSrc.setFitHeight(60);
-        this.imgSrc.setFitWidth(60);
-    }
-
-    public User(int dbID, String pseudo, InetAddress IP, int port) {
-        this.dbID = dbID;
-        this.pseudo = pseudo;
-        this.IP = IP;
-        this.port = port;
     }
 
     public boolean choose_pseudo(String pseudo, String id) throws IOException {
         if(Broadcast.getInstance().broadcasting(pseudo)){
             if(identify_active_agents()){
                 this.pseudo = pseudo;
-                this.pseudo_selected("-@id@ = "+id);//on fait passer l'utilisateur à l'interface principale de l'application
+                this.pseudo_selected("-@id@ = "+id); // Home interface is displayed
             }
             else
-                return false;//l'utilisateur se connecte pas et un msg d'errur apparaitera.
+                return false; // the user does not log in and an error message is displayed.
         }
         return true;
     }
@@ -227,7 +213,10 @@ public class User {
     }
 
     public ImageView getImgSrc() {
-        return imgSrc;
+        ImageView img = new ImageView(new Image(imgSrc));
+        img.setFitHeight(60);
+        img.setFitWidth(60);
+        return img;
     }
 
     public String getFullName() {

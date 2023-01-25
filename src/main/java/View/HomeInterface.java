@@ -2,7 +2,6 @@ package View;
 
 import Controller.Threads.*;
 import Model.User;
-import com.example.chatsystem.Main;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -40,8 +39,12 @@ import java.util.ResourceBundle;
 import static Controller.Database.Operations.closeConnection;
 import static Controller.Database.Operations.displayMessagesWithAgent;
 import static Model.User.getUser;
+import static com.example.chatsystem.Main.changeScene;
 import static com.example.chatsystem.Main.stage;
 
+/**
+ * Interface to exchange with active agents, change pseudonym, view personal information and change name
+ */
 public class HomeInterface implements Initializable {
     @FXML
     public Button reduceButton;
@@ -76,16 +79,20 @@ public class HomeInterface implements Initializable {
     @FXML
     private TableColumn<User, String> pseudoColumn;
 
+    /* contains active agents */
     ObservableList<User> agentsList = FXCollections.observableArrayList();
-    public static HomeInterface currentHomeInter;
-    int index = -1;
-    Main objetMain = new Main();
 
+    public static HomeInterface currentHomeInter;
+
+    /* index of the selected agent in list of active agents */
+    int index = -1;
+
+    /* used when the user disconnect */
     void disconnect (){
         try {
             ConnectivityThread.setFlag(true);
             ConnectivityThread.getInstance().deconnection();
-            objetMain.changeScene("Login.fxml");
+            changeScene("Login.fxml");
         } catch (Exception ex) {
             ex.printStackTrace();
         } catch (Throwable e) {
@@ -93,13 +100,15 @@ public class HomeInterface implements Initializable {
         }
     }
 
+    /* update list of active agents displayed in home interface */
     public void refreshTable(){
-        restrictConversation();
         agentsList.clear();
         agentsList.addAll(User.getActive_agents());
         agentsTable.setItems(agentsList);
+        agentsTable.getSelectionModel().select(index);
     }
 
+    /* hide a conversation with an agent */
     public void restrictConversation() {
         Platform.runLater(new Runnable() {
             @Override
@@ -114,25 +123,27 @@ public class HomeInterface implements Initializable {
         });
     }
 
+    /* update the conversation when messages are added */
     public void refreshConversation(String pseudo, int id) {
         if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()) != null) {
             if (pseudoColumn.getCellData(agentsTable.getSelectionModel().getSelectedIndex()).equals(pseudo)) {
                 List<String[]> tab = displayMessagesWithAgent(id);
                 if (tab.isEmpty()) {
                     addLabelForEmptyConversation(vbox_messages);
-                }
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
-                    }
-                });
-                for (String[] element : tab) {
-                    if (element[2].equals("R")) {
-                        addLabelForIncomingMessage(element[0], element[1], vbox_messages);
-                    }
-                    if (element[2].equals("S")) {
-                        addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
+                } else {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            vbox_messages.getChildren().removeAll(vbox_messages.getChildren());
+                        }
+                    });
+                    for (String[] element : tab) {
+                        if (element[2].equals("R")) {
+                            addLabelForIncomingMessage(element[0], element[1], vbox_messages);
+                        }
+                        if (element[2].equals("S")) {
+                            addLabelForOutgoingMessage(element[0], element[1], vbox_messages);
+                        }
                     }
                 }
             }
@@ -144,17 +155,18 @@ public class HomeInterface implements Initializable {
         /* Disable conversation space */
         All.setDisable(true);
 
-        /* Set the user actually connected int the App */
+        /* Set the current interface */
         currentHomeInter = this;
 
         /* Set user information */
         myPseudo.setText(ConnectivityThread.getInstance().getUser().getPseudo());
 
-        /* Configure active agents list */
+        /* Configure list of active agents */
         photoColumn.setCellValueFactory(new PropertyValueFactory<>("imgSrc"));
         pseudoColumn.setCellValueFactory(new PropertyValueFactory<>("pseudo"));
         refreshTable();
 
+        /* Display messages with an agent when it is clicked in the list of active agents */
         agentsTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -168,6 +180,7 @@ public class HomeInterface implements Initializable {
             }
         });
 
+        /* Hide table header */
         agentsTable.skinProperty().addListener((obsVal, oldSkin, newSkin) -> {
             TableHeaderRow header = (TableHeaderRow) agentsTable.lookup("TableHeaderRow");
             header.reorderingProperty()
@@ -182,6 +195,7 @@ public class HomeInterface implements Initializable {
             }
         });
 
+        /* Send a message */
         sendButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -224,6 +238,7 @@ public class HomeInterface implements Initializable {
             }
         });
 
+        /* hide a conversation */
         reduceButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -231,6 +246,7 @@ public class HomeInterface implements Initializable {
             }
         });
 
+        /* return to log in interface */
         disconnectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -238,6 +254,7 @@ public class HomeInterface implements Initializable {
             }
         });
 
+        /* manage the shutdown of the app when the interface is suddenly closed */
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent t) {
@@ -248,6 +265,7 @@ public class HomeInterface implements Initializable {
             }
         });
 
+        /* Show user profile */
         parametersButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -266,6 +284,7 @@ public class HomeInterface implements Initializable {
             }
         });
 
+        /* change pseudonym */
         editButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -311,6 +330,7 @@ public class HomeInterface implements Initializable {
         Search();
     }
 
+    /* formatting and adding incoming message bubbles */
     public void addLabelForIncomingMessage(Object msg, String date, VBox vbox) {
         VBox primaryVbox = new VBox();
         primaryVbox.setAlignment(Pos.CENTER_LEFT);
@@ -345,6 +365,7 @@ public class HomeInterface implements Initializable {
         });
     }
 
+    /* formatting and adding outgoing message bubbles */
     public void addLabelForOutgoingMessage(Object msg, String date, VBox vbox) {
         VBox primaryVbox = new VBox();
         primaryVbox.setAlignment(Pos.CENTER_RIGHT);
@@ -380,12 +401,13 @@ public class HomeInterface implements Initializable {
         });
     }
 
+    /* formatting and adding a bubble for empty conversation */
     public void addLabelForEmptyConversation(VBox vbox) {
         HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER);
         hbox.setPadding(new Insets(5,5,5,10));
 
-        Text text = new Text((String) "No messages");
+        Text text = new Text("No messages");
         text.setStyle("-fx-font-size: 12px;");
         TextFlow textflow = new TextFlow(text);
 
@@ -404,6 +426,7 @@ public class HomeInterface implements Initializable {
         });
     }
 
+    /* Search for active agent in the list */
     private void Search() {
 
         FilteredList<User> filteredData = new FilteredList<>(agentsList, b -> true);
@@ -422,6 +445,16 @@ public class HomeInterface implements Initializable {
         SortedList<User> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(agentsTable.comparatorProperty());
         agentsTable.setItems(sortedData);
+    }
+
+    /* display an information alert when an agent has just changed his pseudonym */
+    public void alertForChangingPseudo(String oldps, String newps) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("file:src/main/resources/Images/logo.png"));
+        alert.setContentText("\""+ oldps + "\" changed his pseudonym to \"" + newps +"\"");
+        alert.showAndWait();
     }
 
     public String getAgentPseudo() {

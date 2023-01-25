@@ -7,6 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains all the operations to access, add, modify, delete ... from the database
+ **/
 public class Operations{
 
     static Connection cnx = null;
@@ -18,7 +21,6 @@ public class Operations{
 
     /* Check if the database is connected with the code */
     public static void connect() {
-        Connexion connexion = new Connexion();
         try {
             cnx = Connexion.getConnection();
             System.out.println("\n--> DB connected !\n");
@@ -31,14 +33,14 @@ public class Operations{
     /* Initiate the database */
     public static void initiate() {
         try {
-            String query = "CREATE TABLE pseudos" +
+            String query = "CREATE TABLE IF NOT EXISTS pseudos" +
                     " (pseudoID INTEGER NOT NULL PRIMARY KEY," +
                     " unPseudo TEXT NOT NULL)";
 
             st = cnx.createStatement();
             st.executeUpdate(query);
 
-            query = "CREATE TABLE messages" +
+            query = "CREATE TABLE IF NOT EXISTS messages" +
                     " (messageID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                     " content BLOB NOT NULL," +
                     " date TEXT NOT NULL," +
@@ -55,6 +57,7 @@ public class Operations{
         }
     }
 
+    /* Return incoming and outgoing messages related to an agent */
     public static List<String[]> displayMessagesWithAgent(int agentID){
         List<String[]> tab = new ArrayList<>();
         try {
@@ -68,6 +71,7 @@ public class Operations{
         return tab;
     }
 
+    /* verify if an agent (id) already exist in the database */
     public static boolean exist(int id) {
         int res = 0;
         try {
@@ -77,17 +81,14 @@ public class Operations{
             while (rst.next()) {
                 res = Integer.parseInt(rst.getString("result"));
             }
-            if (res==1) {
-                return true;
-            } else {
-                return false;
-            }
+            return (res == 1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
+    /* Change the pseudonym of an agent to a new one */
     public static void modifyPseudo(int id, String newPseudo) {
         try {
             String query = "UPDATE '"+ tableNameSec +"' SET unPseudo = '"+ newPseudo +"' WHERE pseudoID ="+id+";";
@@ -98,7 +99,7 @@ public class Operations{
     }
 
 
-    /* Add an element in a DB table  */
+    /* Add a message to the DB */
     public static void 	add(String content, String date, char operation, int id){
 
         try {
@@ -112,6 +113,7 @@ public class Operations{
         }
     }
 
+    /* Add an agent to the database */
     public static void addPseudo(String pseudo, int id){
         try {
             String query = "INSERT INTO "+ tableNameSec +" (pseudoID, unPseudo) "+
@@ -124,7 +126,7 @@ public class Operations{
         }
     }
 
-    /* Delete an element in a DB table */
+    /* Delete an agent from the database */
     public static void deleteAgent (int id){
         try {
             cnx = Connexion.getConnection();
@@ -137,6 +139,7 @@ public class Operations{
         }
     }
 
+    /* Close connection with the DB if it initiated */
     public static void closeConnection() {
         try {
             if (st!=null && cnx!=null) {

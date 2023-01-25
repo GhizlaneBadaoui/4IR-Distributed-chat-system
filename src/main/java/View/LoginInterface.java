@@ -1,7 +1,6 @@
 package View;
 
 import Model.User;
-import com.example.chatsystem.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,6 +9,11 @@ import javafx.scene.control.TextField;
 
 import java.net.InetAddress;
 
+import static com.example.chatsystem.Main.changeScene;
+
+/**
+ * interface to log in
+ */
 public class LoginInterface {
 
     @FXML
@@ -23,9 +27,6 @@ public class LoginInterface {
 
 
     public static User user;
-
-    Main objetMain = new Main();
-
 
     /* Connection : check pseudo and connect */
     @FXML
@@ -44,7 +45,7 @@ public class LoginInterface {
                             user.setPseudo(pseudoLabel.getText());
                             user.setDbID(id);
                             connectionError.setText("Success !");
-                            objetMain.changeScene("Home.fxml");
+                            changeScene("Home.fxml");
                         }
                         else {
                             connectionError.setText("This pseudo already exists, choose another one.");

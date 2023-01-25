@@ -4,6 +4,7 @@ import Controller.Database.Operations;
 import Controller.Protocoles.Broadcast;
 import Model.User;
 import View.HomeInterface;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.net.*;
@@ -89,6 +90,12 @@ public class ConnectivityThread extends Thread{
                         HomeInterface.currentHomeInter.refreshTable();
                         if (HomeInterface.currentHomeInter.getAgentPseudo().equals(oldps)) {
                             HomeInterface.currentHomeInter.restrictConversation();
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    HomeInterface.currentHomeInter.alertForChangingPseudo(oldps, newps);
+                                }
+                            });
                         }
                     }
                     else if(data.contains("@@@!") && data.contains("pseudo")){

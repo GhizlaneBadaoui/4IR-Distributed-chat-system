@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import static Controller.Database.Operations.connect;
+import static Controller.Database.Operations.initiate;
 
 public class Main extends Application {
 
@@ -26,13 +27,15 @@ public class Main extends Application {
         stage.show();
     }
 
-    public void changeScene(String fxml) throws IOException{
-        Parent BorderPane = FXMLLoader.load(getClass().getResource(fxml));
+    /* called to change the scene */
+    public static void changeScene(String fxml) throws IOException{
+        Parent BorderPane = FXMLLoader.load(Main.class.getResource(fxml));
         stage.getScene().setRoot(BorderPane);
     }
 
     public static void main(String[] args) {
         connect();
+        initiate();
         launch();
     }
 

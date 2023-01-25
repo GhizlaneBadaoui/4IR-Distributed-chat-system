@@ -4,8 +4,6 @@ import org.junit.jupiter.api.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserTest {
     User user;
@@ -19,7 +17,7 @@ class UserTest {
     @BeforeEach
     public void setup() throws UnknownHostException {
         System.out.println("***************** Test number : "+testNum+" ********************");
-        user = new User(1,"walid",InetAddress.getLocalHost(),5010);
+        user = new User("walid",InetAddress.getLocalHost(),5010,1);
         User.getActive_agents().add(user);
     }
 
