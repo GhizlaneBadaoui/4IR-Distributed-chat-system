@@ -1,3 +1,5 @@
+package com.example.chatsystem;
+
 import com.example.chatsystem.Main;
 
 public class _Main {
