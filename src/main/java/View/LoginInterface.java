@@ -17,9 +17,9 @@ import static com.example.chatsystem.Main.changeScene;
 public class LoginInterface {
 
     @FXML
-    public Button logInButton;
+    private Button logInButton;
     @FXML
-    public TextField idLabel;
+    private TextField idLabel;
     @FXML
     private TextField pseudoLabel;
     @FXML

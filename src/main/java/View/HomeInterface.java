@@ -47,9 +47,9 @@ import static com.example.chatsystem.Main.stage;
  */
 public class HomeInterface implements Initializable {
     @FXML
-    public Button reduceButton;
+    private Button reduceButton;
     @FXML
-    public VBox All;
+    private VBox All;
     @FXML
     private Label agentPseudo;
     @FXML
@@ -85,10 +85,10 @@ public class HomeInterface implements Initializable {
     public static HomeInterface currentHomeInter;
 
     /* index of the selected agent in list of active agents */
-    int index = -1;
+    private int index = -1;
 
     /* used when the user disconnect */
-    void disconnect (){
+    public void disconnect (){
         try {
             ConnectivityThread.setFlag(true);
             ConnectivityThread.getInstance().deconnection();
